@@ -1,8 +1,8 @@
-import { Divider, PlayingNow, TodayCard } from './_lib/components';
+import { Divider, OnThisDay, PlayingNow, TodayCard } from './_lib/components';
 
 export default function Home() {
   return (
-    <main className="relative w-full h-full flex flex-col gap-5">
+    <main className="w-full h-full flex flex-col gap-5">
       <header>
         <h1 className="text-base text-gray-800 font-bold">olá,</h1>
         <Divider />
@@ -42,8 +42,9 @@ export default function Home() {
           />
         ))}
       </section>
+      <OnThisDay />
 
-      <footer className="w-full border-t-gray-100 border-t pt-2 absolute bottom-0">
+      <footer className="w-full border-t-gray-100 border-t pt-2 mt-auto">
         <p className="text-xs text-gray-400 text-center">
           jawr <span className="text-gray-200">| 2026</span>
         </p>

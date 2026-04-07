@@ -4,3 +4,4 @@ export * from './nav';
 export * from './nav-item';
 export * from './playing-now';
 export * from './today-card';
+export * from './on-this-day';
