@@ -5,7 +5,6 @@ export default function Home() {
     <main className="w-full h-full flex flex-col gap-5">
       <header>
         <h1 className="text-base text-gray-800 font-bold">olá,</h1>
-        <Divider />
       </header>
       <article className="text-sm text-gray-600 flex flex-col gap-4">
         <p>
@@ -23,32 +22,12 @@ export default function Home() {
       <Divider />
       <PlayingNow />
       <Divider />
-      <section className="flex justify-between">
-        {new Array(4).fill(0).map((_, i) => (
-          <TodayCard
-            key={i}
-            title="álbum do dia"
-            image={'/cover.png'}
-            description={{
-              title: 'Descrição do álbum do dia',
-              subtitle: i % 2 === 0 ? 'Subtítulo do álbum do dia' : undefined,
-            }}
-            source={[
-              {
-                name: '1001 albums',
-                url: 'https://en.wikipedia.org/wiki/1001_Albums_You_Must_Hear_Before_You_Die',
-              },
-            ]}
-          />
-        ))}
+      <section className="flex justify-between flex-wrap gap-y-3">
+        <TodayCard.Album />
+        <TodayCard.Artist />
+        <TodayCard.Color />
       </section>
       <OnThisDay />
-
-      <footer className="w-full border-t-gray-100 border-t pt-2 mt-auto">
-        <p className="text-xs text-gray-400 text-center">
-          jawr <span className="text-gray-200">| 2026</span>
-        </p>
-      </footer>
     </main>
   );
 }

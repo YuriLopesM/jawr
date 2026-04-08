@@ -6,7 +6,7 @@ type SourceType = {
   url: string;
 };
 
-type TodayCardProps = {
+type TemplateCardProps = {
   title: string;
   image: string;
   description: {
@@ -16,12 +16,12 @@ type TodayCardProps = {
   source: SourceType[];
 };
 
-export function TodayCard({
+export function TemplateCard({
   title,
   image,
   description,
   source,
-}: TodayCardProps) {
+}: TemplateCardProps) {
   const hasSubtitle = Boolean(description.subtitle);
 
   return (
