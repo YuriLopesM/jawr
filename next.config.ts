@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
       new URL('https://singlecolorimage.com/**'),
       new URL('https://i.scdn.co/**'),
       new URL('https://r2.theaudiodb.com/**'),
-      new URL('https://lastfm.freetls.fastly.net/**'),
     ],
   },
 };
