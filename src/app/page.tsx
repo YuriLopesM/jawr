@@ -1,4 +1,4 @@
-import { Divider, OnThisDay, PlayingNow, TodayCard } from './_lib/components';
+import { Divider, OnThisDay, PlayingNow, ThisOrThat, TodayCard } from './_lib/components';
 
 export default function Home() {
   return (
@@ -28,6 +28,8 @@ export default function Home() {
         <TodayCard.Color />
       </section>
       <OnThisDay />
+      <Divider />
+      <ThisOrThat />
     </main>
   );
 }
