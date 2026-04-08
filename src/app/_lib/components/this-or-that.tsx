@@ -1,6 +1,14 @@
 'use client';
 
-import { ArtistInfo, fetchPair } from '@/app/_lib/services/this-or-that';
+import {
+  ArtistInfo,
+  ArtistVotes,
+  DailyData,
+  DAILY_LIMIT,
+  fetchPair,
+  getDailyData,
+  incrementDailyCount,
+} from '@/app/_lib/services/this-or-that';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
@@ -86,16 +94,17 @@ function useCountUp(target: number, active: boolean, duration = 600) {
   return value;
 }
 
-type ArtistVotes = Record<string, number>;
-
 const STORAGE_KEY = 'jawr-this-or-that-votes';
 
 export function ThisOrThat() {
   const [votes, setVotes] = useState<ArtistVotes>({});
   const [pair, setPair] = useState<[ArtistInfo, ArtistInfo] | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [voted, setVoted] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [daily, setDaily] = useState<DailyData>({ date: '', count: 0 });
+
+  const limitReached = daily.count >= DAILY_LIMIT;
 
   useEffect(() => {
     try {
@@ -103,6 +112,7 @@ export function ThisOrThat() {
       if (stored) setVotes(JSON.parse(stored));
     } catch {}
 
+    setDaily(getDailyData());
     loadPair();
   }, []);
 
@@ -121,8 +131,9 @@ export function ThisOrThat() {
   }
 
   function handleVote(name: string) {
-    if (voted) return;
+    if (voted || limitReached) return;
     saveVotes({ ...votes, [name]: (votes[name] ?? 0) + 1 });
+    setDaily(incrementDailyCount());
     setVoted(name);
   }
 
@@ -135,6 +146,7 @@ export function ThisOrThat() {
   const votesA = votes[a?.name ?? ''] ?? 0;
   const votesB = votes[b?.name ?? ''] ?? 0;
   const total = votesA + votesB;
+  const maxVotes = Math.max(votesA, votesB);
 
   return (
     <section className="flex flex-col gap-4 items-center">
@@ -153,13 +165,17 @@ export function ThisOrThat() {
         </div>
       )}
 
-      {open && pair && (
+      {open && limitReached && (
+        <p className="text-[11px] text-gray-400 text-center">obrigado por votar. volte amanhã :)</p>
+      )}
+
+      {open && !limitReached && pair && (
         <>
           <div className="flex gap-3 w-full">
             {pair.map((artist) => {
               const count = votes[artist.name] ?? 0;
               const pct = total > 0 ? Math.round((count / total) * 100) : 0;
-              const isWinner = !!voted && count === Math.max(votesA, votesB) && total > 0;
+              const isWinner = !!voted && count === maxVotes && total > 0;
 
               return (
                 <ArtistCard
