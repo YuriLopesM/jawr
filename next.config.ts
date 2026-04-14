@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       new URL('https://i.scdn.co/**'),
       new URL('https://r2.theaudiodb.com/**'),
       new URL('https://www.theaudiodb.com/**'),
+      new URL('https://upload.wikimedia.org/**'),
     ],
   },
 };

@@ -59,7 +59,7 @@ export async function OnThisDay() {
       <div className="flex items-center gap-3 w-full">
         <span className="flex-1 border-t border-gray-100" />
         <Divider>
-          hoje, {day} de {month}
+          hoje, {day} de {month} na história
         </Divider>
 
         <span className="flex-1 border-t border-gray-100" />
