@@ -1,10 +1,10 @@
-import { Divider, OnThisDay, PlayingNow, ThisOrThat, TodayCard } from './_lib/components';
+import { Divider, Greeting, OnThisDay, PlayingNow, ThisOrThat, TodayCard } from './_lib/components';
 
 export default function Home() {
   return (
     <main className="w-full h-full flex flex-col gap-5">
       <header>
-        <h1 className="text-base text-gray-800 font-bold">olá,</h1>
+        <Greeting />
       </header>
       <article className="text-sm text-gray-600 flex flex-col gap-4">
         <p>

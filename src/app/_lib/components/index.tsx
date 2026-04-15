@@ -1,4 +1,5 @@
 export * from './divider';
+export * from './greeting';
 export * from './menu';
 export * from './nav';
 export * from './nav-item';
