@@ -24,4 +24,20 @@ export type Album = {
   images: Image[];
 };
 
+export type Song = {
+  artist?: string;
+  title?: string;
+  art?: string;
+};
+
+export type NowPlaying = {
+  song?: Song;
+  played_at?: number;
+};
+
+export type HistoryItem = {
+  song?: { artist?: string; title?: string };
+  played_at?: number;
+};
+
 export type AlbumsMap = Record<string, Album>;

@@ -7,6 +7,5 @@ export * from './now-playing';
 export * from './on-this-day';
 export * from './playing-now';
 export * from './radio-player';
-export * from './recently-played';
 export * from './this-or-that';
 export * from './today';

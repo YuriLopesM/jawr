@@ -3,8 +3,8 @@
 import {
   ArtistInfo,
   ArtistVotes,
-  DailyData,
   DAILY_LIMIT,
+  DailyData,
   fetchPair,
   getDailyData,
   incrementDailyCount,
@@ -21,7 +21,14 @@ type ArtistCardProps = {
   onVote: () => void;
 };
 
-function ArtistCard({ artist, voted, count, pct, isWinner, onVote }: ArtistCardProps) {
+function ArtistCard({
+  artist,
+  voted,
+  count,
+  pct,
+  isWinner,
+  onVote,
+}: ArtistCardProps) {
   const animatedPct = useCountUp(pct, voted, 300);
 
   return (
@@ -39,7 +46,13 @@ function ArtistCard({ artist, voted, count, pct, isWinner, onVote }: ArtistCardP
     >
       <div className="relative w-full aspect-square bg-gray-100">
         {artist.image ? (
-          <Image src={artist.image} alt={artist.name} fill sizes="50vw" className="object-cover" />
+          <Image
+            src={artist.image}
+            alt={artist.name}
+            fill
+            sizes="50vw"
+            className="object-cover"
+          />
         ) : (
           <div className="w-full h-full bg-gray-100" />
         )}
@@ -49,13 +62,21 @@ function ArtistCard({ artist, voted, count, pct, isWinner, onVote }: ArtistCardP
             <div className="absolute inset-0 bg-black/40" />
             {/* percentage */}
             <div className="absolute inset-0 flex items-end justify-start p-2">
-              <span className="text-white text-3xl font-bold leading-none">{animatedPct}%</span>
+              <span className="text-white text-3xl font-bold leading-none">
+                {animatedPct}%
+              </span>
             </div>
             {/* winner checkmark badge */}
             {isWinner && (
               <div className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white flex items-center justify-center shadow">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M2 7l4 4 6-6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d="M2 7l4 4 6-6"
+                    stroke="black"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </div>
             )}
@@ -63,7 +84,9 @@ function ArtistCard({ artist, voted, count, pct, isWinner, onVote }: ArtistCardP
         )}
       </div>
       <div className="px-2 py-2 flex flex-col gap-0.5">
-        <span className="text-xs font-semibold text-gray-800 leading-tight">{artist.name}</span>
+        <span className="text-xs font-semibold text-gray-800 leading-tight">
+          {artist.name}
+        </span>
         {voted && (
           <span className="text-[10px] text-gray-400">
             {count} {count === 1 ? 'voto' : 'votos'}
@@ -79,7 +102,10 @@ function useCountUp(target: number, active: boolean, duration = 600) {
   const ref = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (!active) { setValue(0); return; }
+    if (!active) {
+      setValue(0);
+      return;
+    }
     const steps = 20;
     const interval = duration / steps;
     let step = 0;
@@ -160,13 +186,18 @@ export function ThisOrThat() {
       {open && (loading || !pair) && (
         <div className="flex gap-3">
           {[0, 1].map((i) => (
-            <div key={i} className="w-[120px] aspect-square border border-gray-100 bg-gray-50 animate-pulse" />
+            <div
+              key={i}
+              className="w-30 aspect-square border border-gray-100 bg-gray-50 animate-pulse"
+            />
           ))}
         </div>
       )}
 
       {open && limitReached && (
-        <p className="text-[11px] text-gray-400 text-center">obrigado por votar. volte amanhã :)</p>
+        <p className="text-[11px] text-gray-400 text-center">
+          obrigado por votar. volte amanhã :)
+        </p>
       )}
 
       {open && !limitReached && pair && (

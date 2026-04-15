@@ -1,5 +1,5 @@
-import { unstable_cache } from 'next/cache';
 import dayjs from 'dayjs';
+import { unstable_cache } from 'next/cache';
 
 import { ONE_DAY } from '../../helpers/date';
 import { TemplateCard } from './template-card';
@@ -55,14 +55,15 @@ export async function ImageCard() {
   if (!image?.thumbnail?.source) return null;
 
   const description = image.description?.text ?? '';
-  const artist = image.artist?.text ?? '';
+  // const artist = image.artist?.text ?? '';
+
   return (
     <TemplateCard
       title="imagem do dia"
       image={image.thumbnail.source}
       description={{
         title: description,
-        subtitle: artist,
+        // subtitle: artist,
       }}
       source={[
         {

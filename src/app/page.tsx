@@ -1,4 +1,4 @@
-import { Divider, Greeting, OnThisDay, PlayingNow, ThisOrThat, TodayCard } from './_lib/components';
+import { Divider, Greeting, PlayingNow, TodayCard } from './_lib/components';
 
 export default function Home() {
   return (
@@ -12,14 +12,20 @@ export default function Home() {
           <em className="text-gray-300">(just another web radio)</em> - tocamos
           a música que a gente gosta. 24/7. <br />
           sintonize pela página{' '}
-          <a href="/listen" className="underline">ouvir</a>{' '}
+          <a href="/listen" className="underline">
+            ouvir
+          </a>{' '}
           ou baixe o{' '}
-          <a href="/jawr.m3u" download className="underline">.m3u</a>{' '}
+          <a href="/jawr.m3u" download className="underline">
+            .m3u
+          </a>{' '}
           para o seu reprodutor de áudio.
         </p>
         <p>
           DJs, curadores e artistas estão convidados, leia{' '}
-          <a href="#" className="underline">mais</a>{' '}
+          <a href="#" className="underline">
+            mais
+          </a>{' '}
           se quiser participar.
         </p>
       </article>
@@ -32,9 +38,9 @@ export default function Home() {
         <TodayCard.Color />
         <TodayCard.Image />
       </section>
-      <OnThisDay />
-      <Divider />
-      <ThisOrThat />
+      {/* <OnThisDay /> */}
+      {/* <Divider /> */}
+      {/* <ThisOrThat /> */}
     </main>
   );
 }
