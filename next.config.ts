@@ -4,10 +4,13 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
   images: {
+    qualities: [100, 75],
     remotePatterns: [
       new URL('https://singlecolorimage.com/**'),
       new URL('https://i.scdn.co/**'),
       new URL('https://r2.theaudiodb.com/**'),
+      new URL('https://www.theaudiodb.com/**'),
+      new URL('https://upload.wikimedia.org/**'),
     ],
   },
 };

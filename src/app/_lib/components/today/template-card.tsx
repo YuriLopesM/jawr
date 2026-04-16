@@ -33,10 +33,12 @@ export function TemplateCard({
           alt={title}
           width={160}
           height={160}
+          loading="eager"
           className="w-full h-full object-cover"
         />
+
         <div className="flex flex-col absolute bottom-0 left-0 right-0 gap-0.5 text-[10px] text-gray-50 w-full py-3 px-2 overflow-hidden bg-gray-950/70">
-          <h3 className="font-semibold">{description.title}</h3>
+          <h3 className="font-semibold line-clamp-2">{description.title}</h3>
           {hasSubtitle && <p>{description.subtitle}</p>}
         </div>
       </section>
