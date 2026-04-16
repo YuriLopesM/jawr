@@ -36,6 +36,7 @@ async function fetchImageOfTheDay(
 
 export async function ImageCard() {
   const now = dayjs();
+
   const image = await fetchImageOfTheDay(
     now.year(),
     now.format('MM'),
@@ -44,7 +45,7 @@ export async function ImageCard() {
 
   if (!image?.thumbnail?.source) return null;
 
-  const description = image.description?.text ?? '';
+  // const description = image.description?.text ?? '';
   // const artist = image.artist?.text ?? '';
 
   return (
@@ -52,7 +53,7 @@ export async function ImageCard() {
       title="imagem do dia"
       image={image.thumbnail.source}
       description={{
-        title: description,
+        title: now.format('D [de] MMMM [de] YYYY, [às] HH:mm'),
         // subtitle: artist,
       }}
       source={[
