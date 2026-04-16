@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { unstable_cache } from 'next/cache';
 
 import { ONE_DAY } from '../../helpers/date';
 import { TemplateCard } from './template-card';
@@ -11,14 +10,14 @@ type WikiImage = {
   file_page?: string;
 };
 
-async function _fetchImageOfTheDay(
+async function fetchImageOfTheDay(
   year: number,
   month: string,
   day: string
 ): Promise<WikiImage | null> {
   const res = await fetch(
     `https://api.wikimedia.org/feed/v1/wikipedia/pt/featured/${year}/${month}/${day}`,
-    { cache: 'no-store', headers: { 'Api-User-Agent': 'jawr-radio/1.0' } }
+    { next: { revalidate: ONE_DAY } }
   );
 
   if (!res.ok) return null;
@@ -35,22 +34,13 @@ async function _fetchImageOfTheDay(
   };
 }
 
-async function fetchImageOfTheDay(): Promise<WikiImage | null> {
-  const now = dayjs();
-  const year = now.year();
-  const month = now.format('MM');
-  const day = now.format('DD');
-  const cacheKey = `wiki-image-${year}-${month}-${day}`;
-
-  return unstable_cache(
-    () => _fetchImageOfTheDay(year, month, day),
-    [cacheKey],
-    { revalidate: ONE_DAY }
-  )();
-}
-
 export async function ImageCard() {
-  const image = await fetchImageOfTheDay();
+  const now = dayjs();
+  const image = await fetchImageOfTheDay(
+    now.year(),
+    now.format('MM'),
+    now.format('DD')
+  );
 
   if (!image?.thumbnail?.source) return null;
 
