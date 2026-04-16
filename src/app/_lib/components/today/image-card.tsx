@@ -1,6 +1,9 @@
+'use client';
+
 import dayjs from 'dayjs';
 
-import { ONE_DAY } from '../../helpers/date';
+import { useEffect, useState } from 'react';
+import { getImageOfTheDay } from '../../services/api/wikipedia';
 import { TemplateCard } from './template-card';
 
 type WikiImage = {
@@ -10,42 +13,30 @@ type WikiImage = {
   file_page?: string;
 };
 
-async function fetchImageOfTheDay(
-  year: number,
-  month: string,
-  day: string
-): Promise<WikiImage | null> {
-  const res = await fetch(
-    `https://api.wikimedia.org/feed/v1/wikipedia/pt/featured/${year}/${month}/${day}`,
-    { next: { revalidate: ONE_DAY } }
-  );
+export function ImageCard() {
+  const [image, setImage] = useState<WikiImage | null>(null);
 
-  if (!res.ok) return null;
+  useEffect(() => {
+    const now = dayjs();
+    const year = now.year();
+    const month = now.format('MM');
+    const day = now.format('DD');
 
-  const data = await res.json();
-  const img = data.image;
-  if (!img) return null;
+    async function fetchImage() {
+      try {
+        const res = await getImageOfTheDay({ year, month, day });
+        setImage(res);
+      } catch (error) {
+        console.error('Failed to fetch image of the day', error);
+      }
+    }
 
-  return {
-    thumbnail: { source: img.thumbnail?.source ?? '' },
-    description: { text: img.description?.text },
-    artist: { text: img.artist?.text },
-    file_page: img.file_page,
-  };
-}
-
-export async function ImageCard() {
-  const now = dayjs();
-
-  const image = await fetchImageOfTheDay(
-    now.year(),
-    now.format('MM'),
-    now.format('DD')
-  );
+    fetchImage();
+  }, []);
 
   if (!image?.thumbnail?.source) return null;
 
-  // const description = image.description?.text ?? '';
+  const description = image.description?.text ?? '';
   // const artist = image.artist?.text ?? '';
 
   return (
@@ -53,7 +44,7 @@ export async function ImageCard() {
       title="imagem do dia"
       image={image.thumbnail.source}
       description={{
-        title: now.format('D [de] MMMM [de] YYYY, [às] HH:mm'),
+        title: description,
         // subtitle: artist,
       }}
       source={[
