@@ -9,10 +9,7 @@ export function useRadio() {
 
   const [playing, setPlaying] = useState(false);
 
-  const [volume, setVolume] = useState({
-    value: 0.5,
-    isMuted: false,
-  });
+  const [volume, setVolume] = useState<{ value: number; isMuted: boolean } | null>(null);
 
   const [song, setSong] = useState<Song | null>(null);
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -32,6 +29,7 @@ export function useRadio() {
     const audio = new Audio();
     audio.preload = 'none';
     audioRef.current = audio;
+
     return () => {
       audio.pause();
       audio.src = '';
@@ -56,8 +54,10 @@ export function useRadio() {
     loadVolumeState();
   }, []);
 
-  // Debounce volume state persistence to cookie
+  // Debounce volume state persistence to cookie — skip until loaded from cookie
   useEffect(() => {
+    if (volume === null) return;
+
     if (debounceTimeoutRef.current) {
       clearTimeout(debounceTimeoutRef.current);
     }
@@ -75,19 +75,82 @@ export function useRadio() {
     };
   }, [volume]);
 
-  // API polling
+  // Initial REST fetch for instant data
   useEffect(() => {
-    async function load() {
+    radioAPI.get('/nowplaying/jawk').then(({ data }) => {
+      setSong(data.now_playing?.song ?? null);
+      setHistory((data.song_history as HistoryItem[]) ?? []);
+    }).catch(() => {});
+  }, []);
+
+  // WebSocket now-playing
+  useEffect(() => {
+    const wsUrl = `${process.env.NEXT_PUBLIC_AZURACAST_URL?.replace(/^http/, 'ws')}/api/live/nowplaying/websocket`;
+    let ws: WebSocket | null = null;
+    let reconnectDelay = 1000;
+    let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+    let destroyed = false;
+
+    function parseMessage(raw: string) {
       try {
-        const { data } = await radioAPI.get('/nowplaying/jawk');
-        setSong(data.now_playing.song || null);
-        setHistory((data.song_history as HistoryItem[]) || []);
-      } catch (error) {
-        console.error('Failed to load radio data', error);
+        const msg = JSON.parse(raw);
+
+        if (msg.connect?.data) {
+          for (const item of msg.connect.data) {
+            if (item.channel === 'station:jawk' && item.data?.np) {
+              const np = item.data.np;
+              setSong(np.now_playing?.song ?? null);
+              setHistory(np.song_history ?? []);
+            }
+          }
+          return;
+        }
+
+        if (msg.channel === 'station:jawk' && msg.pub?.data?.np) {
+          const np = msg.pub.data.np;
+          setSong(np.now_playing?.song ?? null);
+          setHistory(np.song_history ?? []);
+        }
+      } catch {
+        // malformed message — ignore
       }
     }
 
-    load();
+    function connect() {
+      if (destroyed) return;
+
+      const socket = new WebSocket(wsUrl);
+      ws = socket;
+
+      socket.onopen = () => {
+        reconnectDelay = 1000;
+        socket.send(JSON.stringify({ subs: { 'station:jawk': {} } }));
+      };
+
+      socket.onmessage = (event) => {
+        parseMessage(event.data as string);
+      };
+
+      socket.onclose = () => {
+        if (destroyed) return;
+        reconnectTimer = setTimeout(() => {
+          reconnectDelay = Math.min(reconnectDelay * 2, 30000);
+          connect();
+        }, reconnectDelay);
+      };
+
+      socket.onerror = () => {
+        socket.close();
+      };
+    }
+
+    connect();
+
+    return () => {
+      destroyed = true;
+      if (reconnectTimer) clearTimeout(reconnectTimer);
+      ws?.close();
+    };
   }, []);
 
   function toggle() {
@@ -100,34 +163,32 @@ export function useRadio() {
       return;
     }
 
-    if (!playing) {
-      audio.src = `${process.env.NEXT_PUBLIC_AZURACAST_URL}/listen/jawk/radio.mp3`;
-      setPlaying(true);
-      audio.play().catch(() => {
-        setPlaying(false);
-        audio.src = '';
-      });
-      return;
-    }
+    audio.src = `${process.env.NEXT_PUBLIC_AZURACAST_URL}/listen/jawk/radio.mp3`;
+    setPlaying(true);
+    audio.play().catch(() => {
+      setPlaying(false);
+      audio.src = '';
+    });
   }
 
   function changeVolume(v: number) {
     const audio = audioRef.current;
     if (!audio) return;
     audio.volume = v;
-    setVolume({ ...volume, value: v });
+    setVolume((prev) => ({ ...(prev ?? { value: v, isMuted: false }), value: v }));
   }
 
   function toggleMute() {
     const audio = audioRef.current;
     if (!audio) return;
     audio.muted = !audio.muted;
-    setVolume({ ...volume, isMuted: audio.muted });
+    const muted = audio.muted;
+    setVolume((prev) => ({ ...(prev ?? { value: audio.volume, isMuted: muted }), isMuted: muted }));
   }
 
   return {
     playing,
-    volume,
+    volume: volume ?? { value: 0.5, isMuted: false },
     nowPlaying,
     artist,
     history,
