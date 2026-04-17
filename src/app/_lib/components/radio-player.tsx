@@ -55,45 +55,20 @@ export function RadioPlayer() {
             <span className="flex-1 px-3 flex justify-between items-center gap-2 text-xs text-gray-500">
               <span>jawr.mp3</span>
               {playing && (
-                <span
-                  className="inline-flex gap-0.5 items-end shrink-0"
-                  style={{ height: '14px' }}
-                >
-                  <span
-                    className="w-1 bg-gray-500"
-                    style={{
-                      animation: 'eq 0.8s ease-in-out infinite 0s',
-                      height: '40%',
-                    }}
-                  />
-                  <span
-                    className="w-1 bg-gray-500"
-                    style={{
-                      animation: 'eq 0.8s ease-in-out infinite 0.2s',
-                      height: '70%',
-                    }}
-                  />
-                  <span
-                    className="w-1 bg-gray-500"
-                    style={{
-                      animation: 'eq 0.8s ease-in-out infinite 0.4s',
-                      height: '55%',
-                    }}
-                  />
-                  <span
-                    className="w-1 bg-gray-500"
-                    style={{
-                      animation: 'eq 0.8s ease-in-out infinite 0.3s',
-                      height: '35%',
-                    }}
-                  />
-                  <span
-                    className="w-1 bg-gray-500"
-                    style={{
-                      animation: 'eq 0.8s ease-in-out infinite 0.6s',
-                      height: '80%',
-                    }}
-                  />
+                <span className="inline-flex gap-0.5 items-end shrink-0">
+                  {([
+                    ['eq-a', '0.65s', '0s'],
+                    ['eq-c', '0.9s',  '0.1s'],
+                    ['eq-b', '0.5s',  '0.3s'],
+                    ['eq-a', '0.75s', '0.05s'],
+                    ['eq-c', '0.8s',  '0.2s'],
+                  ] as const).map(([kf, dur, delay], i) => (
+                    <span
+                      key={i}
+                      className="w-1 h-3.5 bg-gray-500"
+                      style={{ animation: `${kf} ${dur} ease-in-out infinite ${delay}`, transformOrigin: 'bottom' }}
+                    />
+                  ))}
                 </span>
               )}
             </span>
