@@ -3,7 +3,7 @@
 import { MusicNoteIcon } from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
 
-const API = 'https://152.67.35.182/api/nowplaying/jawk';
+const API = 'https://152.67.35.182/api/nowplaying/jawr';
 
 type Song = {
   artist?: string;

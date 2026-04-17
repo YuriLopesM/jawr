@@ -79,7 +79,7 @@ export function useRadio() {
   useEffect(() => {
     async function load() {
       try {
-        const { data } = await radioAPI.get('/nowplaying/jawk');
+        const { data } = await radioAPI.get('/nowplaying/jawr');
         setSong(data.now_playing.song || null);
         setHistory((data.song_history as HistoryItem[]) || []);
       } catch (error) {
@@ -101,7 +101,7 @@ export function useRadio() {
     }
 
     if (!playing) {
-      audio.src = `${process.env.NEXT_PUBLIC_AZURACAST_URL}/listen/jawk/radio.mp3`;
+      audio.src = `${process.env.NEXT_PUBLIC_AZURACAST_URL}/listen/jawr/radio.mp3`;
       setPlaying(true);
       audio.play().catch(() => {
         setPlaying(false);
