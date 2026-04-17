@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-const API = 'https://152.67.35.182/api/nowplaying/jawk';
+const API = `${process.env.NEXT_PUBLIC_AZURACAST_URL}/api/nowplaying/jawr`;
 
 type Song = {
   artist?: string;
