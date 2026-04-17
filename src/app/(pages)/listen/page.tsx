@@ -11,7 +11,7 @@ export default function Listen() {
       <p className="block sm:hidden text-xs text-gray-500">
         no celular? abra o{' '}
         <a
-          href="https://152.67.35.182/listen/jawr/radio.mp3"
+          href="https://api.jawr.org/listen/jawr/radio.mp3"
           target="_blank"
           rel="noopener noreferrer"
           className="underline hover:text-gray-700 transition-colors"
