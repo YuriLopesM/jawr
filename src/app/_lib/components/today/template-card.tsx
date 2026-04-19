@@ -25,7 +25,7 @@ export function TemplateCard({
   const hasSubtitle = Boolean(description.subtitle);
 
   return (
-    <div className="w-full max-w-60 aspect-square border border-gray-100 p-6 flex flex-col gap-4 hover:border-gray-200 transition-colors">
+    <div className="w-full aspect-square border border-gray-100 p-4 sm:p-6 flex flex-col gap-4 hover:border-gray-200 transition-colors">
       <p className="text-gray-600 text-[12px] font-semibold">{title}</p>
       <section className="relative w-full h-full">
         <Image
