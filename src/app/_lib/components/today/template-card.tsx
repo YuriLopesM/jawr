@@ -3,6 +3,7 @@ import React from 'react';
 
 type SourceType = {
   name: string;
+  shortName?: string;
   url: string;
 };
 
@@ -25,7 +26,7 @@ export function TemplateCard({
   const hasSubtitle = Boolean(description.subtitle);
 
   return (
-    <div className="w-full max-w-60 aspect-square border border-gray-100 p-6 flex flex-col gap-4 hover:border-gray-200 transition-colors">
+    <div className="w-full aspect-square border border-gray-100 p-4 sm:p-6 flex flex-col gap-4 hover:border-gray-200 transition-colors">
       <p className="text-gray-600 text-[12px] font-semibold">{title}</p>
       <section className="relative w-full h-full">
         <Image
@@ -52,7 +53,12 @@ export function TemplateCard({
               rel="noopener noreferrer"
               className="underline hover:text-gray-600 transition-colors"
             >
-              {src.name}
+              {src.shortName ? (
+                <>
+                  <span className="lg:hidden">{src.shortName}</span>
+                  <span className="hidden lg:inline">{src.name}</span>
+                </>
+              ) : src.name}
             </a>
             {i < source.length - 1 && <span className="text-gray-200">|</span>}
           </React.Fragment>

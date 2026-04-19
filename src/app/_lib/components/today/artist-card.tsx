@@ -18,10 +18,12 @@ export async function ArtistCard() {
       source={[
         {
           name: '1001 albums',
+          shortName: '1001',
           url: 'https://en.wikipedia.org/wiki/1001_Albums_You_Must_Hear_Before_You_Die',
         },
         {
           name: 'theaudiodb',
+          shortName: 'audiodb',
           url: 'https://www.theaudiodb.com/',
         },
       ]}

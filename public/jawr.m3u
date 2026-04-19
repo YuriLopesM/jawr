@@ -1,0 +1,3 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="jawr" tvg-name="jawr" group-title="jawr - just another web radio",jawr
+https://api.jawr.org/listen/jawr/radio.mp3
