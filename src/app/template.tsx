@@ -3,7 +3,7 @@ import { Menu, Nav } from './_lib/components';
 export default function Template({ children }: { children: React.ReactNode }) {
   return (
     <div className="max-w-5xl w-full min-h-screen pt-12 px-4 sm:px-8 mx-auto flex flex-col gap-12 relative">
-      <header className="w-full flex items-center justify-between">
+      <header className="w-full flex flex-wrap items-center justify-between gap-y-2">
         <Nav>
           <Nav.Item href="/">início</Nav.Item>
           <Nav.Item href="/listen">ouvir</Nav.Item>
