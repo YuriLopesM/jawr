@@ -37,7 +37,7 @@ export function RadioPlayer() {
         </span>
       </p>
 
-      <div className="grid grid-cols-[3fr_2fr] relative gap-8 items-start">
+      <div className="grid grid-cols-1 sm:grid-cols-[3fr_2fr] relative gap-8 items-start">
         {/* Left column */}
         <div className="flex flex-col justify-between h-full">
           {/* Player bar */}
@@ -87,7 +87,7 @@ export function RadioPlayer() {
             </button>
 
             {/* Volume slider + % */}
-            <div className="flex items-center gap-2 px-3 border-l border-gray-200 shrink-0">
+            <div className="hidden sm:flex items-center gap-2 px-3 border-l border-gray-200 shrink-0">
               <input
                 type="range"
                 min={0}
@@ -175,10 +175,10 @@ export function RadioPlayer() {
           <img
             src={art}
             alt="capa"
-            className="w-full aspect-square object-cover border border-gray-200"
+            className="w-full aspect-square object-cover border border-gray-200 order-first sm:order-last"
           />
         ) : (
-          <div className="w-full aspect-square border border-gray-200 bg-gray-50" />
+          <div className="w-full aspect-square border border-gray-200 bg-gray-50 order-first sm:order-last" />
         )}
       </div>
     </div>
