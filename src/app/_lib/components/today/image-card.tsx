@@ -1,6 +1,7 @@
 'use client';
 
 import dayjs from 'dayjs';
+import { useT } from 'next-i18next/client';
 
 import { useEffect, useState } from 'react';
 import { getImageOfTheDay } from '../../services/api/wikipedia';
@@ -14,6 +15,7 @@ type WikiImage = {
 };
 
 export function ImageCard() {
+  const { t: tHome } = useT('home');
   const [image, setImage] = useState<WikiImage | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -54,7 +56,7 @@ export function ImageCard() {
 
   return (
     <TemplateCard
-      title="imagem do dia"
+      title={tHome('image_of_the_day')}
       image={image.thumbnail.source}
       description={{
         title: description,

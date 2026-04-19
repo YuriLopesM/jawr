@@ -1,0 +1,17 @@
+{
+  "listen_title": "listen",
+  "listen_mobile_intro": "on mobile? open the",
+  "listen_mobile_direct_stream": "direct stream",
+  "listen_mobile_middle": "in a new tab or download the",
+  "listen_mobile_suffix": "for your audio player.",
+  "live_indicator": "live",
+  "player_play": "play",
+  "player_pause": "pause",
+  "player_mute": "mute",
+  "player_unmute": "unmute",
+  "player_volume": "volume",
+  "player_download_m3u": "download .m3u",
+  "album_art_alt": "album art",
+  "now_label": "now:",
+  "recently_label": "recently:"
+}

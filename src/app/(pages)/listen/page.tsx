@@ -1,24 +1,29 @@
+import { getT } from 'next-i18next/server';
 import { Divider, RadioPlayer } from '../../_lib/components';
 
-export default function Listen() {
+export default async function Listen() {
+  const { t } = await getT('listen');
+
   return (
     <main className="w-full h-full flex flex-col gap-5">
       <header>
-        <h1 className="text-base text-gray-800 font-bold">ouvir</h1>
+        <h1 className="text-base text-gray-800 font-bold">
+          {t('listen_title')}
+        </h1>
         <Divider />
       </header>
       <RadioPlayer />
       <p className="block sm:hidden text-xs text-gray-500">
-        no celular? abra o{' '}
+        {t('listen_mobile_intro')}{' '}
         <a
           href="https://api.jawr.org/listen/jawr/radio.mp3"
           target="_blank"
           rel="noopener noreferrer"
           className="underline hover:text-gray-700 transition-colors"
         >
-          stream direto
+          {t('listen_mobile_direct_stream')}
         </a>{' '}
-        em nova aba ou baixe o{' '}
+        {t('listen_mobile_middle')}{' '}
         <a
           href="/jawr.m3u"
           target="_blank"
@@ -27,7 +32,7 @@ export default function Listen() {
         >
           .m3u
         </a>{' '}
-        para o seu reprodutor de áudio.
+        {t('listen_mobile_suffix')}
       </p>
     </main>
   );

@@ -1,6 +1,9 @@
+import { getT } from 'next-i18next/server';
 import { Divider, Greeting, PlayingNow, TodayCard } from './_lib/components';
 
-export default function Home() {
+export default async function Home() {
+  const { t } = await getT('home');
+
   return (
     <main className="w-full h-full flex flex-col gap-5">
       <header>
@@ -8,25 +11,25 @@ export default function Home() {
       </header>
       <article className="text-sm text-gray-600 flex flex-col gap-4">
         <p>
-          bem-vindo à <strong>jawr</strong>{' '}
-          <em className="text-gray-300">(just another web radio)</em> - tocamos
-          a música que a gente gosta. 24/7. <br />
-          sintonize pela página{' '}
+          {t('welcome_message')}{' '}
+          <em className="text-gray-300">(just another web radio)</em> -{' '}
+          {t('welcome_message_2')} <br />
+          {t('listen_instruction_1')}{' '}
           <a href="/listen" className="underline">
-            ouvir
+            {t('listen_instruction_listen')}
           </a>{' '}
-          ou baixe o{' '}
+          {t('listen_instruction_2')}{' '}
           <a href="/jawr.m3u" download className="underline">
             .m3u
           </a>{' '}
-          para o seu reprodutor de áudio.
+          {t('listen_instruction_3')}
         </p>
         <p>
-          DJs, curadores e artistas estão convidados, leia{' '}
+          {t('collaboration_invite_1')}{' '}
           <a href="#" className="underline">
-            mais
+            {t('collaboration_invite_read_more')}
           </a>{' '}
-          se quiser participar.
+          {t('collaboration_invite_2')}
         </p>
       </article>
       <Divider />
