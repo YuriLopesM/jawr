@@ -9,6 +9,7 @@ type Props = {
 
 export function DJModal({ onClose }: Props) {
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
   const [link, setLink] = useState('');
   const [message, setMessage] = useState('');
@@ -19,7 +20,7 @@ export function DJModal({ onClose }: Props) {
     await fetch('/api/dj', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, role, link, message }),
+      body: JSON.stringify({ name, email, role, link, message }),
     });
     setSending(false);
     onClose();
@@ -48,6 +49,16 @@ export function DJModal({ onClose }: Props) {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-800 outline-none focus:border-gray-400 transition-colors"
+            />
+          </label>
+
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs text-gray-600">email</span>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-800 outline-none focus:border-gray-400 transition-colors"
             />
           </label>

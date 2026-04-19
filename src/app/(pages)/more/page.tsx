@@ -19,14 +19,14 @@ export default function More() {
       <section className="flex flex-col gap-2">
         <p className="text-sm font-bold text-gray-800">seja um dj, curador ou artista</p>
         <p className="text-sm text-gray-600">
-          a jawr é aberta a quem tem algo pra tocar. DJ, curador de playlist ou artista com autoral — manda o que você tem.
+          a jawr é aberta a quem tem algo pra tocar. DJ, curador de playlist ou artista com autoral - manda o que tiver.
         </p>
         <p className="text-sm">
           <button
             onClick={() => setShowDJ(true)}
             className="underline hover:text-gray-700 transition-colors cursor-pointer"
           >
-            enviar →
+            participar →
           </button>
         </p>
       </section>
@@ -34,7 +34,7 @@ export default function More() {
       <section className="flex flex-col gap-2">
         <p className="text-sm font-bold text-gray-800">fale conosco</p>
         <p className="text-sm text-gray-600">
-          qualquer coisa, manda um email. perguntas, sugestões, feedback — tudo bem-vindo.
+          qualquer coisa, manda aqui. perguntas, sugestões, feedback - tudo bem-vindo.
         </p>
         <p className="text-sm">
           <button

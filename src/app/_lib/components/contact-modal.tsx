@@ -9,6 +9,7 @@ type Props = {
 
 export function ContactModal({ onClose }: Props) {
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [sending, setSending] = useState(false);
@@ -18,7 +19,7 @@ export function ContactModal({ onClose }: Props) {
     await fetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, subject, message }),
+      body: JSON.stringify({ name, email, subject, message }),
     });
     setSending(false);
     onClose();
@@ -47,6 +48,16 @@ export function ContactModal({ onClose }: Props) {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-800 outline-none focus:border-gray-400 transition-colors"
+            />
+          </label>
+
+          <label className="flex flex-col gap-1.5">
+            <span className="text-xs text-gray-600">email</span>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-800 outline-none focus:border-gray-400 transition-colors"
             />
           </label>

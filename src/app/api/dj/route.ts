@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
-  const { name, role, link, message } = await req.json();
+  const { name, email, role, link, message } = await req.json();
 
   if (!name?.trim() || !role?.trim()) {
     return NextResponse.json({ error: 'missing fields' }, { status: 400 });
@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
         title: `🎧 novo ${role}: ${name}`,
         fields: [
           { name: 'tipo', value: role, inline: true },
+          ...(email ? [{ name: 'email', value: email, inline: true }] : []),
           ...(link ? [{ name: 'link', value: link, inline: true }] : []),
           ...(message ? [{ name: 'recado', value: message }] : []),
         ],
