@@ -1,4 +1,5 @@
 export * from './divider';
+export * from './social-icon';
 export * from './greeting';
 export * from './menu';
 export * from './nav';
