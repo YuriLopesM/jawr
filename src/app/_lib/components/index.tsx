@@ -3,7 +3,6 @@ export * from './greeting';
 export * from './menu';
 export * from './nav';
 export * from './nav-item';
-export * from './now-playing';
 export * from './on-this-day';
 export * from './playing-now';
 export * from './radio-player';
