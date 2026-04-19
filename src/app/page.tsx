@@ -23,7 +23,7 @@ export default function Home() {
         </p>
         <p>
           DJs, curadores e artistas estão convidados, leia{' '}
-          <a href="#" className="underline">
+          <a href="/more" className="underline">
             mais
           </a>{' '}
           se quiser participar.
