@@ -26,7 +26,7 @@ export default async function Home() {
         </p>
         <p>
           {t('collaboration_invite_1')}{' '}
-          <a href="#" className="underline">
+          <a href="/more" className="underline">
             {t('collaboration_invite_read_more')}
           </a>{' '}
           {t('collaboration_invite_2')}

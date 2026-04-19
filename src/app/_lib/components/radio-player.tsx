@@ -119,13 +119,8 @@ export function RadioPlayer() {
             <a
               href="/jawr.m3u"
               download
-<<<<<<< HEAD
-              className="flex items-center justify-center w-10 h-full border-l border-gray-200 text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition-colors shrink-0"
-              aria-label={t('player_download_m3u')}
-=======
               className="flex items-center justify-center w-10 h-full border-l border-gray-200 dark:border-[#2a2a2a] text-gray-400 dark:text-[#6e6e6e] hover:text-gray-900 dark:hover:text-[#f0f0f0] hover:bg-gray-100 dark:hover:bg-[#2a2a2a] transition-colors shrink-0"
-              aria-label="baixar .m3u"
->>>>>>> c888430 (feat: dark mode)
+              aria-label={t('player_download_m3u')}
             >
               <DownloadSimpleIcon weight="fill" />
             </a>

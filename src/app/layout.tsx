@@ -27,7 +27,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { i18n, lng } = await getT();
+  const { i18n, lng } = await getT(['common', 'home', 'listen', 'blog', 'curators', 'more']);
   const resources = getResources(i18n);
 
   return (
