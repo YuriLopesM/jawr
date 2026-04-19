@@ -38,8 +38,20 @@ export function RadioPlayer() {
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-[3fr_2fr] relative gap-8 items-start">
-        {/* Left column */}
-        <div className="flex flex-col justify-between h-full">
+        {/* Album art — first in DOM = first on mobile, column 2 on desktop */}
+        {art ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={art}
+            alt="capa"
+            className="w-full aspect-square object-cover border border-gray-200 sm:col-start-2"
+          />
+        ) : (
+          <div className="w-full aspect-square border border-gray-200 bg-gray-50 sm:col-start-2" />
+        )}
+
+        {/* Left column — column 1, row 1 on desktop */}
+        <div className="flex flex-col justify-between h-full sm:col-start-1 sm:row-start-1">
           {/* Player bar */}
           <div className="flex items-center h-11 border border-gray-200 bg-gray-50">
             {/* Play/Pause */}
@@ -169,17 +181,6 @@ export function RadioPlayer() {
           </div>
         </div>
 
-        {/* Right column: album art */}
-        {art ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={art}
-            alt="capa"
-            className="w-full aspect-square object-cover border border-gray-200 order-first sm:order-last"
-          />
-        ) : (
-          <div className="w-full aspect-square border border-gray-200 bg-gray-50 order-first sm:order-last" />
-        )}
       </div>
     </div>
   );
