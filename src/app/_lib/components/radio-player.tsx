@@ -128,7 +128,7 @@ export function RadioPlayer() {
 
           {/* Now playing */}
           <div className="flex flex-col gap-3 mb-2 text-sm">
-            <p className="text-gray-600 font-bold">agora:</p>
+            <p className="text-gray-600 font-bold mt-5">agora:</p>
             <p className="text-gray-900">{nowPlaying}</p>
             {artist && (
               <p className="text-xs text-gray-400 flex gap-2">
@@ -154,7 +154,7 @@ export function RadioPlayer() {
 
           {/* Recently played */}
           <div className="flex flex-col gap-3">
-            <p className="text-sm text-gray-600 font-bold">recentemente:</p>
+            <p className="text-sm text-gray-600 font-bold mt-5">recentemente:</p>
             <ul className="flex flex-col text-xs text-gray-600">
               {history.length === 0 && <li className="text-gray-300">—</li>}
               {history.map(({ song, played_at }, i) => {

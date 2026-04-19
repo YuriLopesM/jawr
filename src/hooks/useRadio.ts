@@ -77,7 +77,7 @@ export function useRadio() {
 
   // Initial REST fetch for instant data
   useEffect(() => {
-    radioAPI.get('/nowplaying/jawk').then(({ data }) => {
+    radioAPI.get('/nowplaying/jawr').then(({ data }) => {
       setSong(data.now_playing?.song ?? null);
       setHistory((data.song_history as HistoryItem[]) ?? []);
     }).catch(() => {});
@@ -97,7 +97,7 @@ export function useRadio() {
 
         if (msg.connect?.data) {
           for (const item of msg.connect.data) {
-            if (item.channel === 'station:jawk' && item.data?.np) {
+            if (item.channel === 'station:jawr' && item.data?.np) {
               const np = item.data.np;
               setSong(np.now_playing?.song ?? null);
               setHistory(np.song_history ?? []);
@@ -106,7 +106,7 @@ export function useRadio() {
           return;
         }
 
-        if (msg.channel === 'station:jawk' && msg.pub?.data?.np) {
+        if (msg.channel === 'station:jawr' && msg.pub?.data?.np) {
           const np = msg.pub.data.np;
           setSong(np.now_playing?.song ?? null);
           setHistory(np.song_history ?? []);
@@ -124,7 +124,7 @@ export function useRadio() {
 
       socket.onopen = () => {
         reconnectDelay = 1000;
-        socket.send(JSON.stringify({ subs: { 'station:jawk': {} } }));
+        socket.send(JSON.stringify({ subs: { 'station:jawr': {} } }));
       };
 
       socket.onmessage = (event) => {
@@ -163,7 +163,7 @@ export function useRadio() {
       return;
     }
 
-    audio.src = `${process.env.NEXT_PUBLIC_AZURACAST_URL}/listen/jawk/radio.mp3`;
+    audio.src = `${process.env.NEXT_PUBLIC_AZURACAST_URL}/listen/jawr/radio.mp3`;
     setPlaying(true);
     audio.play().catch(() => {
       setPlaying(false);

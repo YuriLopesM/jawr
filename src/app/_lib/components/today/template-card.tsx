@@ -3,6 +3,7 @@ import React from 'react';
 
 type SourceType = {
   name: string;
+  shortName?: string;
   url: string;
 };
 
@@ -52,7 +53,12 @@ export function TemplateCard({
               rel="noopener noreferrer"
               className="underline hover:text-gray-600 transition-colors"
             >
-              {src.name}
+              {src.shortName ? (
+                <>
+                  <span className="lg:hidden">{src.shortName}</span>
+                  <span className="hidden lg:inline">{src.name}</span>
+                </>
+              ) : src.name}
             </a>
             {i < source.length - 1 && <span className="text-gray-200">|</span>}
           </React.Fragment>
