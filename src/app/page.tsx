@@ -32,7 +32,7 @@ export default function Home() {
       <Divider />
       <PlayingNow />
       <Divider />
-      <section className="flex justify-between flex-wrap gap-y-3">
+      <section className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <TodayCard.Album />
         <TodayCard.Artist />
         <TodayCard.Color />

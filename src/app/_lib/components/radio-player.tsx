@@ -28,9 +28,21 @@ export function RadioPlayer() {
         </span>
       </p>
 
-      <div className="grid grid-cols-[3fr_2fr] relative gap-8 items-start">
-        {/* Left column */}
-        <div className="flex flex-col justify-between h-full">
+      <div className="grid grid-cols-1 sm:grid-cols-[3fr_2fr] relative gap-8 items-start">
+        {/* Album art — first in DOM = first on mobile, column 2 on desktop */}
+        {song?.art ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={song.art}
+            alt="capa"
+            className="w-full aspect-square object-cover border border-gray-200 sm:col-start-2"
+          />
+        ) : (
+          <div className="w-full aspect-square border border-gray-200 bg-gray-50 sm:col-start-2" />
+        )}
+
+        {/* Left column — column 1, row 1 on desktop */}
+        <div className="flex flex-col justify-between h-full sm:col-start-1 sm:row-start-1">
           {/* Player bar */}
           <div className="flex items-center h-11 border border-gray-200 bg-gray-50">
             {/* Play/Pause */}
@@ -83,7 +95,7 @@ export function RadioPlayer() {
             </button>
 
             {/* Volume slider + % */}
-            <div className="flex items-center gap-2 px-3 border-l border-gray-200 shrink-0">
+            <div className="hidden sm:flex items-center gap-2 px-3 border-l border-gray-200 shrink-0">
               <input
                 type="range"
                 min={0}
@@ -140,7 +152,7 @@ export function RadioPlayer() {
 
           {/* Recently played */}
           <div className="flex flex-col gap-3">
-            <p className="text-sm text-gray-600 font-bold">recentemente:</p>
+            <p className="text-sm text-gray-600 font-bold mt-5">recentemente:</p>
             <ul className="flex flex-col text-xs text-gray-600">
               {history.length === 0 && <li className="text-gray-300">—</li>}
               {history.map(({ song, played_at }, i) => {
@@ -167,17 +179,6 @@ export function RadioPlayer() {
           </div>
         </div>
 
-        {/* Right column: album art */}
-        {song?.art ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={song.art}
-            alt="capa"
-            className="w-full aspect-square object-cover border border-gray-200"
-          />
-        ) : (
-          <div className="w-full aspect-square border border-gray-200 bg-gray-50" />
-        )}
       </div>
     </div>
   );
