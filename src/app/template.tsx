@@ -2,7 +2,7 @@ import { Menu, Nav } from './_lib/components';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   return (
-    <div className="w-5xl min-h-screen pt-12 mx-auto flex flex-col gap-12 relative">
+    <div className="max-w-5xl w-full min-h-screen pt-12 px-4 sm:px-8 mx-auto flex flex-col gap-12 relative">
       <header className="w-full flex items-center justify-between">
         <Nav>
           <Nav.Item href="/">início</Nav.Item>
@@ -18,7 +18,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
       </header>
       <div className="w-full">{children}</div>
       <footer className="border-t-gray-100 bg-gray-50 border-t">
-        <div className="w-5xl mx-auto h-12 flex items-center justify-center">
+        <div className="max-w-5xl w-full mx-auto h-12 flex items-center justify-center px-4 sm:px-8">
           <p className="text-xs text-gray-400 text-center">
             jawr <span className="text-gray-200">| 2026</span>
           </p>
