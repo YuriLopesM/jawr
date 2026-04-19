@@ -1,0 +1,16 @@
+{
+  "name": "jawr.",
+  "short_name": "jawr",
+  "description": "Just another web radio.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f9fafb",
+  "theme_color": "#f9fafb",
+  "icons": [
+    {
+      "src": "/cover.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}
