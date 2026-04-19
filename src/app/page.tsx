@@ -9,8 +9,8 @@ export default async function Home() {
       <header>
         <Greeting />
       </header>
-      <article className="text-sm text-gray-600 flex flex-col gap-4">
-        <p>
+      <article className="text-sm text-gray-600 dark:text-[#b0b0b0] flex flex-col gap-4">
+        <p className="text-sm text-gray-600 dark:text-[#b0b0b0]">
           {t('welcome_message')}{' '}
           <em className="text-gray-300">(just another web radio)</em> -{' '}
           {t('welcome_message_2')} <br />

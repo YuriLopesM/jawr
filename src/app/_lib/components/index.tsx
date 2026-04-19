@@ -1,5 +1,7 @@
 export * from './divider';
 export * from './social-icon';
+export * from './theme-provider';
+export * from './theme-toggle';
 export * from './greeting';
 export * from './language-switcher';
 export * from './menu';

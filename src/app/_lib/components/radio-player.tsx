@@ -46,18 +46,18 @@ export function RadioPlayer() {
         {/* Left column — column 1, row 1 on desktop */}
         <div className="flex flex-col justify-between h-full sm:col-start-1 sm:row-start-1">
           {/* Player bar */}
-          <div className="flex items-center h-11 border border-gray-200 bg-gray-50">
+          <div className="flex items-center h-11 border border-gray-200 dark:border-[#2a2a2a] bg-gray-50 dark:bg-gray-900">
             {/* Play/Pause */}
             <button
               onClick={toggle}
-              className="flex items-center justify-center w-11 h-full border-r border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer shrink-0"
+              className="flex items-center justify-center w-11 h-full border-r border-gray-200 dark:border-[#2a2a2a] text-gray-600 dark:text-[#b0b0b0] hover:text-gray-900 dark:hover:text-[#f0f0f0] hover:bg-gray-100 dark:hover:bg-[#2a2a2a] transition-colors cursor-pointer shrink-0"
               aria-label={playing ? t('player_pause') : t('player_play')}
             >
               {playing ? <PauseIcon /> : <PlayIcon weight="fill" />}
             </button>
 
             {/* EQ bars / label */}
-            <span className="flex-1 px-3 flex justify-between items-center gap-2 text-xs text-gray-500">
+            <span className="flex-1 px-3 flex justify-between items-center gap-2 text-xs text-gray-500 dark:text-gray-100">
               <span>jawr.mp3</span>
               {playing && (
                 <span className="inline-flex gap-0.5 items-end shrink-0">
@@ -72,7 +72,7 @@ export function RadioPlayer() {
                   ).map(([kf, dur, delay], i) => (
                     <span
                       key={i}
-                      className="w-1 h-3.5 bg-gray-500"
+                      className="w-1 h-3.5 bg-gray-500 dark:bg-[#6e6e6e]"
                       style={{
                         animation: `${kf} ${dur} ease-in-out infinite ${delay}`,
                         transformOrigin: 'bottom',
@@ -86,7 +86,7 @@ export function RadioPlayer() {
             {/* Mute */}
             <button
               onClick={toggleMute}
-              className="flex items-center justify-center w-10 h-full border-l border-gray-200 text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer shrink-0"
+              className="flex items-center justify-center w-10 h-full border-l border-gray-200 dark:border-[#2a2a2a] text-gray-400 dark:text-[#6e6e6e] hover:text-gray-900 dark:hover:text-[#f0f0f0] hover:bg-gray-100 dark:hover:bg-[#2a2a2a] transition-colors cursor-pointer shrink-0"
               aria-label={
                 volume.isMuted ? t('player_unmute') : t('player_mute')
               }
@@ -99,7 +99,7 @@ export function RadioPlayer() {
             </button>
 
             {/* Volume slider + % */}
-            <div className="hidden sm:flex items-center gap-2 px-3 border-l border-gray-200 shrink-0">
+            <div className="hidden sm:flex items-center gap-2 px-3 border-l border-gray-200 dark:border-[#2a2a2a] shrink-0">
               <input
                 type="range"
                 min={0}
@@ -110,7 +110,7 @@ export function RadioPlayer() {
                 className="w-20 accent-gray-600 cursor-pointer"
                 aria-label={t('player_volume')}
               />
-              <span className="text-xs text-gray-400 w-7 text-right tabular-nums">
+              <span className="text-xs text-gray-400 dark:text-[#6e6e6e] w-7 text-right tabular-nums">
                 {Math.round(volume.value * 100)}%
               </span>
             </div>
@@ -119,8 +119,13 @@ export function RadioPlayer() {
             <a
               href="/jawr.m3u"
               download
+<<<<<<< HEAD
               className="flex items-center justify-center w-10 h-full border-l border-gray-200 text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition-colors shrink-0"
               aria-label={t('player_download_m3u')}
+=======
+              className="flex items-center justify-center w-10 h-full border-l border-gray-200 dark:border-[#2a2a2a] text-gray-400 dark:text-[#6e6e6e] hover:text-gray-900 dark:hover:text-[#f0f0f0] hover:bg-gray-100 dark:hover:bg-[#2a2a2a] transition-colors shrink-0"
+              aria-label="baixar .m3u"
+>>>>>>> c888430 (feat: dark mode)
             >
               <DownloadSimpleIcon weight="fill" />
             </a>
@@ -128,17 +133,17 @@ export function RadioPlayer() {
 
           {/* Now playing */}
           <div className="flex flex-col gap-3 mb-2 text-sm">
-            <p className="text-gray-600 font-bold">{t('now_label')}</p>
-            <p className="text-gray-900">
+            <p className="text-gray-600 dark:text-[#6e6e6e] font-bold">{t('now_label')}</p>
+            <p className="text-gray-900 dark:text-[#f0f0f0]">
               {song?.artist} - {song?.title}
             </p>
             {song?.artist && (
-              <p className="text-xs text-gray-400 flex gap-2">
+              <p className="text-xs text-gray-400 dark:text-[#6e6e6e] flex gap-2">
                 <a
                   href={`https://www.last.fm/music/${encodeURIComponent(song.artist)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline hover:text-gray-600 transition-colors"
+                  className="underline hover:text-gray-600 dark:hover:text-[#b0b0b0] transition-colors"
                 >
                   [last.fm]
                 </a>
@@ -146,7 +151,7 @@ export function RadioPlayer() {
                   href={`https://www.discogs.com/search/?q=${encodeURIComponent(song.artist)}&type=artist`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline hover:text-gray-600 transition-colors"
+                  className="underline hover:text-gray-600 dark:hover:text-[#b0b0b0] transition-colors"
                 >
                   [discogs]
                 </a>
@@ -156,11 +161,11 @@ export function RadioPlayer() {
 
           {/* Recently played */}
           <div className="flex flex-col gap-3">
-            <p className="text-sm text-gray-600 font-bold">
+            <p className="text-sm text-gray-600 dark:text-[#6e6e6e] font-bold">
               {t('recently_label')}
             </p>
-            <ul className="flex flex-col text-xs text-gray-600">
-              {history.length === 0 && <li className="text-gray-300">—</li>}
+            <ul className="flex flex-col text-xs text-gray-600 dark:text-[#b0b0b0]">
+              {history.length === 0 && <li className="text-gray-300 dark:text-[#3a3a3a]">—</li>}
               {history.map(({ song, played_at }, i) => {
                 if (!song) return null;
 
@@ -172,11 +177,11 @@ export function RadioPlayer() {
                 return (
                   <li
                     key={i}
-                    className="flex items-center gap-2 py-1.5 border-b border-gray-100 overflow-hidden"
+                    className="flex items-center gap-2 py-1.5 border-b border-gray-100 dark:border-[#2a2a2a] overflow-hidden"
                   >
                     <span className="flex-1 truncate">{text}</span>
                     {ago && (
-                      <span className="text-gray-300 shrink-0">{ago}</span>
+                      <span className="text-gray-300 dark:text-[#3a3a3a] shrink-0">{ago}</span>
                     )}
                   </li>
                 );

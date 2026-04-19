@@ -7,6 +7,7 @@ import { I18nProvider } from 'next-i18next/client';
 import { IBM_Plex_Mono } from 'next/font/google';
 
 import './globals.css';
+import { ThemeProvider } from './_lib/components';
 
 const ibmPlexMono = IBM_Plex_Mono({
   subsets: ['latin'],
@@ -32,12 +33,14 @@ export default async function RootLayout({
   return (
     <html
       lang={lng}
-      className={`${ibmPlexMono.className} h-full antialiased bg-gray-50`}
+      className={`${ibmPlexMono.className} h-full antialiased bg-gray-50 dark:bg-gray-950`}
     >
       <body className="h-full flex flex-col">
-        <I18nProvider language={lng} resources={resources}>
-          {children}
-        </I18nProvider>
+        <ThemeProvider>
+          <I18nProvider language={lng} resources={resources}>
+            {children}
+          </I18nProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
