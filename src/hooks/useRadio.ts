@@ -70,13 +70,10 @@ export function useRadio() {
 
   // Initial REST fetch for instant data
   useEffect(() => {
-    radioAPI
-      .get('/nowplaying/jawr')
-      .then(({ data }) => {
-        setSong(data.now_playing?.song ?? null);
-        setHistory((data.song_history as HistoryItem[]) ?? []);
-      })
-      .catch(() => {});
+    radioAPI.get('/nowplaying/jawr').then(({ data }) => {
+      setSong(data.now_playing?.song ?? null);
+      setHistory((data.song_history as HistoryItem[]) ?? []);
+    }).catch(() => {});
   }, []);
 
   // WebSocket now-playing
