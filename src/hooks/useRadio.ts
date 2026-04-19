@@ -9,20 +9,13 @@ export function useRadio() {
 
   const [playing, setPlaying] = useState(false);
 
-  const [volume, setVolume] = useState<{ value: number; isMuted: boolean } | null>(null);
+  const [volume, setVolume] = useState<{
+    value: number;
+    isMuted: boolean;
+  } | null>(null);
 
   const [song, setSong] = useState<Song | null>(null);
   const [history, setHistory] = useState<HistoryItem[]>([]);
-
-  const nowPlaying =
-    song === null
-      ? '—'
-      : song?.artist
-        ? `${song.artist} - ${song.title}`
-        : (song?.title ?? '—');
-
-  const artist = song?.artist;
-  const art = song?.art;
 
   // Audio element init
   useEffect(() => {
@@ -77,15 +70,18 @@ export function useRadio() {
 
   // Initial REST fetch for instant data
   useEffect(() => {
-    radioAPI.get('/nowplaying/jawr').then(({ data }) => {
-      setSong(data.now_playing?.song ?? null);
-      setHistory((data.song_history as HistoryItem[]) ?? []);
-    }).catch(() => {});
+    radioAPI
+      .get('/nowplaying/jawr')
+      .then(({ data }) => {
+        setSong(data.now_playing?.song ?? null);
+        setHistory((data.song_history as HistoryItem[]) ?? []);
+      })
+      .catch(() => {});
   }, []);
 
   // WebSocket now-playing
   useEffect(() => {
-    const wsUrl = `${process.env.NEXT_PUBLIC_AZURACAST_URL?.replace(/^http/, 'ws')}/api/live/nowplaying/websocket`;
+    const wsUrl = `${process.env.NEXT_PUBLIC_AZURACAST_URL_WS}/api/live/nowplaying/websocket`;
     let ws: WebSocket | null = null;
     let reconnectDelay = 1000;
     let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
@@ -175,7 +171,10 @@ export function useRadio() {
     const audio = audioRef.current;
     if (!audio) return;
     audio.volume = v;
-    setVolume((prev) => ({ ...(prev ?? { value: v, isMuted: false }), value: v }));
+    setVolume((prev) => ({
+      ...(prev ?? { value: v, isMuted: false }),
+      value: v,
+    }));
   }
 
   function toggleMute() {
@@ -183,16 +182,17 @@ export function useRadio() {
     if (!audio) return;
     audio.muted = !audio.muted;
     const muted = audio.muted;
-    setVolume((prev) => ({ ...(prev ?? { value: audio.volume, isMuted: muted }), isMuted: muted }));
+    setVolume((prev) => ({
+      ...(prev ?? { value: audio.volume, isMuted: muted }),
+      isMuted: muted,
+    }));
   }
 
   return {
     playing,
     volume: volume ?? { value: 0.5, isMuted: false },
-    nowPlaying,
-    artist,
+    song,
     history,
-    art,
     toggle,
     toggleMute,
     changeVolume,

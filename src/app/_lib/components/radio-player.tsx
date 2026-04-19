@@ -12,17 +12,8 @@ import {
 import { timeAgo } from '../helpers/date';
 
 export function RadioPlayer() {
-  const {
-    playing,
-    artist,
-    art,
-    history,
-    volume,
-    nowPlaying,
-    toggle,
-    toggleMute,
-    changeVolume,
-  } = useRadio();
+  const { playing, history, volume, song, toggle, toggleMute, changeVolume } =
+    useRadio();
 
   return (
     <div className="flex flex-col gap-6">
@@ -39,10 +30,10 @@ export function RadioPlayer() {
 
       <div className="grid grid-cols-1 sm:grid-cols-[3fr_2fr] relative gap-8 items-start">
         {/* Album art — first in DOM = first on mobile, column 2 on desktop */}
-        {art ? (
+        {song?.art ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={art}
+            src={song.art}
             alt="capa"
             className="w-full aspect-square object-cover border border-gray-200 sm:col-start-2"
           />
@@ -68,17 +59,22 @@ export function RadioPlayer() {
               <span>jawr.mp3</span>
               {playing && (
                 <span className="inline-flex gap-0.5 items-end shrink-0">
-                  {([
-                    ['eq-a', '0.65s', '0s'],
-                    ['eq-c', '0.9s',  '0.1s'],
-                    ['eq-b', '0.5s',  '0.3s'],
-                    ['eq-a', '0.75s', '0.05s'],
-                    ['eq-c', '0.8s',  '0.2s'],
-                  ] as const).map(([kf, dur, delay], i) => (
+                  {(
+                    [
+                      ['eq-a', '0.65s', '0s'],
+                      ['eq-c', '0.9s', '0.1s'],
+                      ['eq-b', '0.5s', '0.3s'],
+                      ['eq-a', '0.75s', '0.05s'],
+                      ['eq-c', '0.8s', '0.2s'],
+                    ] as const
+                  ).map(([kf, dur, delay], i) => (
                     <span
                       key={i}
                       className="w-1 h-3.5 bg-gray-500"
-                      style={{ animation: `${kf} ${dur} ease-in-out infinite ${delay}`, transformOrigin: 'bottom' }}
+                      style={{
+                        animation: `${kf} ${dur} ease-in-out infinite ${delay}`,
+                        transformOrigin: 'bottom',
+                      }}
                     />
                   ))}
                 </span>
@@ -128,12 +124,14 @@ export function RadioPlayer() {
 
           {/* Now playing */}
           <div className="flex flex-col gap-3 mb-2 text-sm">
-            <p className="text-gray-600 font-bold mt-5">agora:</p>
-            <p className="text-gray-900">{nowPlaying}</p>
-            {artist && (
+            <p className="text-gray-600 font-bold">agora:</p>
+            <p className="text-gray-900">
+              {song?.artist} - {song?.title}
+            </p>
+            {song?.artist && (
               <p className="text-xs text-gray-400 flex gap-2">
                 <a
-                  href={`https://www.last.fm/music/${encodeURIComponent(artist)}`}
+                  href={`https://www.last.fm/music/${encodeURIComponent(song.artist)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline hover:text-gray-600 transition-colors"
@@ -141,7 +139,7 @@ export function RadioPlayer() {
                   [last.fm]
                 </a>
                 <a
-                  href={`https://www.discogs.com/search/?q=${encodeURIComponent(artist)}&type=artist`}
+                  href={`https://www.discogs.com/search/?q=${encodeURIComponent(song.artist)}&type=artist`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline hover:text-gray-600 transition-colors"
