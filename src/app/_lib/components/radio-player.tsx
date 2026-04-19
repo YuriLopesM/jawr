@@ -8,12 +8,14 @@ import {
   SpeakerHighIcon,
   SpeakerSlashIcon,
 } from '@phosphor-icons/react';
+import { useT } from 'next-i18next/client';
 
 import { timeAgo } from '../helpers/date';
 
 export function RadioPlayer() {
   const { playing, history, volume, song, toggle, toggleMute, changeVolume } =
     useRadio();
+  const { t } = useT('listen');
 
   return (
     <div className="flex flex-col gap-6">
@@ -24,7 +26,7 @@ export function RadioPlayer() {
           style={{ animation: 'pulse 2s ease-in-out infinite' }}
         />
         <span className="text-xs font-bold text-red-700 tracking-widest uppercase">
-          ao vivo
+          {t('live_indicator')}
         </span>
       </p>
 
@@ -34,7 +36,7 @@ export function RadioPlayer() {
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={song.art}
-            alt="capa"
+            alt={t('album_art_alt')}
             className="w-full aspect-square object-cover border border-gray-200 sm:col-start-2"
           />
         ) : (
@@ -49,7 +51,7 @@ export function RadioPlayer() {
             <button
               onClick={toggle}
               className="flex items-center justify-center w-11 h-full border-r border-gray-200 text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer shrink-0"
-              aria-label={playing ? 'pausar' : 'tocar'}
+              aria-label={playing ? t('player_pause') : t('player_play')}
             >
               {playing ? <PauseIcon /> : <PlayIcon weight="fill" />}
             </button>
@@ -85,7 +87,9 @@ export function RadioPlayer() {
             <button
               onClick={toggleMute}
               className="flex items-center justify-center w-10 h-full border-l border-gray-200 text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer shrink-0"
-              aria-label={volume.isMuted ? 'desmutar' : 'mutar'}
+              aria-label={
+                volume.isMuted ? t('player_unmute') : t('player_mute')
+              }
             >
               {volume.isMuted ? (
                 <SpeakerSlashIcon weight="fill" />
@@ -104,7 +108,7 @@ export function RadioPlayer() {
                 value={volume.value}
                 onChange={(e) => changeVolume(Number(e.target.value))}
                 className="w-20 accent-gray-600 cursor-pointer"
-                aria-label="volume"
+                aria-label={t('player_volume')}
               />
               <span className="text-xs text-gray-400 w-7 text-right tabular-nums">
                 {Math.round(volume.value * 100)}%
@@ -116,7 +120,7 @@ export function RadioPlayer() {
               href="/jawr.m3u"
               download
               className="flex items-center justify-center w-10 h-full border-l border-gray-200 text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition-colors shrink-0"
-              aria-label="baixar .m3u"
+              aria-label={t('player_download_m3u')}
             >
               <DownloadSimpleIcon weight="fill" />
             </a>
@@ -124,7 +128,7 @@ export function RadioPlayer() {
 
           {/* Now playing */}
           <div className="flex flex-col gap-3 mb-2 text-sm">
-            <p className="text-gray-600 font-bold">agora:</p>
+            <p className="text-gray-600 font-bold">{t('now_label')}</p>
             <p className="text-gray-900">
               {song?.artist} - {song?.title}
             </p>
@@ -152,7 +156,9 @@ export function RadioPlayer() {
 
           {/* Recently played */}
           <div className="flex flex-col gap-3">
-            <p className="text-sm text-gray-600 font-bold mt-5">recentemente:</p>
+            <p className="text-sm text-gray-600 font-bold">
+              {t('recently_label')}
+            </p>
             <ul className="flex flex-col text-xs text-gray-600">
               {history.length === 0 && <li className="text-gray-300">—</li>}
               {history.map(({ song, played_at }, i) => {

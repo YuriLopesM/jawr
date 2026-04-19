@@ -1,13 +1,15 @@
+import { getT } from 'next-i18next/server';
 import { getMusicOfTheDay } from '../../services/music';
 
 import { TemplateCard } from './template-card';
 
 export async function AlbumCard() {
+  const { t } = await getT('home');
   const { album } = await getMusicOfTheDay();
 
   return (
     <TemplateCard
-      title="álbum do dia"
+      title={t('album_of_the_day')}
       image={album.image}
       description={{
         title: album.title,

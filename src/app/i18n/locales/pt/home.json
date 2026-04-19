@@ -1,0 +1,19 @@
+{
+  "greeting_morning": "bom dia",
+  "greeting_afternoon": "boa tarde",
+  "greeting_evening": "boa noite",
+  "welcome_message": "bem-vindo à jawr",
+  "welcome_message_2": "tocamos a música que a gente gosta, 24/7.",
+  "listen_instruction_1": "sintonize pela página",
+  "listen_instruction_listen": "ouvir",
+  "listen_instruction_2": "ou baixe o",
+  "listen_instruction_3": "para o seu reprodutor de áudio.",
+  "collaboration_invite_1": "DJs, curadores e artistas estão convidados,",
+  "collaboration_invite_read_more": "leia mais",
+  "collaboration_invite_2": "se quiser participar.",
+  "now_playing": "tocando agora",
+  "album_of_the_day": "álbum do dia",
+  "artist_of_the_day": "artista do dia",
+  "color_of_the_day": "cor do dia",
+  "image_of_the_day": "imagem do dia"
+}

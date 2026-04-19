@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import { getT } from 'next-i18next/server';
 
 dayjs.extend(utc);
 
@@ -19,6 +20,7 @@ function getColorFromDay() {
 }
 
 export async function ColorCard() {
+  const { t } = await getT('home');
   const { h, s, l } = getColorFromDay();
 
   const res = await fetch(
@@ -37,7 +39,7 @@ export async function ColorCard() {
 
   return (
     <TemplateCard
-      title="cor do dia"
+      title={t('color_of_the_day')}
       image={image}
       description={{
         title: colorName,

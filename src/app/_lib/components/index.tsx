@@ -1,6 +1,7 @@
 export * from './divider';
 export * from './social-icon';
 export * from './greeting';
+export * from './language-switcher';
 export * from './menu';
 export * from './nav';
 export * from './nav-item';
