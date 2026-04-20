@@ -54,7 +54,7 @@ export function DJModal({ onClose }: Props) {
           </label>
 
           <label className="flex flex-col gap-1.5">
-            <span className="text-xs text-gray-600">email</span>
+            <span className="text-xs text-gray-600">email <span className="text-gray-400">*</span></span>
             <input
               type="email"
               value={email}
@@ -78,7 +78,7 @@ export function DJModal({ onClose }: Props) {
           </label>
 
           <label className="flex flex-col gap-1.5">
-            <span className="text-xs text-gray-600">link ou material</span>
+            <span className="text-xs text-gray-600">link ou material <span className="text-gray-400">*</span></span>
             <input
               type="text"
               value={link}
@@ -102,7 +102,7 @@ export function DJModal({ onClose }: Props) {
         <div className="flex justify-end">
           <button
             onClick={handleSubmit}
-            disabled={!name.trim() || !role || sending}
+            disabled={!name.trim() || !email.trim() || !role || !link.trim() || sending}
             className="px-4 py-2 text-xs bg-gray-900 text-white hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
           >
             {sending ? 'enviando...' : 'enviar'}

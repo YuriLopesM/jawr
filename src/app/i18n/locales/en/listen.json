@@ -13,5 +13,14 @@
   "player_download_m3u": "download .m3u",
   "album_art_alt": "album art",
   "now_label": "now:",
-  "recently_label": "recently:"
+  "recently_label": "recently:",
+  "song_request_button": "request a song",
+  "song_request_title": "request a song",
+  "song_request_subtitle": "",
+  "song_request_name": "name or nickname",
+  "song_request_song": "requested song",
+  "song_request_email": "email",
+  "song_request_message": "message",
+  "song_request_submit": "send",
+  "song_request_sending": "sending..."
 }
