@@ -41,3 +41,12 @@ export type HistoryItem = {
 };
 
 export type AlbumsMap = Record<string, Album>;
+
+export type RequestResult = {
+  request_id: string;
+  song: {
+    title: string;
+    artist: string;
+    art?: string;
+  };
+};

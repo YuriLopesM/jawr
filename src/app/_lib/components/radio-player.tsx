@@ -9,13 +9,17 @@ import {
   SpeakerSlashIcon,
 } from '@phosphor-icons/react';
 import { useT } from 'next-i18next/client';
+import { useState } from 'react';
 
 import { timeAgo } from '../helpers/date';
+import { SongRequestModal } from './song-request-modal';
 
 export function RadioPlayer() {
   const { playing, history, volume, song, toggle, toggleMute, changeVolume } =
     useRadio();
   const { t } = useT('listen');
+
+  const [showRequest, setShowRequest] = useState(false);
 
   return (
     <div className="flex flex-col gap-6">
@@ -183,9 +187,19 @@ export function RadioPlayer() {
               })}
             </ul>
           </div>
+
+          {/* Song request button */}
+          <button
+            onClick={() => setShowRequest(true)}
+            className="mt-4 self-start text-xs text-gray-400 underline hover:text-gray-700 transition-colors cursor-pointer"
+          >
+            {t('song_request_button')}
+          </button>
         </div>
 
       </div>
+
+      {showRequest && <SongRequestModal onClose={() => setShowRequest(false)} />}
     </div>
   );
 }
