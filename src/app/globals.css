@@ -1,4 +1,8 @@
 @import 'tailwindcss';
+@import 'tailwindcss/theme' layer(theme);
+@import 'tailwindcss/utilities' layer(utilities);
+
+@variant dark (&:where(.dark, .dark *));
 
 @keyframes eq-a {
   0%   { transform: scaleY(0.2); }
@@ -34,6 +38,16 @@
   --color-gray-800: #222222;
   --color-gray-900: #151515;
   --color-gray-950: #0b0b0b;
+
+}
+
+.dark {
+  --dk-bg: #151515;
+  --dk-surface: #1e1e1e;
+  --dk-border: #2a2a2a;
+  --dk-heading: #f0f0f0;
+  --dk-body: #b0b0b0;
+  --dk-muted: #6e6e6e;
 }
 
 ::selection {

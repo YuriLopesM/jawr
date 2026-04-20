@@ -2,6 +2,7 @@
 
 import { XIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
+import { useT } from 'next-i18next/client';
 
 type Props = {
   onClose: () => void;
@@ -13,6 +14,7 @@ export function ContactModal({ onClose }: Props) {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [sending, setSending] = useState(false);
+  const { t } = useT('more');
 
   async function handleSubmit() {
     setSending(true);
@@ -28,57 +30,57 @@ export function ContactModal({ onClose }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={onClose}>
       <div
-        className="bg-white border border-gray-200 w-full max-w-sm mx-4 flex flex-col gap-5 p-6"
+        className="bg-white dark:bg-gray-950 border border-gray-200 dark:border-[#2a2a2a] w-full max-w-sm mx-4 flex flex-col gap-5 p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between">
           <div className="flex flex-col gap-1">
-            <h2 className="text-sm font-bold text-gray-900">fale conosco</h2>
-            <p className="text-xs text-gray-400">perguntas, sugestões e feedback são bem-vindos.</p>
+            <h2 className="text-sm font-bold text-gray-900 dark:text-[#f0f0f0]">{t('contact_modal_title')}</h2>
+            <p className="text-xs text-gray-400 dark:text-[#6e6e6e]">{t('contact_modal_description')}</p>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-700 transition-colors cursor-pointer">
+          <button onClick={onClose} className="text-gray-400 dark:text-[#6e6e6e] hover:text-gray-700 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer">
             <XIcon />
           </button>
         </div>
 
         <div className="flex flex-col gap-4">
           <label className="flex flex-col gap-1.5">
-            <span className="text-xs text-gray-600">nome ou apelido <span className="text-gray-400">*</span></span>
+            <span className="text-xs text-gray-600 dark:text-[#b0b0b0]">{t('contact_field_name')} <span className="text-gray-400 dark:text-[#6e6e6e]">*</span></span>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-800 outline-none focus:border-gray-400 transition-colors"
+              className="border border-gray-200 dark:border-[#2a2a2a] bg-gray-50 dark:bg-[#1e1e1e] px-3 py-2 text-xs text-gray-800 dark:text-[#f0f0f0] outline-none focus:border-gray-400 dark:focus:border-[#6e6e6e] transition-colors"
             />
           </label>
 
           <label className="flex flex-col gap-1.5">
-            <span className="text-xs text-gray-600">email <span className="text-gray-400">*</span></span>
+            <span className="text-xs text-gray-600 dark:text-[#b0b0b0]">{t('contact_field_email')}</span>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-800 outline-none focus:border-gray-400 transition-colors"
+              className="border border-gray-200 dark:border-[#2a2a2a] bg-gray-50 dark:bg-[#1e1e1e] px-3 py-2 text-xs text-gray-800 dark:text-[#f0f0f0] outline-none focus:border-gray-400 dark:focus:border-[#6e6e6e] transition-colors"
             />
           </label>
 
           <label className="flex flex-col gap-1.5">
-            <span className="text-xs text-gray-600">assunto</span>
+            <span className="text-xs text-gray-600 dark:text-[#b0b0b0]">{t('contact_field_subject')}</span>
             <input
               type="text"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              className="border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-800 outline-none focus:border-gray-400 transition-colors"
+              className="border border-gray-200 dark:border-[#2a2a2a] bg-gray-50 dark:bg-[#1e1e1e] px-3 py-2 text-xs text-gray-800 dark:text-[#f0f0f0] outline-none focus:border-gray-400 dark:focus:border-[#6e6e6e] transition-colors"
             />
           </label>
 
           <label className="flex flex-col gap-1.5">
-            <span className="text-xs text-gray-600">mensagem <span className="text-gray-400">*</span></span>
+            <span className="text-xs text-gray-600 dark:text-[#b0b0b0]">{t('contact_field_message')} <span className="text-gray-400 dark:text-[#6e6e6e]">*</span></span>
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={4}
-              className="border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-800 outline-none focus:border-gray-400 transition-colors resize-none"
+              className="border border-gray-200 dark:border-[#2a2a2a] bg-gray-50 dark:bg-[#1e1e1e] px-3 py-2 text-xs text-gray-800 dark:text-[#f0f0f0] outline-none focus:border-gray-400 dark:focus:border-[#6e6e6e] transition-colors resize-none"
             />
           </label>
         </div>
@@ -86,10 +88,10 @@ export function ContactModal({ onClose }: Props) {
         <div className="flex justify-end">
           <button
             onClick={handleSubmit}
-            disabled={!name.trim() || !email.trim() || !message.trim() || sending}
-            className="px-4 py-2 text-xs bg-gray-900 text-white hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+            disabled={!name.trim() || !message.trim() || sending}
+            className="px-4 py-2 text-xs bg-gray-900 dark:bg-[#2a2a2a] text-white hover:bg-gray-700 dark:hover:bg-[#3a3a3a] disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
           >
-            {sending ? 'enviando...' : 'enviar'}
+            {sending ? t('contact_button_sending') : t('contact_button_send')}
           </button>
         </div>
       </div>

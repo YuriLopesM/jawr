@@ -9,10 +9,10 @@ export function PlayingNow() {
   const { t } = useT('home');
 
   return (
-    <p className="w-full h-5 inline-flex items-center justify-center gap-2 text-sm text-gray-500">
+    <p className="w-full h-5 inline-flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-[#b0b0b0]">
       <MusicNoteIcon size={16} />
       {t('now_playing')}:
-      <span className="text-gray-900">
+      <span className="text-gray-900 dark:text-[#f0f0f0]">
         {song === null ? (
           '—'
         ) : song.artist ? (

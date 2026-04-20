@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { getT } from 'next-i18next/server';
-import { LanguageSwitcher, Menu, Nav } from './_lib/components';
+import { LanguageSwitcher, Menu, Nav, ThemeToggle } from './_lib/components';
 
 export default async function Template({
   children,
@@ -26,11 +26,11 @@ export default async function Template({
           <Menu.Item>
             <LanguageSwitcher currentLanguage={lng} />
           </Menu.Item>
-          <Menu.Item>{t('theme_dark')}</Menu.Item>
+          <ThemeToggle />
         </Menu>
       </header>
       <div className="w-full">{children}</div>
-      <footer className="border-t-gray-100 bg-gray-50 border-t">
+      <footer className="border-t-gray-100 bg-gray-50 border-t dark:bg-gray-950 dark:border-t-[#2a2a2a]">
         <div className="max-w-5xl w-full mx-auto h-12 flex items-center justify-center px-4 sm:px-8">
           <p className="text-xs text-gray-400 text-center">
             jawr <span className="text-gray-200">| {year}</span>

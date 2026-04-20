@@ -41,10 +41,10 @@ export function ImageCard() {
 
   if (loading) {
     return (
-      <div className="w-full max-w-60 aspect-square border border-gray-100 p-6 flex flex-col gap-4">
-        <div className="h-3 w-24 bg-gray-100 animate-pulse" />
-        <div className="w-full h-full bg-gray-100 animate-pulse" />
-        <div className="h-2 w-16 bg-gray-100 animate-pulse self-end" />
+      <div className="w-full max-w-60 aspect-square border border-gray-100 dark:border-[#2a2a2a] p-6 flex flex-col gap-4">
+        <div className="h-3 w-24 bg-gray-100 dark:bg-[#2a2a2a] animate-pulse" />
+        <div className="w-full h-full bg-gray-100 dark:bg-[#2a2a2a] animate-pulse" />
+        <div className="h-2 w-16 bg-gray-100 dark:bg-[#2a2a2a] animate-pulse self-end" />
       </div>
     );
   }
