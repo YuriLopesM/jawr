@@ -1,6 +1,6 @@
 'use client';
 
-import { useRadio } from '@/hooks';
+import { useLastfm, useRadio } from '@/hooks';
 import {
   DownloadSimpleIcon,
   PauseIcon,
@@ -9,7 +9,7 @@ import {
   SpeakerSlashIcon,
 } from '@phosphor-icons/react';
 import { useT } from 'next-i18next/client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { timeAgo } from '../helpers/date';
 import { SongRequestModal } from './song-request-modal';
@@ -17,9 +17,29 @@ import { SongRequestModal } from './song-request-modal';
 export function RadioPlayer() {
   const { playing, history, volume, song, toggle, toggleMute, changeVolume } =
     useRadio();
+  const { session, pending, connect, confirm, disconnect, nowPlaying, scrobbleTrack } = useLastfm();
   const { t } = useT('listen');
 
   const [showRequest, setShowRequest] = useState(false);
+  const scrobbleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (scrobbleTimer.current) clearTimeout(scrobbleTimer.current);
+    scrobbleTimer.current = null;
+    if (!session || !song?.artist || !song?.title || !playing) return;
+
+    nowPlaying(song.artist, song.title).catch(() => {});
+
+    const timestamp = Math.floor(Date.now() / 1000);
+    scrobbleTimer.current = setTimeout(() => {
+      scrobbleTrack(song.artist!, song.title!, timestamp).catch(() => {});
+      scrobbleTimer.current = null;
+    }, 60_000);
+
+    return () => {
+      if (scrobbleTimer.current) clearTimeout(scrobbleTimer.current);
+    };
+  }, [song?.title, song?.artist, playing, session?.key]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -188,13 +208,46 @@ export function RadioPlayer() {
             </ul>
           </div>
 
-          {/* Song request button */}
-          <button
-            onClick={() => setShowRequest(true)}
-            className="mt-4 self-start text-xs text-gray-400 underline hover:text-gray-700 transition-colors cursor-pointer"
-          >
-            {t('song_request_button')}
-          </button>
+          {/* Song request + Last.fm buttons */}
+          <div className="mt-4 flex items-center justify-between">
+            <button
+              onClick={() => setShowRequest(true)}
+              className="self-start text-xs text-gray-400 underline hover:text-gray-700 transition-colors cursor-pointer"
+            >
+              {t('song_request_button')}
+            </button>
+
+            {session ? (
+              <span className="text-xs text-gray-600 dark:text-[#b0b0b0] flex items-center gap-1.5">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500 shrink-0" />
+                {session.name}
+                <button
+                  onClick={disconnect}
+                  className="text-gray-400 dark:text-[#6e6e6e] hover:text-gray-900 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+                  aria-label={t('lastfm_disconnect')}
+                >
+                  ×
+                </button>
+              </span>
+            ) : pending ? (
+              <span className="text-xs text-gray-400 dark:text-[#6e6e6e] flex items-center gap-1.5">
+                {t('lastfm_pending')}
+                <button
+                  onClick={confirm}
+                  className="underline hover:text-gray-900 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+                >
+                  {t('lastfm_confirm')}
+                </button>
+              </span>
+            ) : (
+              <button
+                onClick={connect}
+                className="text-xs text-gray-400 dark:text-[#6e6e6e] underline hover:text-gray-900 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+              >
+                {t('lastfm_connect')}
+              </button>
+            )}
+          </div>
         </div>
 
       </div>

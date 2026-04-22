@@ -22,5 +22,9 @@
   "song_request_email": "email",
   "song_request_message": "recado",
   "song_request_submit": "enviar",
-  "song_request_sending": "enviando..."
+  "song_request_sending": "enviando...",
+  "lastfm_connect": "last.fm: conectar",
+  "lastfm_disconnect": "desconectar last.fm",
+  "lastfm_pending": "aguardando...",
+  "lastfm_confirm": "confirmar"
 }
