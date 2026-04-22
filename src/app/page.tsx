@@ -1,8 +1,12 @@
 import { getT } from 'next-i18next/server';
+import { cookies } from 'next/headers';
 import { Divider, Greeting, PlayingNow, TodayCard } from './_lib/components';
 
 export default async function Home() {
   const { t } = await getT('home');
+  const cookieStore = await cookies();
+
+  const lang = cookieStore.get('i18next')?.value || 'en';
 
   return (
     <main className="w-full h-full flex flex-col gap-5">
@@ -39,7 +43,7 @@ export default async function Home() {
         <TodayCard.Album />
         <TodayCard.Artist />
         <TodayCard.Color />
-        <TodayCard.Image />
+        <TodayCard.Image lang={lang} />
       </section>
       {/* <OnThisDay /> */}
       {/* <Divider /> */}

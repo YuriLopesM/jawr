@@ -26,5 +26,6 @@
   "lastfm_connect": "last.fm: conectar",
   "lastfm_disconnect": "desconectar last.fm",
   "lastfm_pending": "aguardando...",
-  "lastfm_confirm": "confirmar"
+  "lastfm_confirm": "confirmar",
+  "played_ago": "atrás"
 }

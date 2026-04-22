@@ -1,7 +1,5 @@
 export * from './divider';
-export * from './social-icon';
-export * from './theme-provider';
-export * from './theme-toggle';
+export * from './footer';
 export * from './greeting';
 export * from './language-switcher';
 export * from './menu';
@@ -10,5 +8,8 @@ export * from './nav-item';
 export * from './on-this-day';
 export * from './playing-now';
 export * from './radio-player';
+export * from './social-icon';
+export * from './theme-provider';
+export * from './theme-toggle';
 export * from './this-or-that';
 export * from './today';

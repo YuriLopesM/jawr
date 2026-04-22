@@ -14,7 +14,7 @@ type WikiImage = {
   file_page?: string;
 };
 
-export function ImageCard() {
+export function ImageCard({ lang }: { lang: string }) {
   const { t: tHome } = useT('home');
   const [image, setImage] = useState<WikiImage | null>(null);
   const [loading, setLoading] = useState(true);
@@ -27,7 +27,7 @@ export function ImageCard() {
 
     async function fetchImage() {
       try {
-        const res = await getImageOfTheDay({ year, month, day });
+        const res = await getImageOfTheDay({ year, month, day, lang });
         setImage(res);
       } catch (error) {
         console.error('Failed to fetch image of the day', error);
@@ -37,7 +37,7 @@ export function ImageCard() {
     }
 
     fetchImage();
-  }, []);
+  }, [lang]);
 
   if (loading) {
     return (

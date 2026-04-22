@@ -4,13 +4,15 @@ export const getImageOfTheDay = async ({
   year,
   month,
   day,
+  lang,
 }: {
   year: number;
   month: string;
   day: string;
+  lang: string;
 }) => {
   const res = await fetch(
-    `https://api.wikimedia.org/feed/v1/wikipedia/pt/featured/${year}/${month}/${day}`,
+    `https://api.wikimedia.org/feed/v1/wikipedia/${lang}/featured/${year}/${month}/${day}`,
     { next: { revalidate: ONE_DAY } }
   );
 

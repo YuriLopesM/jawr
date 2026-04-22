@@ -152,7 +152,9 @@ export function RadioPlayer() {
 
           {/* Now playing */}
           <div className="flex flex-col gap-3 mb-2 text-sm">
-            <p className="text-gray-600 dark:text-[#6e6e6e] font-bold">{t('now_label')}</p>
+            <p className="text-gray-600 dark:text-[#6e6e6e] font-bold">
+              {t('now_label')}
+            </p>
             <p className="text-gray-900 dark:text-[#f0f0f0]">
               {song?.artist} - {song?.title}
             </p>
@@ -184,14 +186,18 @@ export function RadioPlayer() {
               {t('recently_label')}
             </p>
             <ul className="flex flex-col text-xs text-gray-600 dark:text-[#b0b0b0]">
-              {history.length === 0 && <li className="text-gray-300 dark:text-[#3a3a3a]">—</li>}
+              {history.length === 0 && (
+                <li className="text-gray-300 dark:text-[#3a3a3a]">—</li>
+              )}
               {history.map(({ song, played_at }, i) => {
                 if (!song) return null;
 
                 const text = song.artist
                   ? `${song.artist} - ${song.title}`
                   : (song.title ?? '-');
-                const ago = played_at ? timeAgo(played_at) : '';
+                const ago = played_at
+                  ? `${timeAgo(played_at)} ${t('played_ago')}`
+                  : '';
 
                 return (
                   <li
@@ -200,7 +206,9 @@ export function RadioPlayer() {
                   >
                     <span className="flex-1 truncate">{text}</span>
                     {ago && (
-                      <span className="text-gray-300 dark:text-[#3a3a3a] shrink-0">{ago}</span>
+                      <span className="text-gray-300 dark:text-[#3a3a3a] shrink-0">
+                        {ago}
+                      </span>
                     )}
                   </li>
                 );
@@ -249,10 +257,11 @@ export function RadioPlayer() {
             )}
           </div>
         </div>
-
       </div>
 
-      {showRequest && <SongRequestModal onClose={() => setShowRequest(false)} />}
+      {showRequest && (
+        <SongRequestModal onClose={() => setShowRequest(false)} />
+      )}
     </div>
   );
 }
