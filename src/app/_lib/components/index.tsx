@@ -13,3 +13,4 @@ export * from './theme-provider';
 export * from './theme-toggle';
 export * from './this-or-that';
 export * from './today';
+export * from './tz-setter';

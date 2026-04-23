@@ -1,6 +1,7 @@
 // services/musicOfTheDay.ts
-import { getNumberDay } from '@/app/_lib/helpers/date';
+import { getNumberDay, TZ_COOKIE } from '@/app/_lib/helpers/date';
 import { Album, AlbumsMap } from '@/app/_types';
+import { cookies } from 'next/headers';
 
 import albumsData from '@/app/_lib/assets/1001albums.json';
 
@@ -19,7 +20,8 @@ export function getBestImage(images: Album['images']) {
 }
 
 export async function getMusicOfTheDay() {
-  const day = getNumberDay();
+  const tz = (await cookies()).get(TZ_COOKIE)?.value;
+  const day = getNumberDay(tz);
 
   const data = albumsData as AlbumsMap;
   const entries = Object.values(data);

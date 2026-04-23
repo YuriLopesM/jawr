@@ -1,3 +1,10 @@
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 export type ArtistInfo = {
   name: string;
   image: string;
@@ -9,8 +16,16 @@ export type DailyData = { date: string; count: number };
 
 export const DAILY_LIMIT = 10;
 
+export function getUserTimezone(): string {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+  } catch {
+    return 'UTC';
+  }
+}
+
 function getTodayStr() {
-  return new Date().toISOString().slice(0, 10);
+  return dayjs().tz(getUserTimezone()).format('YYYY-MM-DD');
 }
 
 export function getDailyData(): DailyData {

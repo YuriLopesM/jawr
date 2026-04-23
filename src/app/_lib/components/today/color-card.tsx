@@ -1,16 +1,17 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { getT } from 'next-i18next/server';
+import { cookies } from 'next/headers';
 
 dayjs.extend(utc);
 
-import { getNumberDay } from '../../helpers/date';
+import { getNumberDay, TZ_COOKIE } from '../../helpers/date';
 import { TemplateCard } from './template-card';
 
 export const ONE_DAY = 60 * 60 * 24;
 
-function getColorFromDay() {
-  const day = getNumberDay();
+function getColorFromDay(tz?: string) {
+  const day = getNumberDay(tz);
 
   const h = (day * 137) % 360;
   const s = 45 + (day % 30);
@@ -21,7 +22,8 @@ function getColorFromDay() {
 
 export async function ColorCard() {
   const { t } = await getT('home');
-  const { h, s, l } = getColorFromDay();
+  const tz = (await cookies()).get(TZ_COOKIE)?.value;
+  const { h, s, l } = getColorFromDay(tz);
 
   const res = await fetch(
     `https://www.thecolorapi.com/id?hsl=${h},${s}%25,${l}%25`,
