@@ -28,6 +28,7 @@ export default async function Template({
           <Nav.Item href="/blog">{t('nav_blog')}</Nav.Item>
           <Nav.Item href="/curators">{t('nav_curators')}</Nav.Item>
           <Nav.Item href="/more">{t('nav_more')}</Nav.Item>
+          <Nav.Item href="/extension">{t('nav_extension')}</Nav.Item>
         </Nav>
         <Menu>
           <Menu.Item>

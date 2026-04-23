@@ -63,7 +63,7 @@ export function RadioPlayer() {
         </span>
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-[3fr_2fr] relative gap-8 items-start">
+      <div className="grid grid-cols-1 sm:grid-cols-[5fr_4fr] relative gap-8 items-start">
         {/* Album art — first in DOM = first on mobile, column 2 on desktop */}
         {song?.art ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -161,7 +161,7 @@ export function RadioPlayer() {
 
           {/* Now playing */}
           <div className="flex flex-col gap-3 mb-2 text-sm">
-            <p className="text-gray-600 dark:text-[#6e6e6e] font-bold">
+            <p className="text-gray-600 dark:text-[#6e6e6e] text-[10px] uppercase tracking-widest">
               {t('now_label')}
             </p>
             <p className="text-gray-900 dark:text-[#f0f0f0]">
@@ -191,7 +191,7 @@ export function RadioPlayer() {
 
           {/* Recently played */}
           <div className="flex flex-col gap-3">
-            <p className="text-sm text-gray-600 dark:text-[#6e6e6e] font-bold">
+            <p className="text-gray-600 dark:text-[#6e6e6e] text-[10px] uppercase tracking-widest">
               {t('recently_label')}
             </p>
             <ul className="flex flex-col text-xs text-gray-600 dark:text-[#b0b0b0]">

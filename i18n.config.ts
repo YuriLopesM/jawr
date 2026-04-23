@@ -6,7 +6,7 @@ const i18nConfig: I18nConfig = {
   localeInPath: false,
   fallbackLng: 'en',
   defaultNS: 'common',
-  ns: ['common', 'home', 'listen', 'blog', 'curators', 'more'],
+  ns: ['common', 'home', 'listen', 'blog', 'curators', 'more', 'extension'],
   // Recommended: works on all platforms including Vercel/serverless
   resourceLoader: (language, namespace) =>
     import(`./src/app/i18n/locales/${language}/${namespace}.json`),

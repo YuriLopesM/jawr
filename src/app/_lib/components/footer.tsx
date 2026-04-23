@@ -19,7 +19,7 @@ export function Footer() {
           rel="noopener noreferrer"
           className="text-gray-300 text-md hover:text-gray-600 dark:hover:text-[#b0b0b0] transition-colors"
         >
-          <GithubLogoIcon weight="duotone" />
+          <GithubLogoIcon />
         </a>
       </div>
     </footer>
