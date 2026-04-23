@@ -1,40 +1,26 @@
-import {
-  buildAuthUrl,
-  getSession,
-  getToken,
-  LastfmSession,
-  scrobble,
-  updateNowPlaying,
-} from '@/app/_lib/services/lastfm';
+import { LastfmPublicSession } from '@/app/_types';
+import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 
-const STORAGE_KEY = 'jawr_lastfm_session';
+type StartAuthResponse = {
+  token: string;
+  authUrl: string;
+};
 
-function loadSession(): LastfmSession | null {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as LastfmSession) : null;
-  } catch {
-    return null;
-  }
-}
-
-function saveSession(session: LastfmSession | null) {
-  if (session) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
-  } else {
-    localStorage.removeItem(STORAGE_KEY);
-  }
-}
+type SessionResponse = {
+  session: LastfmPublicSession | null;
+};
 
 export function useLastfm() {
-  const [session, setSession] = useState<LastfmSession | null>(null);
+  const [session, setSession] = useState<LastfmPublicSession | null>(null);
   const [pending, setPending] = useState(false);
   const pendingToken = useRef<string | null>(null);
   const pollInterval = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    setSession(loadSession());
+    axios.get<SessionResponse>('/api/lastfm/session')
+      .then(({ data }) => setSession(data.session))
+      .catch(() => setSession(null));
   }, []);
 
   function stopPolling() {
@@ -45,51 +31,60 @@ export function useLastfm() {
   }
 
   async function connect() {
-    const token = await getToken();
-    pendingToken.current = token;
+    const { data } = await axios.post<StartAuthResponse>('/api/lastfm/start');
+
+    pendingToken.current = data.token;
     setPending(true);
-    window.open(buildAuthUrl(token), '_blank');
+    window.open(data.authUrl, '_blank');
 
     pollInterval.current = setInterval(async () => {
       try {
-        const s = await getSession(pendingToken.current!);
-        stopPolling();
-        pendingToken.current = null;
-        setPending(false);
-        setSession(s);
-        saveSession(s);
+        await confirmToken(true);
       } catch {
         // user hasn't authorized yet — keep polling
       }
     }, 3000);
   }
 
-  async function confirm() {
+  async function confirmToken(silent = false) {
     if (!pendingToken.current) return;
-    const s = await getSession(pendingToken.current);
-    stopPolling();
-    pendingToken.current = null;
-    setPending(false);
-    setSession(s);
-    saveSession(s);
+
+    try {
+      const { data } = await axios.post<SessionResponse>('/api/lastfm/confirm', {
+        token: pendingToken.current,
+      });
+
+      stopPolling();
+      pendingToken.current = null;
+      setPending(false);
+      setSession(data.session);
+    } catch (error) {
+      if (!silent) {
+        throw error;
+      }
+    }
   }
 
-  function disconnect() {
+  async function confirm() {
+    await confirmToken(false);
+  }
+
+  async function disconnect() {
+    await axios.post<{ ok: true }>('/api/lastfm/disconnect');
     stopPolling();
     pendingToken.current = null;
     setPending(false);
     setSession(null);
-    saveSession(null);
   }
 
   async function nowPlaying(artist: string, track: string) {
     if (!session) return;
-    await updateNowPlaying(session.key, artist, track);
+    await axios.post<{ ok: true }>('/api/lastfm/now-playing', { artist, track });
   }
 
   async function scrobbleTrack(artist: string, track: string, timestamp: number) {
     if (!session) return;
-    await scrobble(session.key, artist, track, timestamp);
+    await axios.post<{ ok: true }>('/api/lastfm/scrobble', { artist, track, timestamp });
   }
 
   useEffect(() => () => stopPolling(), []);

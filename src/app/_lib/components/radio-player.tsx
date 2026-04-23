@@ -7,6 +7,7 @@ import {
   PlayIcon,
   SpeakerHighIcon,
   SpeakerSlashIcon,
+  XIcon,
 } from '@phosphor-icons/react';
 import { useT } from 'next-i18next/client';
 import { useEffect, useRef, useState } from 'react';
@@ -17,7 +18,15 @@ import { SongRequestModal } from './song-request-modal';
 export function RadioPlayer() {
   const { playing, history, volume, song, toggle, toggleMute, changeVolume } =
     useRadio();
-  const { session, pending, connect, confirm, disconnect, nowPlaying, scrobbleTrack } = useLastfm();
+  const {
+    session,
+    pending,
+    connect,
+    confirm,
+    disconnect,
+    nowPlaying,
+    scrobbleTrack,
+  } = useLastfm();
   const { t } = useT('listen');
 
   const [showRequest, setShowRequest] = useState(false);
@@ -39,7 +48,7 @@ export function RadioPlayer() {
     return () => {
       if (scrobbleTimer.current) clearTimeout(scrobbleTimer.current);
     };
-  }, [song?.title, song?.artist, playing, session?.key]);
+  }, [song?.title, song?.artist, playing, session?.name]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -231,10 +240,10 @@ export function RadioPlayer() {
                 {session.name}
                 <button
                   onClick={disconnect}
-                  className="text-gray-400 dark:text-[#6e6e6e] hover:text-gray-900 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+                  className="text-[10px] text-gray-400 dark:text-[#6e6e6e] hover:text-gray-900 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
                   aria-label={t('lastfm_disconnect')}
                 >
-                  ×
+                  <XIcon />
                 </button>
               </span>
             ) : pending ? (

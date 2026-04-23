@@ -50,3 +50,12 @@ export type RequestResult = {
     art?: string;
   };
 };
+
+export type LastfmSession = {
+  key: string;
+  name: string;
+};
+
+export type LastfmPublicSession = {
+  name: string;
+};
