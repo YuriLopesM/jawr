@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useT } from 'next-i18next/client';
-import { Divider } from '../../_lib/components';
+import { Divider } from '../../_lib/components/divider';
 import { ContactModal } from '../../_lib/components/contact-modal';
 import { DJModal } from '../../_lib/components/dj-modal';
 
