@@ -4,7 +4,7 @@ import {
   buildAuthUrlServer,
   getTokenServer,
   isLastfmApiError,
-} from '@/app/_lib/services/lastfm-server';
+} from '@/app/_lib/services/lastfm';
 
 export async function POST() {
   try {

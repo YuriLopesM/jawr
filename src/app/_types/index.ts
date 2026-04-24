@@ -59,3 +59,21 @@ export type LastfmSession = {
 export type LastfmPublicSession = {
   name: string;
 };
+
+export enum CuratorRole {
+  Curator = 'curator',
+  Dev = 'dev',
+}
+
+export type CuratorSocialLink = {
+  network: string;
+  href: string;
+};
+
+export type Curator = {
+  name: string;
+  socials: CuratorSocialLink[];
+  roles: CuratorRole[];
+};
+
+export type CuratorSocialProps = Curator;

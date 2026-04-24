@@ -1,3 +1,4 @@
+export * from './curator-social';
 export * from './divider';
 export * from './footer';
 export * from './greeting';

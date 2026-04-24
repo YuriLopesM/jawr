@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getLastfmSessionCookie } from '@/app/_lib/actions/lastfm';
-import {
-  isLastfmApiError,
-  scrobbleServer,
-} from '@/app/_lib/services/lastfm-server';
+import { isLastfmApiError, scrobbleServer } from '@/app/_lib/services/lastfm';
 
 export async function POST(req: NextRequest) {
   const { artist, track, timestamp } = await req.json();

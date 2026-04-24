@@ -4,7 +4,7 @@ import { getLastfmSessionCookie } from '@/app/_lib/actions/lastfm';
 import {
   isLastfmApiError,
   updateNowPlayingServer,
-} from '@/app/_lib/services/lastfm-server';
+} from '@/app/_lib/services/lastfm';
 
 export async function POST(req: NextRequest) {
   const { artist, track } = await req.json();

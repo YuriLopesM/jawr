@@ -5,6 +5,8 @@
   "nav_curators": "curadores",
   "nav_more": "mais",
   "nav_extension": "extensão",
+  "role_curator": "curador",
+  "role_dev": "dev",
   "theme_dark": "escuro",
   "theme_light": "claro"
 }

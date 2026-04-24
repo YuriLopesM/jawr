@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { setLastfmSessionCookie } from '@/app/_lib/actions/lastfm';
-import {
-  getSessionServer,
-  isLastfmApiError,
-} from '@/app/_lib/services/lastfm-server';
+import { getSessionServer, isLastfmApiError } from '@/app/_lib/services/lastfm';
 
 export async function POST(req: NextRequest) {
   const { token } = await req.json();
