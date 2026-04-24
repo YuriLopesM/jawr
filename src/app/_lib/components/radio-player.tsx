@@ -1,6 +1,6 @@
 'use client';
 
-import { useLastfm, useRadio } from '@/hooks';
+import { useLastfm, useNotifications, useRadio } from '@/hooks';
 import {
   DownloadSimpleIcon,
   PauseIcon,
@@ -18,6 +18,7 @@ import { SongRequestModal } from './song-request-modal';
 export function RadioPlayer() {
   const { playing, history, volume, song, toggle, toggleMute, changeVolume } =
     useRadio();
+  const { enabled: notificationsEnabled, permission: notificationPermission, toggle: toggleNotifications } = useNotifications(song, playing);
   const {
     session,
     pending,
@@ -53,15 +54,25 @@ export function RadioPlayer() {
   return (
     <div className="flex flex-col gap-6">
       {/* Live indicator */}
-      <p className="flex items-center gap-2">
-        <span
-          className="inline-block w-2 h-2 rounded-full bg-red-700"
-          style={{ animation: 'pulse 2s ease-in-out infinite' }}
-        />
-        <span className="text-xs font-bold text-red-700 tracking-widest uppercase">
-          {t('live_indicator')}
-        </span>
-      </p>
+      <div className="flex items-center justify-between">
+        <p className="flex items-center gap-2">
+          <span
+            className="inline-block w-2 h-2 rounded-full bg-red-700"
+            style={{ animation: 'pulse 2s ease-in-out infinite' }}
+          />
+          <span className="text-xs font-bold text-red-700 tracking-widest uppercase">
+            {t('live_indicator')}
+          </span>
+        </p>
+        {notificationPermission !== 'denied' && (
+          <button
+            onClick={toggleNotifications}
+            className="text-xs text-gray-400 underline hover:text-gray-700 transition-colors cursor-pointer"
+          >
+            {notificationsEnabled ? t('notifications_disable') : t('notifications_enable')}
+          </button>
+        )}
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-[5fr_4fr] relative gap-8 items-start">
         {/* Album art — first in DOM = first on mobile, column 2 on desktop */}
@@ -160,7 +171,7 @@ export function RadioPlayer() {
           </div>
 
           {/* Now playing */}
-          <div className="flex flex-col gap-3 mb-2 text-sm">
+          <div className="flex flex-col gap-3 mb-2 mt-6 text-sm">
             <p className="text-gray-600 dark:text-[#6e6e6e] text-[10px] uppercase tracking-widest">
               {t('now_label')}
             </p>
@@ -190,7 +201,7 @@ export function RadioPlayer() {
           </div>
 
           {/* Recently played */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 mt-6">
             <p className="text-gray-600 dark:text-[#6e6e6e] text-[10px] uppercase tracking-widest">
               {t('recently_label')}
             </p>
@@ -226,7 +237,7 @@ export function RadioPlayer() {
           </div>
 
           {/* Song request + Last.fm buttons */}
-          <div className="mt-4 flex items-center justify-between">
+          <div className="mt-8 flex items-center justify-between">
             <button
               onClick={() => setShowRequest(true)}
               className="self-start text-xs text-gray-400 underline hover:text-gray-700 transition-colors cursor-pointer"
