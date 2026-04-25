@@ -3,7 +3,10 @@
 import { useLastfm, useNotifications } from '@/hooks';
 import { useRadioContext } from './radio-provider';
 import {
+  BellSimpleRingingIcon,
+  BellSimpleSlashIcon,
   DownloadSimpleIcon,
+  LastfmLogoIcon,
   PauseIcon,
   PlayIcon,
   SpeakerHighIcon,
@@ -33,6 +36,10 @@ export function RadioPlayer() {
 
   const [showRequest, setShowRequest] = useState(false);
   const scrobbleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const notificationsLabel = notificationsEnabled
+    ? t('notifications_disable')
+    : t('notifications_enable');
 
   useEffect(() => {
     if (scrobbleTimer.current) clearTimeout(scrobbleTimer.current);
@@ -68,9 +75,11 @@ export function RadioPlayer() {
         {notificationPermission !== 'denied' && (
           <button
             onClick={toggleNotifications}
-            className="text-xs text-gray-400 underline hover:text-gray-700 transition-colors cursor-pointer"
+            className="text-gray-400 hover:text-gray-700 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+            aria-label={notificationsLabel}
+            title={notificationsLabel}
           >
-            {notificationsEnabled ? t('notifications_disable') : t('notifications_enable')}
+            {notificationsEnabled ? <BellSimpleRingingIcon weight="fill" /> : <BellSimpleSlashIcon />}
           </button>
         )}
       </div>
@@ -271,8 +280,9 @@ export function RadioPlayer() {
             ) : (
               <button
                 onClick={connect}
-                className="text-xs text-gray-400 dark:text-[#6e6e6e] underline hover:text-gray-900 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-[#6e6e6e] hover:text-gray-900 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
               >
+                <LastfmLogoIcon size={16} />
                 {t('lastfm_connect')}
               </button>
             )}

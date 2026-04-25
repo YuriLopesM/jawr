@@ -6,7 +6,7 @@ export default async function Listen() {
 
   return (
     <main className="w-full h-full flex flex-col gap-5">
-      <header>
+      <header className="hidden sm:block">
         <h1 className="text-base text-gray-800 font-bold dark:text-[#f0f0f0]">
           {t('listen_title')}
         </h1>
