@@ -1,6 +1,6 @@
 'use client';
 
-import { useRadio } from '@/hooks';
+import { useKeyboardShortcuts, useRadio } from '@/hooks';
 import { HistoryItem, Song } from '@/app/_types';
 import { createContext, useContext } from 'react';
 
@@ -18,6 +18,12 @@ const RadioContext = createContext<RadioContextValue | null>(null);
 
 export function RadioProvider({ children }: { children: React.ReactNode }) {
   const radio = useRadio();
+  useKeyboardShortcuts({
+    toggle: radio.toggle,
+    toggleMute: radio.toggleMute,
+    changeVolume: radio.changeVolume,
+    volume: radio.volume.value,
+  });
   return <RadioContext.Provider value={radio}>{children}</RadioContext.Provider>;
 }
 
