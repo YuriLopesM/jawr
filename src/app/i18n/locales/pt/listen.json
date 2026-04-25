@@ -27,7 +27,5 @@
   "lastfm_disconnect": "desconectar last.fm",
   "lastfm_pending": "aguardando...",
   "lastfm_confirm": "confirmar",
-  "played_ago": "atrás",
-  "notifications_enable": "notificações on",
-  "notifications_disable": "notificações off"
+  "notifications_label": "notificações"
 }

@@ -13,7 +13,7 @@ export default async function Listen() {
         <Divider />
       </header>
       <RadioPlayer />
-      <p className="block sm:hidden text-xs text-gray-500 dark:text-[#6e6e6e]">
+      <p className="block sm:hidden mt-3 text-xs text-gray-500 dark:text-[#6e6e6e]">
         {t('listen_mobile_intro')}{' '}
         <a
           href="https://api.jawr.org/listen/jawr/radio.mp3"

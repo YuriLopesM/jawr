@@ -37,9 +37,7 @@ export function RadioPlayer() {
   const [showRequest, setShowRequest] = useState(false);
   const scrobbleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const notificationsLabel = notificationsEnabled
-    ? t('notifications_disable')
-    : t('notifications_enable');
+  const notificationsLabel = t('notifications_label');
 
   useEffect(() => {
     if (scrobbleTimer.current) clearTimeout(scrobbleTimer.current);
@@ -75,11 +73,12 @@ export function RadioPlayer() {
         {notificationPermission !== 'denied' && (
           <button
             onClick={toggleNotifications}
-            className="text-gray-400 hover:text-gray-700 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-700 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
             aria-label={notificationsLabel}
             title={notificationsLabel}
           >
-            {notificationsEnabled ? <BellSimpleRingingIcon weight="fill" /> : <BellSimpleSlashIcon />}
+            {notificationsEnabled ? <BellSimpleRingingIcon size={16} weight="fill" /> : <BellSimpleSlashIcon size={16} />}
+            {notificationsLabel}
           </button>
         )}
       </div>
@@ -225,9 +224,7 @@ export function RadioPlayer() {
                 const text = song.artist
                   ? `${song.artist} - ${song.title}`
                   : (song.title ?? '-');
-                const ago = played_at
-                  ? `${timeAgo(played_at)} ${t('played_ago')}`
-                  : '';
+                const ago = played_at ? timeAgo(played_at) : '';
 
                 return (
                   <li
