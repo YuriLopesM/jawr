@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 
 import { getResources, getT, initServerI18next } from 'next-i18next/server';
@@ -7,7 +7,12 @@ import i18nConfig from '../../i18n.config';
 import { I18nProvider } from 'next-i18next/client';
 import { IBM_Plex_Mono } from 'next/font/google';
 
-import { RadioProvider, ThemeProvider, TzSetter } from './_lib/components';
+import {
+  RadioProvider,
+  SwRegister,
+  ThemeProvider,
+  TzSetter,
+} from './_lib/components';
 import './globals.css';
 
 const ibmPlexMono = IBM_Plex_Mono({
@@ -19,6 +24,18 @@ const ibmPlexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: 'jawr.',
   description: 'Just another web radio.',
+  appleWebApp: {
+    capable: true,
+    title: 'jawr.',
+    statusBarStyle: 'black-translucent',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f9fafb' },
+    { media: '(prefers-color-scheme: dark)', color: '#030712' },
+  ],
 };
 
 initServerI18next(i18nConfig);
@@ -60,6 +77,7 @@ export default async function RootLayout({
           <I18nProvider language={lng} resources={resources}>
             <RadioProvider>
               <TzSetter />
+              <SwRegister />
               {children}
             </RadioProvider>
           </I18nProvider>

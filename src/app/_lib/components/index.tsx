@@ -12,6 +12,7 @@ export * from './mini-player';
 export * from './radio-player';
 export * from './radio-provider';
 export * from './social-icon';
+export * from './sw-register';
 export * from './theme-provider';
 export * from './theme-toggle';
 export * from './this-or-that';
