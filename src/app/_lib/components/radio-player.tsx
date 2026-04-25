@@ -1,6 +1,7 @@
 'use client';
 
-import { useLastfm, useNotifications, useRadio } from '@/hooks';
+import { useLastfm, useNotifications } from '@/hooks';
+import { useRadioContext } from './radio-provider';
 import {
   DownloadSimpleIcon,
   PauseIcon,
@@ -17,7 +18,7 @@ import { SongRequestModal } from './song-request-modal';
 
 export function RadioPlayer() {
   const { playing, history, volume, song, toggle, toggleMute, changeVolume } =
-    useRadio();
+    useRadioContext();
   const { enabled: notificationsEnabled, permission: notificationPermission, toggle: toggleNotifications } = useNotifications(song, playing);
   const {
     session,
