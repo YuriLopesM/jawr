@@ -36,7 +36,7 @@ export async function CuratorSocial({
           </span>
         ))}
       </span>
-      <span className="flex items-center gap-3 text-gray-400 dark:text-[#6e6e6e]">
+      <span className="flex items-center flex-wrap gap-3 text-gray-400 dark:text-[#6e6e6e]">
         {socials.map(({ network, href }) => (
           <a
             key={`${network}-${href}`}
