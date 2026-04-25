@@ -231,7 +231,7 @@ export function RadioPlayer() {
                     key={i}
                     className="flex items-center gap-2 py-1.5 border-b border-gray-100 dark:border-[#2a2a2a] overflow-hidden"
                   >
-                    <span className="flex-1 truncate">{text}</span>
+                    <span className="flex-1 truncate max-w-[60ch]">{text}</span>
                     {ago && (
                       <span className="text-gray-300 dark:text-[#3a3a3a] shrink-0">
                         {ago}
