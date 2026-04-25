@@ -9,6 +9,18 @@ interface Options {
   toggle: () => void;
 }
 
+const ARTWORK_SIZES = ['96x96', '192x192', '512x512'] as const;
+const ALBUM_NAME = 'jawr.';
+
+function buildArtwork(art: string | undefined) {
+  if (!art) return [];
+  return ARTWORK_SIZES.map((sizes) => ({
+    src: art,
+    sizes,
+    type: 'image/jpeg',
+  }));
+}
+
 export function useMediaSession({ song, playing, toggle }: Options) {
   useEffect(() => {
     if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
@@ -17,14 +29,8 @@ export function useMediaSession({ song, playing, toggle }: Options) {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: song.title ?? '',
       artist: song.artist ?? '',
-      album: 'jawr.',
-      artwork: song.art
-        ? [
-            { src: song.art, sizes: '96x96', type: 'image/jpeg' },
-            { src: song.art, sizes: '192x192', type: 'image/jpeg' },
-            { src: song.art, sizes: '512x512', type: 'image/jpeg' },
-          ]
-        : [],
+      album: ALBUM_NAME,
+      artwork: buildArtwork(song.art),
     });
   }, [song?.title, song?.artist, song?.art]);
 

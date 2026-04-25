@@ -10,6 +10,8 @@ interface Options {
 }
 
 const VOLUME_STEP = 0.05;
+const VOLUME_MIN = 0;
+const VOLUME_MAX = 1;
 
 function isTypingTarget(el: EventTarget | null): boolean {
   if (!(el instanceof HTMLElement)) return false;
@@ -42,11 +44,11 @@ export function useKeyboardShortcuts({
           break;
         case 'ArrowUp':
           e.preventDefault();
-          changeVolume(Math.min(1, volume + VOLUME_STEP));
+          changeVolume(Math.min(VOLUME_MAX, volume + VOLUME_STEP));
           break;
         case 'ArrowDown':
           e.preventDefault();
-          changeVolume(Math.max(0, volume - VOLUME_STEP));
+          changeVolume(Math.max(VOLUME_MIN, volume - VOLUME_STEP));
           break;
       }
     }

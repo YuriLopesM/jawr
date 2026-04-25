@@ -1,28 +1,8 @@
-import { ImageResponse } from 'next/og';
+import { renderIconImage } from './_lib/icon-image';
 
 export const size = { width: 192, height: 192 };
 export const contentType = 'image/png';
 
 export default function Icon() {
-  return new ImageResponse(
-    (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: '#030712',
-          color: '#f9fafb',
-          fontSize: 120,
-          fontWeight: 700,
-          letterSpacing: -6,
-        }}
-      >
-        j.
-      </div>
-    ),
-    { ...size }
-  );
+  return renderIconImage({ size: 192, fontSize: 120, letterSpacing: -6 });
 }

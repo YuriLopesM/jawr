@@ -1,5 +1,12 @@
 import type { MetadataRoute } from 'next';
 
+const ICON_SOURCES = [
+  { src: '/icon', sizes: '192x192' },
+  { src: '/icon0', sizes: '512x512' },
+] as const;
+
+const ICON_PURPOSES = ['any', 'maskable'] as const;
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'jawr.',
@@ -10,31 +17,13 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: 'portrait',
     background_color: '#030712',
     theme_color: '#030712',
-    icons: [
-      {
-        src: '/icon',
-        sizes: '192x192',
+    icons: ICON_SOURCES.flatMap(({ src, sizes }) =>
+      ICON_PURPOSES.map((purpose) => ({
+        src,
+        sizes,
         type: 'image/png',
-        purpose: 'any',
-      },
-      {
-        src: '/icon',
-        sizes: '192x192',
-        type: 'image/png',
-        purpose: 'maskable',
-      },
-      {
-        src: '/icon0',
-        sizes: '512x512',
-        type: 'image/png',
-        purpose: 'any',
-      },
-      {
-        src: '/icon0',
-        sizes: '512x512',
-        type: 'image/png',
-        purpose: 'maskable',
-      },
-    ],
+        purpose,
+      }))
+    ),
   };
 }
