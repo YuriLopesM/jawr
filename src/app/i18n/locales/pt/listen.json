@@ -28,6 +28,6 @@
   "lastfm_pending": "aguardando...",
   "lastfm_confirm": "confirmar",
   "played_ago": "atrás",
-  "notifications_enable": "ativar notificações",
-  "notifications_disable": "desativar notificações"
+  "notifications_enable": "notificações on",
+  "notifications_disable": "notificações off"
 }
