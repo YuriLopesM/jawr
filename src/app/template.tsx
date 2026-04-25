@@ -5,6 +5,7 @@ import {
   Footer,
   LanguageSwitcher,
   Menu,
+  MiniPlayer,
   Nav,
   ThemeToggle,
 } from './_lib/components';
@@ -39,6 +40,7 @@ export default async function Template({
       </header>
       <div className="w-full">{children}</div>
       <Footer />
+      <MiniPlayer />
     </div>
   );
 }
