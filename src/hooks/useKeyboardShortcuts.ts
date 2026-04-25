@@ -13,11 +13,25 @@ const VOLUME_STEP = 0.05;
 const VOLUME_MIN = 0;
 const VOLUME_MAX = 1;
 
+const TEXT_INPUT_TYPES = new Set([
+  'text',
+  'search',
+  'email',
+  'url',
+  'tel',
+  'password',
+  'number',
+]);
+
 function isTypingTarget(el: EventTarget | null): boolean {
   if (!(el instanceof HTMLElement)) return false;
-  const tag = el.tagName;
-  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return true;
   if (el.isContentEditable) return true;
+  const tag = el.tagName;
+  if (tag === 'TEXTAREA' || tag === 'SELECT') return true;
+  if (tag === 'INPUT') {
+    const type = (el as HTMLInputElement).type.toLowerCase();
+    return TEXT_INPUT_TYPES.has(type);
+  }
   return false;
 }
 
@@ -53,7 +67,7 @@ export function useKeyboardShortcuts({
       }
     }
 
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
   }, [toggle, toggleMute, changeVolume, volume]);
 }
