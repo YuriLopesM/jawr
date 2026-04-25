@@ -52,7 +52,7 @@ export default async function Curators() {
   ];
 
   return (
-    <main className="w-full h-full flex flex-col gap-5">
+    <main className="w-full flex-1 flex flex-col gap-5">
       <header>
         <h1 className="text-base text-gray-800 font-bold dark:text-[#f0f0f0]">
           {t('curators_title')}

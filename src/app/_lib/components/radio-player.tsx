@@ -1,8 +1,12 @@
 'use client';
 
-import { useLastfm, useNotifications, useRadio } from '@/hooks';
+import { useLastfm, useNotifications } from '@/hooks';
+import { useRadioContext } from './radio-provider';
 import {
+  BellSimpleRingingIcon,
+  BellSimpleSlashIcon,
   DownloadSimpleIcon,
+  LastfmLogoIcon,
   PauseIcon,
   PlayIcon,
   SpeakerHighIcon,
@@ -17,7 +21,7 @@ import { SongRequestModal } from './song-request-modal';
 
 export function RadioPlayer() {
   const { playing, history, volume, song, toggle, toggleMute, changeVolume } =
-    useRadio();
+    useRadioContext();
   const { enabled: notificationsEnabled, permission: notificationPermission, toggle: toggleNotifications } = useNotifications(song, playing);
   const {
     session,
@@ -32,6 +36,8 @@ export function RadioPlayer() {
 
   const [showRequest, setShowRequest] = useState(false);
   const scrobbleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const notificationsLabel = t('notifications_label');
 
   useEffect(() => {
     if (scrobbleTimer.current) clearTimeout(scrobbleTimer.current);
@@ -67,9 +73,12 @@ export function RadioPlayer() {
         {notificationPermission !== 'denied' && (
           <button
             onClick={toggleNotifications}
-            className="text-xs text-gray-400 underline hover:text-gray-700 transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-700 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+            aria-label={notificationsLabel}
+            title={notificationsLabel}
           >
-            {notificationsEnabled ? t('notifications_disable') : t('notifications_enable')}
+            {notificationsEnabled ? <BellSimpleRingingIcon size={16} weight="fill" /> : <BellSimpleSlashIcon size={16} />}
+            {notificationsLabel}
           </button>
         )}
       </div>
@@ -215,9 +224,7 @@ export function RadioPlayer() {
                 const text = song.artist
                   ? `${song.artist} - ${song.title}`
                   : (song.title ?? '-');
-                const ago = played_at
-                  ? `${timeAgo(played_at)} ${t('played_ago')}`
-                  : '';
+                const ago = played_at ? timeAgo(played_at) : '';
 
                 return (
                   <li
@@ -270,8 +277,9 @@ export function RadioPlayer() {
             ) : (
               <button
                 onClick={connect}
-                className="text-xs text-gray-400 dark:text-[#6e6e6e] underline hover:text-gray-900 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-[#6e6e6e] hover:text-gray-900 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
               >
+                <LastfmLogoIcon size={16} />
                 {t('lastfm_connect')}
               </button>
             )}

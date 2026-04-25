@@ -23,11 +23,9 @@
   "song_request_message": "message",
   "song_request_submit": "send",
   "song_request_sending": "sending...",
-  "lastfm_connect": "start scrobbling",
+  "lastfm_connect": "scrobble",
   "lastfm_disconnect": "disconnect last.fm",
   "lastfm_pending": "waiting...",
   "lastfm_confirm": "confirm",
-  "played_ago": "ago",
-  "notifications_enable": "enable notifications",
-  "notifications_disable": "disable notifications"
+  "notifications_label": "notifications"
 }
