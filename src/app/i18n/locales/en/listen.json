@@ -27,5 +27,7 @@
   "lastfm_disconnect": "disconnect last.fm",
   "lastfm_pending": "waiting...",
   "lastfm_confirm": "confirm",
-  "notifications_label": "notifications"
+  "notifications_label": "notifications",
+  "support_artist_button": "support this artist",
+  "support_artist_title": "support"
 }
