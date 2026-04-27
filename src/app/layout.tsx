@@ -22,7 +22,6 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'jawr.',
   description: 'Just another web radio.',
   appleWebApp: {
     capable: true,
@@ -62,6 +61,27 @@ export default async function RootLayout({
       className={`${ibmPlexMono.className} h-full antialiased bg-gray-50 dark:bg-gray-950`}
     >
       <head>
+        <Script id="initial-page-title" strategy="beforeInteractive">
+          {`(function(){
+            var path = window.location.pathname || '/';
+            var routeMap = {
+              '/': 'home',
+              '/listen': 'listen',
+              '/blog': 'blog',
+              '/curators': 'curators',
+              '/more': 'more',
+              '/extension': 'extension'
+            };
+
+            var page = routeMap[path];
+            if (!page) {
+              var firstSegment = path.split('/').filter(Boolean)[0] || 'home';
+              page = firstSegment.replace(/-/g, ' ');
+            }
+
+            document.title = 'jawr | ' + page;
+          })();`}
+        </Script>
         {clarityId && process.env.NODE_ENV === 'production' && (
           <Script id="microsoft-clarity" strategy="beforeInteractive">
             {`(function(c,l,a,r,i,t,y){

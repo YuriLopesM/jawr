@@ -1,5 +1,6 @@
 export * from './curator-social';
 export * from './divider';
+export * from './dynamic-page-title';
 export * from './footer';
 export * from './greeting';
 export * from './language-switcher';

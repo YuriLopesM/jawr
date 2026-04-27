@@ -1,6 +1,6 @@
 import { getT } from 'next-i18next/server';
-import { SocialIcon } from './social-icon';
 import { CuratorRole, CuratorSocialProps } from '../../_types';
+import { SocialIcon } from './social-icon';
 
 const roleClassMap: Record<CuratorRole, string> = {
   [CuratorRole.Curator]:

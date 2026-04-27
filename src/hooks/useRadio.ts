@@ -1,7 +1,9 @@
 import { getVolumeCookie, setVolumeCookie } from '@/app/_lib/actions/volume';
 import { radioAPI } from '@/app/_lib/services/api/radio';
-import { HistoryItem, Song } from '@/app/_types';
+import { HistoryItem } from '@/app/_types';
+import { useRadioStore } from '@/stores/radio-store';
 import { useEffect, useRef, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 
 const RECONNECT_INITIAL_DELAY_MS = 1000;
 const RECONNECT_MAX_DELAY_MS = 15000;
@@ -16,15 +18,29 @@ export function useRadio() {
   const reconnectAttemptsRef = useRef(0);
   const shouldPlayRef = useRef(false);
 
-  const [playing, setPlaying] = useState(false);
+  const {
+    playing,
+    volume,
+    song,
+    history,
+    setPlaying,
+    setVolume,
+    setSong,
+    setHistory,
+  } = useRadioStore(
+    useShallow((store) => ({
+      playing: store.playing,
+      volume: store.volume,
+      song: store.song,
+      history: store.history,
+      setPlaying: store.setPlaying,
+      setVolume: store.setVolume,
+      setSong: store.setSong,
+      setHistory: store.setHistory,
+    }))
+  );
 
-  const [volume, setVolume] = useState<{
-    value: number;
-    isMuted: boolean;
-  } | null>(null);
-
-  const [song, setSong] = useState<Song | null>(null);
-  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [isVolumeLoaded, setIsVolumeLoaded] = useState(false);
 
   function clearReconnectTimer() {
     if (!reconnectTimerRef.current) return;
@@ -81,6 +97,14 @@ export function useRadio() {
     };
   }, []);
 
+  // Keep audio element aligned with store updates
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.volume = volume.value;
+    audio.muted = volume.isMuted;
+  }, [volume]);
+
   // Load volume state from cookie
   useEffect(() => {
     async function loadVolumeState() {
@@ -94,14 +118,17 @@ export function useRadio() {
         }
       } catch (error) {
         console.error('Failed to load volume state from cookie', error);
+      } finally {
+        setIsVolumeLoaded(true);
       }
     }
+
     loadVolumeState();
   }, []);
 
   // Debounce volume state persistence to cookie — skip until loaded from cookie
   useEffect(() => {
-    if (volume === null) return;
+    if (!isVolumeLoaded) return;
 
     if (debounceTimeoutRef.current) {
       clearTimeout(debounceTimeoutRef.current);
@@ -118,7 +145,7 @@ export function useRadio() {
         clearTimeout(debounceTimeoutRef.current);
       }
     };
-  }, [volume]);
+  }, [isVolumeLoaded, volume]);
 
   // Initial REST fetch for instant data
   useEffect(() => {
@@ -129,7 +156,7 @@ export function useRadio() {
         setHistory((data.song_history as HistoryItem[]) ?? []);
       })
       .catch(() => {});
-  }, []);
+  }, [setSong, setHistory]);
 
   // WebSocket now-playing
   useEffect(() => {
@@ -199,7 +226,7 @@ export function useRadio() {
       if (reconnectTimer) clearTimeout(reconnectTimer);
       ws?.close();
     };
-  }, []);
+  }, [setSong, setHistory]);
 
   function toggle() {
     const audio = audioRef.current;
@@ -229,26 +256,25 @@ export function useRadio() {
     const audio = audioRef.current;
     if (!audio) return;
     audio.volume = v;
-    setVolume((prev) => ({
-      ...(prev ?? { value: v, isMuted: false }),
+    setVolume({
+      ...volume,
       value: v,
-    }));
+    });
   }
 
   function toggleMute() {
     const audio = audioRef.current;
     if (!audio) return;
     audio.muted = !audio.muted;
-    const muted = audio.muted;
-    setVolume((prev) => ({
-      ...(prev ?? { value: audio.volume, isMuted: muted }),
-      isMuted: muted,
-    }));
+    setVolume({
+      ...volume,
+      isMuted: audio.muted,
+    });
   }
 
   return {
     playing,
-    volume: volume ?? { value: 0.5, isMuted: false },
+    volume,
     song,
     history,
     toggle,

@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 
 import { getT } from 'next-i18next/server';
 import {
+  DynamicPageTitle,
   Footer,
   LanguageSwitcher,
   Menu,
@@ -21,7 +22,8 @@ export default async function Template({
   const { t } = await getT('common');
 
   return (
-    <div className="max-w-5xl w-full min-h-screen pt-12 px-6 sm:px-8 mx-auto flex flex-col gap-12 relative">
+    <div className="max-w-5xl w-full min-h-screen pt-12 px-4 sm:px-8 mx-auto flex flex-col gap-12 relative">
+      <DynamicPageTitle />
       <header className="w-full flex flex-wrap items-center justify-between gap-y-2">
         <Nav>
           <Nav.Item href="/">{t('nav_home')}</Nav.Item>
