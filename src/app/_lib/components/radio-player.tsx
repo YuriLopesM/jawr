@@ -18,6 +18,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { timeAgo } from '../helpers/date';
 import { SongRequestModal } from './song-request-modal';
+import { SupportArtistModal } from './support-artist-modal';
 
 export function RadioPlayer() {
   const { playing, history, volume, song, toggle, toggleMute, changeVolume } =
@@ -35,6 +36,7 @@ export function RadioPlayer() {
   const { t } = useT('listen');
 
   const [showRequest, setShowRequest] = useState(false);
+  const [showSupport, setShowSupport] = useState(false);
   const scrobbleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const notificationsLabel = t('notifications_label');
@@ -188,24 +190,13 @@ export function RadioPlayer() {
               {song?.artist} - {song?.title}
             </p>
             {song?.artist && (
-              <p className="text-xs text-gray-400 dark:text-[#6e6e6e] flex gap-2">
-                <a
-                  href={`https://www.last.fm/music/${encodeURIComponent(song.artist)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:text-gray-600 dark:hover:text-[#b0b0b0] transition-colors"
-                >
-                  [last.fm]
-                </a>
-                <a
-                  href={`https://www.discogs.com/search/?q=${encodeURIComponent(song.artist)}&type=artist`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:text-gray-600 dark:hover:text-[#b0b0b0] transition-colors"
-                >
-                  [discogs]
-                </a>
-              </p>
+              <button
+                type="button"
+                onClick={() => setShowSupport(true)}
+                className="text-xs text-gray-400 dark:text-[#6e6e6e] underline hover:text-gray-600 dark:hover:text-[#b0b0b0] transition-colors text-left cursor-pointer w-fit"
+              >
+                {t('support_artist_button')}
+              </button>
             )}
           </div>
 
@@ -290,6 +281,14 @@ export function RadioPlayer() {
       {showRequest && (
         <SongRequestModal onClose={() => setShowRequest(false)} />
       )}
+
+      {showSupport && song?.artist && (
+        <SupportArtistModal
+          artist={song.artist}
+          onClose={() => setShowSupport(false)}
+        />
+      )}
     </div>
   );
 }
+
