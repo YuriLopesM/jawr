@@ -3,3 +3,4 @@ export * from './useLastfm';
 export * from './useNotifications';
 export * from './useKeyboardShortcuts';
 export * from './useMediaSession';
+export * from './useRequestBadge';

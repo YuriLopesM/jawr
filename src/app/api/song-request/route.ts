@@ -1,3 +1,4 @@
+import { enqueue } from '@/app/_lib/request-queue';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -22,6 +23,8 @@ export async function POST(req: NextRequest) {
       }],
     }),
   });
+
+  enqueue(song.trim());
 
   return NextResponse.json({ ok: true });
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useLastfm, useNotifications } from '@/hooks';
+import { useLastfm, useNotifications, useRequestBadge } from '@/hooks';
 import { useRadioContext } from './radio-provider';
 import {
   BellSimpleRingingIcon,
@@ -35,6 +35,7 @@ export function RadioPlayer() {
   } = useLastfm();
   const { t } = useT('listen');
 
+  const isRequest = useRequestBadge(song?.title, song?.artist);
   const [showRequest, setShowRequest] = useState(false);
   const [showSupport, setShowSupport] = useState(false);
   const scrobbleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -182,9 +183,12 @@ export function RadioPlayer() {
           </div>
 
           {/* Now playing */}
-          <div className="flex flex-col gap-3 mb-2 mt-6 text-sm">
-            <p className="text-gray-600 dark:text-[#6e6e6e] text-[10px] uppercase tracking-widest">
-              {t('now_label')}
+          <div className={`flex flex-col gap-3 mb-2 mt-6 text-sm${isRequest ? ' pl-3 border-l-2 border-red-700' : ''}`}>
+            <p className="flex items-center gap-2 text-[10px] uppercase tracking-widest">
+              <span className="text-gray-600 dark:text-[#6e6e6e]">{t('now_label')}</span>
+              {isRequest && (
+                <span className="text-red-700">pedido</span>
+              )}
             </p>
             <p className="text-gray-900 dark:text-[#f0f0f0]">
               {song?.artist} - {song?.title}

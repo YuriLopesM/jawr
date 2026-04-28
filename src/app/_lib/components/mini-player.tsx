@@ -1,5 +1,6 @@
 'use client';
 
+import { useRequestBadge } from '@/hooks';
 import { PauseIcon, PlayIcon, SpeakerHighIcon, SpeakerSlashIcon } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -12,12 +13,13 @@ export function MiniPlayer() {
   if (pathname === '/listen') return null;
   if (!playing) return null;
 
+  const isRequest = useRequestBadge(song?.title, song?.artist);
   const label = song?.artist && song?.title
     ? `${song.artist} - ${song.title}`
     : (song?.title ?? '');
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-[#2a2a2a] shadow-sm text-xs text-gray-700 dark:text-[#b0b0b0] max-w-[280px]">
+    <div className={`fixed bottom-4 right-4 z-50 flex items-center gap-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-[#2a2a2a] shadow-sm text-xs text-gray-700 dark:text-[#b0b0b0] max-w-[280px]${isRequest ? ' border-l-2 border-l-red-700' : ''}`}>
       {song?.art && (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={song.art} alt="" className="w-10 h-10 object-cover shrink-0" />
