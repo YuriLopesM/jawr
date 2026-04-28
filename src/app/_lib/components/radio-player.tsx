@@ -1,7 +1,6 @@
 'use client';
 
 import { useLastfm, useNotifications } from '@/hooks';
-import { useRadioContext } from './radio-provider';
 import {
   BellSimpleRingingIcon,
   BellSimpleSlashIcon,
@@ -15,7 +14,9 @@ import {
 } from '@phosphor-icons/react';
 import { useT } from 'next-i18next/client';
 import { useEffect, useRef, useState } from 'react';
+import { useRadioContext } from '../context';
 
+import Image from 'next/image';
 import { timeAgo } from '../helpers/date';
 import { SongRequestModal } from './song-request-modal';
 import { SupportArtistModal } from './support-artist-modal';
@@ -23,7 +24,11 @@ import { SupportArtistModal } from './support-artist-modal';
 export function RadioPlayer() {
   const { playing, history, volume, song, toggle, toggleMute, changeVolume } =
     useRadioContext();
-  const { enabled: notificationsEnabled, permission: notificationPermission, toggle: toggleNotifications } = useNotifications(song, playing);
+  const {
+    enabled: notificationsEnabled,
+    permission: notificationPermission,
+    toggle: toggleNotifications,
+  } = useNotifications(song, playing);
   const {
     session,
     pending,
@@ -79,7 +84,11 @@ export function RadioPlayer() {
             aria-label={notificationsLabel}
             title={notificationsLabel}
           >
-            {notificationsEnabled ? <BellSimpleRingingIcon size={16} weight="fill" /> : <BellSimpleSlashIcon size={16} />}
+            {notificationsEnabled ? (
+              <BellSimpleRingingIcon size={16} weight="fill" />
+            ) : (
+              <BellSimpleSlashIcon size={16} />
+            )}
             {notificationsLabel}
           </button>
         )}
@@ -88,12 +97,18 @@ export function RadioPlayer() {
       <div className="grid grid-cols-1 sm:grid-cols-[5fr_4fr] relative gap-8 items-start">
         {/* Album art — first in DOM = first on mobile, column 2 on desktop */}
         {song?.art ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={song.art}
-            alt={t('album_art_alt')}
-            className="w-full aspect-square object-cover border border-gray-200 sm:col-start-2"
-          />
+          <div className="relative w-full aspect-square border border-gray-200 sm:col-start-2">
+            <Image
+              src={song.art}
+              alt={t('album_art_alt')}
+              fill
+              sizes="(min-width: 400px) 440px, 100vw"
+              quality={75}
+              priority
+              fetchPriority="high"
+              className="object-cover"
+            />
+          </div>
         ) : (
           <div className="w-full aspect-square border border-gray-200 bg-gray-50 sm:col-start-2" />
         )}
@@ -113,7 +128,7 @@ export function RadioPlayer() {
 
             {/* EQ bars / label */}
             <span className="flex-1 px-3 flex justify-between items-center gap-2 text-xs text-gray-500 dark:text-gray-100">
-              <span>jawr.mp3</span>
+              <span>jawr.org</span>
               {playing && (
                 <span className="inline-flex gap-0.5 items-end shrink-0">
                   {(
@@ -222,7 +237,9 @@ export function RadioPlayer() {
                     key={i}
                     className="flex items-center gap-2 py-1.5 border-b border-gray-100 dark:border-[#2a2a2a] overflow-hidden"
                   >
-                    <span className="truncate max-w-[60ch] mr-auto">{text}</span>
+                    <span className="truncate max-w-[60ch] mr-auto">
+                      {text}
+                    </span>
                     {ago && (
                       <span className="text-gray-300 dark:text-[#3a3a3a] shrink-0 tabular-nums">
                         {ago}
@@ -291,4 +308,3 @@ export function RadioPlayer() {
     </div>
   );
 }
-

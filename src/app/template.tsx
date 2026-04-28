@@ -1,5 +1,3 @@
-import { cookies } from 'next/headers';
-
 import { getT } from 'next-i18next/server';
 import {
   DynamicPageTitle,
@@ -16,10 +14,7 @@ export default async function Template({
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = await cookies();
-
-  const lang = cookieStore.get('i18next')?.value || 'en';
-  const { t } = await getT('common');
+  const { t, lng } = await getT('common');
 
   return (
     <div className="max-w-5xl w-full min-h-screen pt-12 px-4 sm:px-8 mx-auto flex flex-col gap-12 relative">
@@ -35,7 +30,7 @@ export default async function Template({
         </Nav>
         <Menu>
           <Menu.Item>
-            <LanguageSwitcher currentLanguage={lang} />
+            <LanguageSwitcher currentLanguage={lng} />
           </Menu.Item>
           <ThemeToggle />
         </Menu>

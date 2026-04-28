@@ -14,6 +14,7 @@ export function Footer() {
           jawr <span className="text-gray-200">| {year}</span>
         </p>
         <a
+          aria-label="github logo"
           href="https://github.com/YuriLopesM/jawr"
           target="_blank"
           rel="noopener noreferrer"

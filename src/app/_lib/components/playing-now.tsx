@@ -1,8 +1,8 @@
 'use client';
 
-import { useRadioContext } from './radio-provider';
 import { MusicNoteIcon } from '@phosphor-icons/react';
 import { useT } from 'next-i18next/client';
+import { useRadioContext } from '../context';
 
 export function PlayingNow() {
   const { song } = useRadioContext();

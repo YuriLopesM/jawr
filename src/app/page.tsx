@@ -30,7 +30,11 @@ export default async function Home() {
         </p>
         <p>
           {t('collaboration_invite_1')}{' '}
-          <a href="/more" className="underline">
+          <a
+            href="/more"
+            className="underline"
+            aria-label={t('collaboration_invite_read_more')}
+          >
             {t('collaboration_invite_read_more')}
           </a>{' '}
           {t('collaboration_invite_2')}

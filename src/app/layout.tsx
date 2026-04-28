@@ -7,12 +7,9 @@ import i18nConfig from '../../i18n.config';
 import { I18nProvider } from 'next-i18next/client';
 import { IBM_Plex_Mono } from 'next/font/google';
 
-import {
-  RadioProvider,
-  SwRegister,
-  ThemeProvider,
-  TzSetter,
-} from './_lib/components';
+import { SwRegister, TzSetter } from './_lib/components';
+import { RadioProvider, ThemeProvider } from './_lib/context';
+
 import './globals.css';
 
 const ibmPlexMono = IBM_Plex_Mono({
