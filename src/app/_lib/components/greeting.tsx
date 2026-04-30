@@ -12,7 +12,7 @@ export async function Greeting() {
   }
 
   return (
-    <h1 className="text-lg text-gray-800 font-bold dark:text-[#f0f0f0]">
+    <h1 className="text-lg text-gray-800 font-bold dark:tk-heading">
       {getGreeting()},
     </h1>
   );

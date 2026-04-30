@@ -26,8 +26,8 @@ export function TemplateCard({
   const hasSubtitle = Boolean(description.subtitle);
 
   return (
-    <div className="w-full aspect-square border border-gray-100 dark:border-[#2a2a2a] p-4 sm:p-6 flex flex-col gap-4 hover:border-gray-200 dark:hover:border-[#3a3a3a] transition-colors">
-      <p className="text-gray-600 dark:text-[#6e6e6e] text-[12px] font-semibold">{title}</p>
+    <div className="w-full aspect-square border border-gray-100 dark:tk-border p-4 sm:p-6 flex flex-col gap-4 hover:border-gray-200 dark:hover:tk-border transition-colors">
+      <p className="text-gray-600 dark:tk-muted text-[12px] font-semibold">{title}</p>
       <section className="relative w-full h-full">
         <Image
           src={image}
@@ -43,15 +43,15 @@ export function TemplateCard({
           {hasSubtitle && <p>{description.subtitle}</p>}
         </div>
       </section>
-      <p className="flex flex-wrap gap-1 justify-end text-[10px] text-gray-900 dark:text-[#6e6e6e]">
-        <span className="text-gray-200 dark:text-[#3a3a3a]">via </span>
+      <p className="flex flex-wrap gap-1 justify-end text-[10px] text-gray-900 dark:tk-muted">
+        <span className="text-gray-200 dark:tk-muted">via </span>
         {source.map((src, i) => (
           <React.Fragment key={i}>
             <a
               href={src.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline hover:text-gray-600 dark:hover:text-[#b0b0b0] transition-colors"
+              className="underline hover:text-gray-600 dark:hover:tk-body transition-colors"
             >
               {src.shortName ? (
                 <>
@@ -60,7 +60,7 @@ export function TemplateCard({
                 </>
               ) : src.name}
             </a>
-            {i < source.length - 1 && <span className="text-gray-200 dark:text-[#3a3a3a]">|</span>}
+            {i < source.length - 1 && <span className="text-gray-200 dark:tk-muted">|</span>}
           </React.Fragment>
         ))}
       </p>

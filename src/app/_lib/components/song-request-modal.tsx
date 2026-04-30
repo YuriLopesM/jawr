@@ -37,67 +37,54 @@ export function SongRequestModal({ onClose }: Props) {
       onClick={onClose}
     >
       <div
-        className="bg-white border border-gray-200 w-full max-w-sm mx-4 flex flex-col gap-5 p-6"
+        className="bg-[var(--dk-bg,#ffffff)] border border-gray-200 dark:tk-border w-full max-w-sm mx-4 flex flex-col gap-5 p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between">
-          <h2 className="text-sm font-bold text-gray-900">
-            {t('song_request_title')}
-          </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-700 transition-colors cursor-pointer"
-          >
+          <h2 className="text-sm font-bold text-gray-900 dark:tk-heading">{t('song_request_title')}</h2>
+          <button onClick={onClose} className="text-gray-400 dark:tk-muted hover:text-gray-700 dark:hover:tk-heading transition-colors cursor-pointer">
             <XIcon />
           </button>
         </div>
 
         <div className="flex flex-col gap-4">
           <label className="flex flex-col gap-1.5">
-            <span className="text-xs text-gray-600">
-              {t('song_request_name')} <span className="text-gray-400">*</span>
-            </span>
+            <span className="text-xs text-gray-600 dark:tk-body">{t('song_request_name')} <span className="text-gray-400 dark:tk-muted">*</span></span>
             <input
               type="text"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-800 outline-none focus:border-gray-400 transition-colors"
+              className="border border-gray-200 dark:tk-border bg-[var(--dk-surface,#f9f9f9)] px-3 py-2 text-xs text-gray-800 dark:tk-heading outline-none focus:border-gray-400 dark:focus:tk-border transition-colors"
             />
           </label>
 
           <label className="flex flex-col gap-1.5">
-            <span className="text-xs text-gray-600">
-              {t('song_request_email')}
-            </span>
+            <span className="text-xs text-gray-600 dark:tk-body">{t('song_request_email')}</span>
             <input
               type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-800 outline-none focus:border-gray-400 transition-colors"
+              className="border border-gray-200 dark:tk-border bg-[var(--dk-surface,#f9f9f9)] px-3 py-2 text-xs text-gray-800 dark:tk-heading outline-none focus:border-gray-400 dark:focus:tk-border transition-colors"
             />
           </label>
 
           <label className="flex flex-col gap-1.5">
-            <span className="text-xs text-gray-600">
-              {t('song_request_song')} <span className="text-gray-400">*</span>
-            </span>
+            <span className="text-xs text-gray-600 dark:tk-body">{t('song_request_song')} <span className="text-gray-400 dark:tk-muted">*</span></span>
             <input
               type="text"
               value={form.song}
               onChange={(e) => setForm({ ...form, song: e.target.value })}
-              className="border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-800 outline-none focus:border-gray-400 transition-colors"
+              className="border border-gray-200 dark:tk-border bg-[var(--dk-surface,#f9f9f9)] px-3 py-2 text-xs text-gray-800 dark:tk-heading outline-none focus:border-gray-400 dark:focus:tk-border transition-colors"
             />
           </label>
 
           <label className="flex flex-col gap-1.5">
-            <span className="text-xs text-gray-600">
-              {t('song_request_message')}
-            </span>
+            <span className="text-xs text-gray-600 dark:tk-body">{t('song_request_message')}</span>
             <textarea
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
               rows={3}
-              className="border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-800 outline-none focus:border-gray-400 transition-colors resize-none"
+              className="border border-gray-200 dark:tk-border bg-[var(--dk-surface,#f9f9f9)] px-3 py-2 text-xs text-gray-800 dark:tk-heading outline-none focus:border-gray-400 dark:focus:tk-border transition-colors resize-none"
             />
           </label>
         </div>
@@ -106,7 +93,7 @@ export function SongRequestModal({ onClose }: Props) {
           <button
             onClick={handleSubmit}
             disabled={!form.name.trim() || !form.song.trim() || sending}
-            className="px-4 py-2 text-xs bg-gray-900 text-white hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+            className="px-4 py-2 text-xs bg-gray-900 dark:tk-surface text-white hover:bg-gray-700 dark:hover:tk-surface disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
           >
             {sending ? t('song_request_sending') : t('song_request_submit')}
           </button>

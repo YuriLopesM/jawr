@@ -24,7 +24,7 @@ export async function CuratorSocial({
   return (
     <li className="flex flex-col gap-2">
       <span className="flex items-center gap-2">
-        <span className="text-sm font-bold text-gray-800 dark:text-[#f0f0f0]">
+        <span className="text-sm font-bold text-gray-800 dark:tk-heading">
           {name}
         </span>
         {roles.map((role) => (
@@ -36,14 +36,14 @@ export async function CuratorSocial({
           </span>
         ))}
       </span>
-      <span className="flex items-center flex-wrap gap-3 text-gray-400 dark:text-[#6e6e6e]">
+      <span className="flex items-center flex-wrap gap-3 text-gray-400 dark:tk-muted">
         {socials.map(({ network, href }) => (
           <a
             key={`${network}-${href}`}
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-gray-700 dark:hover:text-[#f0f0f0] transition-colors"
+            className="hover:text-gray-700 dark:hover:tk-heading transition-colors"
           >
             <SocialIcon network={network} />
           </a>

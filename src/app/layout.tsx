@@ -58,7 +58,7 @@ export default async function RootLayout({
   return (
     <html
       lang={lng}
-      className={`${ibmPlexMono.className} h-full antialiased bg-gray-50 dark:bg-gray-950`}
+      className={`${ibmPlexMono.className} h-full antialiased bg-[var(--dk-bg,#f9f9f9)]`}
     >
       <head>
         <Script id="initial-page-title" strategy="beforeInteractive">
