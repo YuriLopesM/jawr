@@ -14,19 +14,19 @@ export default function More() {
   return (
     <main className="w-full h-full flex flex-col gap-8">
       <header>
-        <h1 className="text-base text-gray-800 font-bold dark:text-[#f0f0f0]">{t('more_title')}</h1>
+        <h1 className="text-base text-gray-800 font-bold dark:tk-heading">{t('more_title')}</h1>
         <Divider />
       </header>
 
       <section className="flex flex-col gap-2">
-        <p className="text-sm font-bold text-gray-800 dark:text-[#f0f0f0]">{t('dj_section_title')}</p>
-        <p className="text-sm text-gray-600 dark:text-[#b0b0b0]">
+        <p className="text-sm font-bold text-gray-800 dark:tk-heading">{t('dj_section_title')}</p>
+        <p className="text-sm text-gray-600 dark:tk-body">
           {t('dj_section_description')}
         </p>
         <p className="text-sm">
           <button
             onClick={() => setShowDJ(true)}
-            className="underline text-gray-800 dark:text-[#b0b0b0] hover:text-gray-600 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+            className="underline text-gray-800 dark:tk-body hover:text-gray-600 dark:hover:tk-heading transition-colors cursor-pointer"
           >
             {t('dj_section_cta')}
           </button>
@@ -34,14 +34,14 @@ export default function More() {
       </section>
 
       <section className="flex flex-col gap-2">
-        <p className="text-sm font-bold text-gray-800 dark:text-[#f0f0f0]">{t('contact_section_title')}</p>
-        <p className="text-sm text-gray-600 dark:text-[#b0b0b0]">
+        <p className="text-sm font-bold text-gray-800 dark:tk-heading">{t('contact_section_title')}</p>
+        <p className="text-sm text-gray-600 dark:tk-body">
           {t('contact_section_description')}
         </p>
         <p className="text-sm">
           <button
             onClick={() => setShowContact(true)}
-            className="underline text-gray-800 dark:text-[#b0b0b0] hover:text-gray-600 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+            className="underline text-gray-800 dark:tk-body hover:text-gray-600 dark:hover:tk-heading transition-colors cursor-pointer"
           >
             {t('contact_section_cta')}
           </button>

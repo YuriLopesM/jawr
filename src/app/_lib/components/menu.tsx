@@ -12,7 +12,7 @@ function MenuRoot({ children }: MenuProps) {
 
 function MenuItem({ children }: MenuItemProps) {
   return (
-    <span className="text-sm flex items-center cursor-pointer transition-colors text-gray-400 hover:text-gray-600 hover:font-medium dark:text-[#6e6e6e] dark:hover:text-[#f0f0f0]">
+    <span className="text-sm flex items-center cursor-pointer transition-colors text-gray-400 hover:text-gray-600 hover:font-medium dark:tk-muted dark:hover:tk-heading">
       [{children}]
     </span>
   );

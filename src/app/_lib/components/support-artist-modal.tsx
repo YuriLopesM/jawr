@@ -75,16 +75,16 @@ export function SupportArtistModal({
       onClick={onClose}
     >
       <div
-        className="bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-[#2a2a2a] w-full max-w-sm mx-4 flex flex-col gap-5 p-6"
+        className="bg-[var(--dk-bg,#ffffff)] border border-gray-200 dark:tk-border w-full max-w-sm mx-4 flex flex-col gap-5 p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between">
-          <h2 className="text-sm font-bold text-gray-900 dark:text-[#f0f0f0]">
+          <h2 className="text-sm font-bold text-gray-900 dark:tk-heading">
             {t('support_artist_title')}
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-700 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+            className="text-gray-400 dark:tk-muted hover:text-gray-700 dark:hover:tk-heading transition-colors cursor-pointer"
           >
             <XIcon />
           </button>
@@ -96,7 +96,7 @@ export function SupportArtistModal({
               <button
                 key={a}
                 onClick={() => setActiveTab(a)}
-                className={`px-3 py-1 text-xs cursor-pointer ${activeTab === a ? 'bg-gray-100 text-gray-500 ring ring-inset ring-gray-200 dark:text-gray-50 dark:bg-gray-400 dark:ring-gray-50' : 'bg-gray-200 text-gray-700 dark:bg-[#2a2a2a] dark:text-[#f0f0f0] hover:bg-gray-100 dark:hover:bg-gray-600'}  transition-colors`}
+                className={`px-3 py-1 text-xs cursor-pointer ${activeTab === a ? 'bg-gray-100 text-gray-500 ring ring-inset ring-gray-200 dark:text-gray-50 dark:bg-gray-400 dark:ring-gray-50' : 'bg-gray-200 text-gray-700 dark:tk-border dark:tk-heading hover:bg-gray-100 dark:hover:tk-surface'} transition-colors`}
               >
                 {a}
               </button>
@@ -111,10 +111,10 @@ export function SupportArtistModal({
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-between w-full px-3 py-2 text-xs text-gray-800 dark:text-[#f0f0f0] border border-gray-200 dark:border-[#2a2a2a] hover:bg-gray-100 dark:hover:bg-[#2a2a2a] transition-colors"
+                className="inline-flex items-center justify-between w-full px-3 py-2 text-xs text-gray-800 dark:tk-heading border border-gray-200 dark:tk-border hover:bg-gray-100 dark:hover:tk-surface transition-colors"
               >
                 {label}
-                <Icon className="text-base text-gray-300" />
+                <Icon className="text-base text-gray-300 dark:tk-muted" />
               </a>
             </li>
           ))}
