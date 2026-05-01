@@ -98,7 +98,7 @@ export function RadioPlayer() {
       <div className="grid grid-cols-1 sm:grid-cols-[5fr_4fr] relative gap-8 items-start">
         {/* Album art — first in DOM = first on mobile, column 2 on desktop */}
         {song?.art ? (
-          <div className="w-full aspect-square object-cover border border-gray-200 dark:tk-border sm:col-start-2">
+          <div className="relative w-full aspect-square border border-gray-200 dark:tk-border sm:col-start-2">
             <Image
               src={song.art}
               alt={t('album_art_alt')}
