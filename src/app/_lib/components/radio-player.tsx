@@ -1,7 +1,6 @@
 'use client';
 
 import { useLastfm, useNotifications } from '@/hooks';
-import { useRadioContext } from './radio-provider';
 import {
   BellSimpleRingingIcon,
   BellSimpleSlashIcon,
@@ -15,7 +14,9 @@ import {
 } from '@phosphor-icons/react';
 import { useT } from 'next-i18next/client';
 import { useEffect, useRef, useState } from 'react';
+import { useRadioContext } from '../context';
 
+import Image from 'next/image';
 import { timeAgo } from '../helpers/date';
 import { AudioVisualizer } from './audio-visualizer';
 import { SongRequestModal } from './song-request-modal';
@@ -24,7 +25,11 @@ import { SupportArtistModal } from './support-artist-modal';
 export function RadioPlayer() {
   const { playing, history, volume, song, toggle, toggleMute, changeVolume } =
     useRadioContext();
-  const { enabled: notificationsEnabled, permission: notificationPermission, toggle: toggleNotifications } = useNotifications(song, playing);
+  const {
+    enabled: notificationsEnabled,
+    permission: notificationPermission,
+    toggle: toggleNotifications,
+  } = useNotifications(song, playing);
   const {
     session,
     pending,
@@ -80,7 +85,11 @@ export function RadioPlayer() {
             aria-label={notificationsLabel}
             title={notificationsLabel}
           >
-            {notificationsEnabled ? <BellSimpleRingingIcon size={16} weight="fill" /> : <BellSimpleSlashIcon size={16} />}
+            {notificationsEnabled ? (
+              <BellSimpleRingingIcon size={16} weight="fill" />
+            ) : (
+              <BellSimpleSlashIcon size={16} />
+            )}
             {notificationsLabel}
           </button>
         )}
@@ -89,20 +98,26 @@ export function RadioPlayer() {
       <div className="grid grid-cols-1 sm:grid-cols-[5fr_4fr] relative gap-8 items-start">
         {/* Album art — first in DOM = first on mobile, column 2 on desktop */}
         {song?.art ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={song.art}
-            alt={t('album_art_alt')}
-            className="w-full aspect-square object-cover border border-gray-200 dark:tk-border sm:col-start-2"
-          />
+          <div className="w-full aspect-square object-cover border border-gray-200 dark:tk-border sm:col-start-2">
+            <Image
+              src={song.art}
+              alt={t('album_art_alt')}
+              fill
+              sizes="(min-width: 400px) 440px, 100vw"
+              quality={75}
+              priority
+              fetchPriority="high"
+              className="object-cover"
+            />
+          </div>
         ) : (
-          <div className="w-full aspect-square border border-gray-200 dark:tk-border bg-[var(--dk-surface,#f9f9f9)] sm:col-start-2" />
+          <div className="w-full aspect-square border border-gray-200 dark:tk-border bg-(--dk-surface,#f9f9f9) sm:col-start-2" />
         )}
 
         {/* Left column — column 1, row 1 on desktop */}
         <div className="flex flex-col justify-between h-full sm:col-start-1 sm:row-start-1">
           {/* Player bar */}
-          <div className="flex items-center h-11 border border-gray-200 dark:tk-border bg-[var(--dk-surface,#f9f9f9)]">
+          <div className="flex items-center h-11 border border-gray-200 dark:tk-border bg-(--dk-surface,#f9f9f9)">
             {/* Play/Pause */}
             <button
               onClick={toggle}
@@ -116,7 +131,7 @@ export function RadioPlayer() {
             <span className="flex-1 px-3 flex justify-between items-center gap-2 text-xs text-gray-500 dark:tk-body min-w-0">
               <span className="shrink-0">jawr.mp3</span>
               {playing && (
-                <span className="flex-1 h-full flex items-center justify-end min-w-0 max-w-[140px]">
+                <span className="flex-1 h-full flex items-center justify-end min-w-0 max-w-35">
                   <AudioVisualizer bars={8} height={14} barWidth={4} gap={2} />
                 </span>
               )}
@@ -207,7 +222,9 @@ export function RadioPlayer() {
                     key={i}
                     className="flex items-center gap-2 py-1.5 border-b border-gray-200 dark:tk-border overflow-hidden"
                   >
-                    <span className="truncate max-w-[60ch] mr-auto">{text}</span>
+                    <span className="truncate max-w-[60ch] mr-auto">
+                      {text}
+                    </span>
                     {ago && (
                       <span className="text-gray-300 dark:tk-muted shrink-0 tabular-nums">
                         {ago}
@@ -276,4 +293,3 @@ export function RadioPlayer() {
     </div>
   );
 }
-

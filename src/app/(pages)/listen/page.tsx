@@ -1,5 +1,30 @@
+import type { Metadata } from 'next';
 import { getT } from 'next-i18next/server';
 import { Divider, RadioPlayer } from '../../_lib/components';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getT(['common', 'listen']);
+  const title = `jawr | ${t('nav_listen')}`;
+  const description = t('seo_description');
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: '/listen',
+    },
+    openGraph: {
+      title,
+      description,
+      url: '/listen',
+      type: 'website',
+    },
+    twitter: {
+      title,
+      description,
+    },
+  };
+}
 
 export default async function Listen() {
   const { t } = await getT('listen');

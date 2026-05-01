@@ -27,7 +27,9 @@ export function TemplateCard({
 
   return (
     <div className="w-full aspect-square border border-gray-100 dark:tk-border p-4 sm:p-6 flex flex-col gap-4 hover:border-gray-200 dark:hover:tk-border transition-colors">
-      <p className="text-gray-600 dark:tk-muted text-[12px] font-semibold">{title}</p>
+      <p className="text-gray-600 dark:tk-muted text-[12px] font-semibold">
+        {title}
+      </p>
       <section className="relative w-full h-full">
         <Image
           src={image}
@@ -35,11 +37,12 @@ export function TemplateCard({
           width={160}
           height={160}
           loading="eager"
+          fetchPriority="high"
           className="w-full h-full object-cover"
         />
 
         <div className="flex flex-col absolute bottom-0 left-0 right-0 gap-0.5 text-[10px] text-gray-50 w-full py-3 px-2 overflow-hidden bg-gray-950/70">
-          <h3 className="font-semibold line-clamp-2">{description.title}</h3>
+          <h2 className="font-semibold line-clamp-2">{description.title}</h2>
           {hasSubtitle && <p>{description.subtitle}</p>}
         </div>
       </section>
@@ -58,9 +61,13 @@ export function TemplateCard({
                   <span className="lg:hidden">{src.shortName}</span>
                   <span className="hidden lg:inline">{src.name}</span>
                 </>
-              ) : src.name}
+              ) : (
+                src.name
+              )}
             </a>
-            {i < source.length - 1 && <span className="text-gray-200 dark:tk-muted">|</span>}
+            {i < source.length - 1 && (
+              <span className="text-gray-200 dark:tk-muted">|</span>
+            )}
           </React.Fragment>
         ))}
       </p>

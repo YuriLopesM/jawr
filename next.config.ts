@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       new URL('https://r2.theaudiodb.com/**'),
       new URL('https://www.theaudiodb.com/**'),
       new URL('https://upload.wikimedia.org/**'),
+      new URL('https://api.jawr.org/**'),
     ],
   },
 };

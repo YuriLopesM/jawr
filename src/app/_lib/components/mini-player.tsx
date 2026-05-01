@@ -3,7 +3,7 @@
 import { PauseIcon, PlayIcon, SpeakerHighIcon, SpeakerSlashIcon } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useRadioContext } from './radio-provider';
+import { useRadioContext } from '../context';
 
 export function MiniPlayer() {
   const { playing, song, volume, toggle, toggleMute } = useRadioContext();

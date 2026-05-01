@@ -7,12 +7,9 @@ import i18nConfig from '../../i18n.config';
 import { I18nProvider } from 'next-i18next/client';
 import { IBM_Plex_Mono } from 'next/font/google';
 
-import {
-  RadioProvider,
-  SwRegister,
-  ThemeProvider,
-  TzSetter,
-} from './_lib/components';
+import { SwRegister, TzSetter } from './_lib/components';
+import { RadioProvider, ThemeProvider } from './_lib/context';
+
 import './globals.css';
 
 const ibmPlexMono = IBM_Plex_Mono({
@@ -22,11 +19,20 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  title: 'jawr.',
   description: 'Just another web radio.',
+  metadataBase: new URL('https://jawr.org'),
   appleWebApp: {
     capable: true,
     title: 'jawr.',
     statusBarStyle: 'black-translucent',
+  },
+  openGraph: {
+    siteName: 'jawr.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
   },
 };
 
@@ -61,27 +67,6 @@ export default async function RootLayout({
       className={`${ibmPlexMono.className} h-full antialiased bg-[var(--dk-bg,#f9f9f9)]`}
     >
       <head>
-        <Script id="initial-page-title" strategy="beforeInteractive">
-          {`(function(){
-            var path = window.location.pathname || '/';
-            var routeMap = {
-              '/': 'home',
-              '/listen': 'listen',
-              '/blog': 'blog',
-              '/curators': 'curators',
-              '/more': 'more',
-              '/extension': 'extension'
-            };
-
-            var page = routeMap[path];
-            if (!page) {
-              var firstSegment = path.split('/').filter(Boolean)[0] || 'home';
-              page = firstSegment.replace(/-/g, ' ');
-            }
-
-            document.title = 'jawr | ' + page;
-          })();`}
-        </Script>
         {clarityId && process.env.NODE_ENV === 'production' && (
           <Script id="microsoft-clarity" strategy="beforeInteractive">
             {`(function(c,l,a,r,i,t,y){

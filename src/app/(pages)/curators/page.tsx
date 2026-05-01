@@ -1,6 +1,31 @@
+import type { Metadata } from 'next';
 import { getT } from 'next-i18next/server';
 import { CuratorSocial, Divider } from '../../_lib/components';
 import { Curator, CuratorRole } from '../../_types';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getT(['common', 'curators']);
+  const title = `jawr | ${t('nav_curators')}`;
+  const description = t('seo_description');
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: '/curators',
+    },
+    openGraph: {
+      title,
+      description,
+      url: '/curators',
+      type: 'website',
+    },
+    twitter: {
+      title,
+      description,
+    },
+  };
+}
 
 export default async function Curators() {
   const { t } = await getT('curators');

@@ -1,6 +1,31 @@
+import type { Metadata } from 'next';
 import { getT } from 'next-i18next/server';
 import { cookies } from 'next/headers';
 import { Divider, Greeting, PlayingNow, TodayCard } from './_lib/components';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getT(['common', 'home']);
+  const title = `jawr | ${t('nav_home')}`;
+  const description = t('seo_description');
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: '/',
+    },
+    openGraph: {
+      title,
+      description,
+      url: '/',
+      type: 'website',
+    },
+    twitter: {
+      title,
+      description,
+    },
+  };
+}
 
 export default async function Home() {
   const { t } = await getT('home');
@@ -30,7 +55,11 @@ export default async function Home() {
         </p>
         <p>
           {t('collaboration_invite_1')}{' '}
-          <a href="/more" className="underline">
+          <a
+            href="/more"
+            className="underline"
+            aria-label={t('collaboration_invite_read_more')}
+          >
             {t('collaboration_invite_read_more')}
           </a>{' '}
           {t('collaboration_invite_2')}

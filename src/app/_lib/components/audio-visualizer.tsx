@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRadioContext } from '@/app/_lib/context';
 import { useAudioAnalyser } from '@/hooks';
-import { useRadioContext } from './radio-provider';
+import { useEffect, useRef } from 'react';
 
 const MIN_BAR_HEIGHT_PX = 2;
 
@@ -27,7 +27,10 @@ function readAccentColors(): AccentColors {
   };
 }
 
-function syncCanvasResolution(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+function syncCanvasResolution(
+  canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D
+) {
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
   canvas.width = rect.width * dpr;
@@ -35,7 +38,13 @@ function syncCanvasResolution(canvas: HTMLCanvasElement, ctx: CanvasRenderingCon
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
-export function AudioVisualizer({ className, bars = 32, height = 48, barWidth, gap = 2 }: Props) {
+export function AudioVisualizer({
+  className,
+  bars = 32,
+  height = 48,
+  barWidth,
+  gap = 2,
+}: Props) {
   const { audioRef, playing } = useRadioContext();
   const { analyserRef, dataRef } = useAudioAnalyser(audioRef, playing);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -48,7 +57,9 @@ export function AudioVisualizer({ className, bars = 32, height = 48, barWidth, g
     if (!ctx) return;
 
     syncCanvasResolution(canvas, ctx);
-    const observer = new ResizeObserver(() => syncCanvasResolution(canvas, ctx));
+    const observer = new ResizeObserver(() =>
+      syncCanvasResolution(canvas, ctx)
+    );
     observer.observe(canvas);
 
     function draw() {
@@ -79,7 +90,7 @@ export function AudioVisualizer({ className, bars = 32, height = 48, barWidth, g
 
       // Log-spaced 40Hz-16kHz with per-band peak — matches human pitch perception and preserves transients.
       const sampleRate = analyser.context.sampleRate;
-      const binHz = sampleRate / (analyser.fftSize);
+      const binHz = sampleRate / analyser.fftSize;
       const minHz = 40;
       const maxHz = 16000;
       const minBin = Math.max(1, Math.floor(minHz / binHz));
@@ -88,8 +99,13 @@ export function AudioVisualizer({ className, bars = 32, height = 48, barWidth, g
       const logMax = Math.log(maxBin);
 
       for (let i = 0; i < bars; i++) {
-        const startBin = Math.floor(Math.exp(logMin + (logMax - logMin) * (i / bars)));
-        const endBin = Math.max(startBin + 1, Math.floor(Math.exp(logMin + (logMax - logMin) * ((i + 1) / bars))));
+        const startBin = Math.floor(
+          Math.exp(logMin + (logMax - logMin) * (i / bars))
+        );
+        const endBin = Math.max(
+          startBin + 1,
+          Math.floor(Math.exp(logMin + (logMax - logMin) * ((i + 1) / bars)))
+        );
         let peak = 0;
         for (let j = startBin; j < endBin; j++) {
           const v = data[j] || 0;

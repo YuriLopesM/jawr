@@ -1,5 +1,30 @@
+import type { Metadata } from 'next';
 import { getT } from 'next-i18next/server';
 import { Divider } from '../../_lib/components';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getT(['common', 'extension']);
+  const title = `jawr | ${t('nav_extension')}`;
+  const description = t('seo_description');
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: '/extension',
+    },
+    openGraph: {
+      title,
+      description,
+      url: '/extension',
+      type: 'website',
+    },
+    twitter: {
+      title,
+      description,
+    },
+  };
+}
 
 export default async function Extension() {
   const { t } = await getT('extension');

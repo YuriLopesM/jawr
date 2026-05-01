@@ -1,7 +1,7 @@
 'use client';
 
-import { useKeyboardShortcuts, useMediaSession, useRadio } from '@/hooks';
 import { HistoryItem, Song } from '@/app/_types';
+import { useKeyboardShortcuts, useMediaSession, useRadio } from '@/hooks';
 import { createContext, RefObject, useContext } from 'react';
 
 interface RadioContextValue {
@@ -34,11 +34,14 @@ export function RadioProvider({ children }: { children: React.ReactNode }) {
     playing: radio.playing,
     toggle: radio.toggle,
   });
-  return <RadioContext.Provider value={radio}>{children}</RadioContext.Provider>;
+  return (
+    <RadioContext.Provider value={radio}>{children}</RadioContext.Provider>
+  );
 }
 
 export function useRadioContext(): RadioContextValue {
   const ctx = useContext(RadioContext);
-  if (!ctx) throw new Error('useRadioContext must be used inside RadioProvider');
+  if (!ctx)
+    throw new Error('useRadioContext must be used inside RadioProvider');
   return ctx;
 }
