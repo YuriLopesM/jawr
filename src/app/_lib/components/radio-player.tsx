@@ -98,7 +98,7 @@ export function RadioPlayer() {
       <div className="grid grid-cols-1 sm:grid-cols-[5fr_4fr] relative gap-8 items-start">
         {/* Album art — first in DOM = first on mobile, column 2 on desktop */}
         {song?.art ? (
-          <div className="relative w-full aspect-square border border-gray-200 sm:col-start-2">
+          <div className="w-full aspect-square object-cover border border-gray-200 dark:tk-border sm:col-start-2">
             <Image
               src={song.art}
               alt={t('album_art_alt')}
@@ -128,8 +128,8 @@ export function RadioPlayer() {
             </button>
 
             {/* EQ bars / label */}
-            <span className="flex-1 px-3 flex justify-between items-center gap-2 text-xs text-gray-500 dark:text-gray-100">
-              <span>jawr.org</span>
+            <span className="flex-1 px-3 flex justify-between items-center gap-2 text-xs text-gray-500 dark:tk-body min-w-0">
+              <span className="shrink-0">jawr.mp3</span>
               {playing && (
                 <span className="flex-1 h-full flex items-center justify-end min-w-0 max-w-35">
                   <AudioVisualizer bars={8} height={14} barWidth={4} gap={2} />
