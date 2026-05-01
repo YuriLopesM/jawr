@@ -51,6 +51,7 @@ export function useRadio() {
   useEffect(() => {
     const audio = new Audio();
     audio.preload = 'none';
+    audio.crossOrigin = 'anonymous';
     audioRef.current = audio;
 
     function scheduleReconnect() {
@@ -280,5 +281,6 @@ export function useRadio() {
     toggle,
     toggleMute,
     changeVolume,
+    audioRef,
   };
 }

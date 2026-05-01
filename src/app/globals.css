@@ -4,28 +4,6 @@
 
 @variant dark (&:where(.dark, .dark *, .nord, .nord *, .dracula, .dracula *, .catppuccin, .catppuccin *, .gruvbox, .gruvbox *, .amoled, .amoled *, .everforest, .everforest *, .city-lights, .city-lights *));
 
-@keyframes eq-a {
-  0%   { transform: scaleY(0.2); }
-  30%  { transform: scaleY(1); }
-  60%  { transform: scaleY(0.5); }
-  100% { transform: scaleY(0.2); }
-}
-
-@keyframes eq-b {
-  0%   { transform: scaleY(0.6); }
-  40%  { transform: scaleY(0.25); }
-  70%  { transform: scaleY(0.9); }
-  100% { transform: scaleY(0.6); }
-}
-
-@keyframes eq-c {
-  0%   { transform: scaleY(0.35); }
-  25%  { transform: scaleY(0.8); }
-  55%  { transform: scaleY(0.15); }
-  80%  { transform: scaleY(0.7); }
-  100% { transform: scaleY(0.35); }
-}
-
 @theme {
   --color-gray-50: #f1f1f1;
   --color-gray-100: #d4d4d4;
