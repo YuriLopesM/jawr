@@ -54,12 +54,12 @@ export default async function Curators() {
   return (
     <main className="w-full flex-1 flex flex-col gap-5">
       <header>
-        <h1 className="text-base text-gray-800 font-bold dark:text-[#f0f0f0]">
+        <h1 className="text-base text-gray-800 font-bold dark:tk-heading">
           {t('curators_title')}
         </h1>
         <Divider />
       </header>
-      <p className="text-sm text-gray-600 dark:text-[#b0b0b0]">
+      <p className="text-sm text-gray-600 dark:tk-body">
         {t('curators_description')}
       </p>
       <ul className="flex flex-col gap-6">

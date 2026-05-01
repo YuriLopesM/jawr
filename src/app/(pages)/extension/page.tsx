@@ -7,7 +7,7 @@ export default async function Extension() {
   return (
     <main className="w-full h-full flex flex-col gap-5">
       <header>
-        <h1 className="text-base text-gray-800 font-bold dark:text-[#f0f0f0]">
+        <h1 className="text-base text-gray-800 font-bold dark:tk-heading">
           {t('extension_title')}
         </h1>
         <Divider />

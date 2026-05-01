@@ -13,10 +13,10 @@ export default async function Home() {
       <header>
         <Greeting />
       </header>
-      <article className="text-sm text-gray-600 dark:text-[#b0b0b0] flex flex-col gap-4">
-        <p className="text-sm text-gray-600 dark:text-[#b0b0b0]">
+      <article className="text-sm text-gray-600 dark:tk-body flex flex-col gap-4">
+        <p className="text-sm text-gray-600 dark:tk-body">
           {t('welcome_message')}{' '}
-          <em className="text-gray-300">(just another web radio)</em> -{' '}
+          <em className="text-gray-300 dark:tk-muted">(just another web radio)</em> -{' '}
           {t('welcome_message_2')} <br />
           {t('listen_instruction_1')}{' '}
           <a href="/listen" className="underline">
