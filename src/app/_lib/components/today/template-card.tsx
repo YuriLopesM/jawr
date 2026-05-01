@@ -37,6 +37,7 @@ export function TemplateCard({
           width={160}
           height={160}
           loading="eager"
+          fetchPriority="high"
           className="w-full h-full object-cover"
         />
 
