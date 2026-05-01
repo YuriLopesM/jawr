@@ -16,7 +16,6 @@
   --color-gray-800: #222222;
   --color-gray-900: #151515;
   --color-gray-950: #0b0b0b;
-
 }
 
 :root {
@@ -85,16 +84,24 @@
   --dk-accent: #ff79c6;
   --dk-accent-alt: #50fa7b;
 }
-.dracula ::selection {
-  background-color: #ff79c6;
-  color: #282a36;
+.dracula ::-webkit-scrollbar-track {
+  background: #282a36;
 }
-.dracula ::-webkit-scrollbar-track { background: #282a36; }
-.dracula ::-webkit-scrollbar-thumb { background: #ff79c6; }
-.dracula ::-webkit-scrollbar-thumb:hover { background: #50fa7b; }
-.dracula .bg-green-500 { background-color: #50fa7b; }
-.dracula .bg-red-700 { background-color: #ff5555; }
-.dracula .text-red-700 { color: #ff5555; }
+.dracula ::-webkit-scrollbar-thumb {
+  background: #ff79c6;
+}
+.dracula ::-webkit-scrollbar-thumb:hover {
+  background: #50fa7b;
+}
+.dracula .bg-green-500 {
+  background-color: #50fa7b;
+}
+.dracula .bg-red-700 {
+  background-color: #ff5555;
+}
+.dracula .text-red-700 {
+  color: #ff5555;
+}
 
 /* Catppuccin Mocha */
 .catppuccin {
@@ -217,8 +224,8 @@ input[type='range'].tk-range::-moz-range-thumb {
 }
 
 ::selection {
-  background-color: var(--color-gray-700);
-  color: var(--color-gray-50);
+  background-color: var(--dk-accent);
+  color: var(--dk-bg);
 }
 
 /* width */
