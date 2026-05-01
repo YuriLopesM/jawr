@@ -1,3 +1,4 @@
+export * from './audio-visualizer';
 export * from './curator-social';
 export * from './divider';
 export * from './dynamic-page-title';

@@ -34,17 +34,17 @@ export default async function More() {
   return (
     <main className="w-full h-full flex flex-col gap-8">
       <header>
-        <h1 className="text-base text-gray-800 font-bold dark:text-[#f0f0f0]">
+        <h1 className="text-base text-gray-800 font-bold dark:tk-heading">
           {t('more_title')}
         </h1>
         <Divider />
       </header>
 
       <section className="flex flex-col gap-2">
-        <p className="text-sm font-bold text-gray-800 dark:text-[#f0f0f0]">
+        <p className="text-sm font-bold text-gray-800 dark:tk-heading">
           {t('dj_section_title')}
         </p>
-        <p className="text-sm text-gray-600 dark:text-[#b0b0b0]">
+        <p className="text-sm text-gray-600 dark:tk-body">
           {t('dj_section_description')}
         </p>
         <div className="text-sm">
@@ -53,10 +53,10 @@ export default async function More() {
       </section>
 
       <section className="flex flex-col gap-2">
-        <p className="text-sm font-bold text-gray-800 dark:text-[#f0f0f0]">
+        <p className="text-sm font-bold text-gray-800 dark:tk-heading">
           {t('contact_section_title')}
         </p>
-        <p className="text-sm text-gray-600 dark:text-[#b0b0b0]">
+        <p className="text-sm text-gray-600 dark:tk-body">
           {t('contact_section_description')}
         </p>
         <div className="text-sm">

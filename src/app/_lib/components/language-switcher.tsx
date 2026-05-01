@@ -16,12 +16,14 @@ export function LanguageSwitcher({
   const router = useRouter();
   const changeLanguage = useChangeLanguage();
 
-  const handleChangeLanguage = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    lang: string
+  const handleCycleLanguage = async (
+    e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
-    changeLanguage(lang);
+    if (!languages || languages.length <= 1) return;
+    const idx = languages.indexOf(currentLanguage);
+    const next = languages[(idx + 1) % languages.length] || languages[0];
+    await changeLanguage(next);
     router.refresh();
   };
 
@@ -50,22 +52,15 @@ export function LanguageSwitcher({
 
   return (
     <div>
-      {languages.map((lang) => {
-        if (lang === currentLanguage) {
-          return null;
-        }
-        return (
-          <span key={lang}>
-            <button
-              className="cursor-pointer inline-flex gap-1 items-center"
-              onClick={(e) => handleChangeLanguage(e, lang)}
-              type="button"
-            >
-              {icons[lang]}
-            </button>
-          </span>
-        );
-      })}
+      <button
+        className="cursor-pointer inline-flex gap-1 items-center"
+        onClick={handleCycleLanguage}
+        type="button"
+        aria-label="Change language"
+        title="Change language"
+      >
+        {icons[currentLanguage] ?? null}
+      </button>
     </div>
   );
 }

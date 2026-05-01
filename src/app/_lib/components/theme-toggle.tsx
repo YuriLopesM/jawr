@@ -1,15 +1,17 @@
 'use client';
 
-import { useTheme } from '../context';
+import { THEMES, useTheme } from '../context';
 
 export function ThemeToggle() {
-  const { theme, toggle } = useTheme();
+  const { theme, cycle } = useTheme();
+  const next = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
   return (
     <span
-      onClick={toggle}
-      className="text-sm cursor-pointer transition-colors text-gray-400 hover:text-gray-600 hover:font-medium dark:text-[#6e6e6e] dark:hover:text-[#f0f0f0]"
+      onClick={cycle}
+      className="text-sm cursor-pointer transition-colors text-gray-400 hover:text-gray-600 hover:font-medium dark:tk-muted dark:hover:tk-accent"
+      title={`Switch to ${next}`}
     >
-      [{theme === 'light' ? 'dark' : 'light'}]
+      [{theme}]
     </span>
   );
 }

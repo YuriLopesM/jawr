@@ -14,7 +14,7 @@ export function DJModalWrapper() {
     <>
       <button
         onClick={() => setShow(true)}
-        className="underline text-gray-800 dark:text-[#b0b0b0] hover:text-gray-600 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+        className="underline text-gray-800 dark:tk-body hover:text-gray-600 dark:hover:tk-accent transition-colors cursor-pointer"
       >
         join →
       </button>

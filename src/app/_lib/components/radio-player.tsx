@@ -18,6 +18,7 @@ import { useRadioContext } from '../context';
 
 import Image from 'next/image';
 import { timeAgo } from '../helpers/date';
+import { AudioVisualizer } from './audio-visualizer';
 import { SongRequestModal } from './song-request-modal';
 import { SupportArtistModal } from './support-artist-modal';
 
@@ -80,7 +81,7 @@ export function RadioPlayer() {
         {notificationPermission !== 'denied' && (
           <button
             onClick={toggleNotifications}
-            className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-700 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-xs text-gray-400 dark:tk-muted hover:text-gray-700 dark:hover:tk-heading transition-colors cursor-pointer"
             aria-label={notificationsLabel}
             title={notificationsLabel}
           >
@@ -110,17 +111,17 @@ export function RadioPlayer() {
             />
           </div>
         ) : (
-          <div className="w-full aspect-square border border-gray-200 bg-gray-50 sm:col-start-2" />
+          <div className="w-full aspect-square border border-gray-200 dark:tk-border bg-(--dk-surface,#f9f9f9) sm:col-start-2" />
         )}
 
         {/* Left column — column 1, row 1 on desktop */}
         <div className="flex flex-col justify-between h-full sm:col-start-1 sm:row-start-1">
           {/* Player bar */}
-          <div className="flex items-center h-11 border border-gray-200 dark:border-[#2a2a2a] bg-gray-50 dark:bg-gray-900">
+          <div className="flex items-center h-11 border border-gray-200 dark:tk-border bg-(--dk-surface,#f9f9f9)">
             {/* Play/Pause */}
             <button
               onClick={toggle}
-              className="flex items-center justify-center w-11 h-full border-r border-gray-200 dark:border-[#2a2a2a] text-gray-600 dark:text-[#b0b0b0] hover:text-gray-900 dark:hover:text-[#f0f0f0] hover:bg-gray-100 dark:hover:bg-[#2a2a2a] transition-colors cursor-pointer shrink-0"
+              className="flex items-center justify-center w-11 h-full border-r border-gray-200 dark:tk-border text-gray-600 dark:tk-body hover:text-gray-900 dark:hover:tk-heading hover:bg-gray-100 dark:hover:tk-surface transition-colors cursor-pointer shrink-0"
               aria-label={playing ? t('player_pause') : t('player_play')}
             >
               {playing ? <PauseIcon /> : <PlayIcon weight="fill" />}
@@ -130,25 +131,8 @@ export function RadioPlayer() {
             <span className="flex-1 px-3 flex justify-between items-center gap-2 text-xs text-gray-500 dark:text-gray-100">
               <span>jawr.org</span>
               {playing && (
-                <span className="inline-flex gap-0.5 items-end shrink-0">
-                  {(
-                    [
-                      ['eq-a', '0.65s', '0s'],
-                      ['eq-c', '0.9s', '0.1s'],
-                      ['eq-b', '0.5s', '0.3s'],
-                      ['eq-a', '0.75s', '0.05s'],
-                      ['eq-c', '0.8s', '0.2s'],
-                    ] as const
-                  ).map(([kf, dur, delay], i) => (
-                    <span
-                      key={i}
-                      className="w-1 h-3.5 bg-gray-500 dark:bg-[#6e6e6e]"
-                      style={{
-                        animation: `${kf} ${dur} ease-in-out infinite ${delay}`,
-                        transformOrigin: 'bottom',
-                      }}
-                    />
-                  ))}
+                <span className="flex-1 h-full flex items-center justify-end min-w-0 max-w-35">
+                  <AudioVisualizer bars={8} height={14} barWidth={4} gap={2} />
                 </span>
               )}
             </span>
@@ -156,7 +140,7 @@ export function RadioPlayer() {
             {/* Mute */}
             <button
               onClick={toggleMute}
-              className="flex items-center justify-center w-10 h-full border-l border-gray-200 dark:border-[#2a2a2a] text-gray-400 dark:text-[#6e6e6e] hover:text-gray-900 dark:hover:text-[#f0f0f0] hover:bg-gray-100 dark:hover:bg-[#2a2a2a] transition-colors cursor-pointer shrink-0"
+              className="flex items-center justify-center w-10 h-full border-l border-gray-200 dark:tk-border text-gray-400 dark:tk-muted hover:text-gray-900 dark:hover:tk-heading hover:bg-gray-100 dark:hover:tk-surface transition-colors cursor-pointer shrink-0"
               aria-label={
                 volume.isMuted ? t('player_unmute') : t('player_mute')
               }
@@ -169,7 +153,7 @@ export function RadioPlayer() {
             </button>
 
             {/* Volume slider + % */}
-            <div className="hidden sm:flex items-center gap-2 px-3 border-l border-gray-200 dark:border-[#2a2a2a] shrink-0">
+            <div className="hidden sm:flex items-center gap-2 px-3 border-l border-gray-200 dark:tk-border shrink-0">
               <input
                 type="range"
                 min={0}
@@ -177,10 +161,11 @@ export function RadioPlayer() {
                 step={0.01}
                 value={volume.value}
                 onChange={(e) => changeVolume(Number(e.target.value))}
-                className="w-20 accent-gray-600 cursor-pointer"
+                className="w-20 cursor-pointer"
+                style={{ accentColor: 'var(--dk-accent)' }}
                 aria-label={t('player_volume')}
               />
-              <span className="text-xs text-gray-400 dark:text-[#6e6e6e] w-7 text-right tabular-nums">
+              <span className="text-xs text-gray-400 dark:tk-muted w-7 text-right tabular-nums">
                 {Math.round(volume.value * 100)}%
               </span>
             </div>
@@ -189,7 +174,7 @@ export function RadioPlayer() {
             <a
               href="/jawr.m3u"
               download
-              className="flex items-center justify-center w-10 h-full border-l border-gray-200 dark:border-[#2a2a2a] text-gray-400 dark:text-[#6e6e6e] hover:text-gray-900 dark:hover:text-[#f0f0f0] hover:bg-gray-100 dark:hover:bg-[#2a2a2a] transition-colors shrink-0"
+              className="flex items-center justify-center w-10 h-full border-l border-gray-200 dark:tk-border text-gray-400 dark:tk-muted hover:text-gray-900 dark:hover:tk-heading hover:bg-gray-100 dark:hover:tk-surface transition-colors shrink-0"
               aria-label={t('player_download_m3u')}
             >
               <DownloadSimpleIcon weight="fill" />
@@ -198,17 +183,17 @@ export function RadioPlayer() {
 
           {/* Now playing */}
           <div className="flex flex-col gap-3 mb-2 mt-6 text-sm">
-            <p className="text-gray-600 dark:text-[#6e6e6e] text-[10px] uppercase tracking-widest">
+            <p className="text-gray-600 dark:tk-muted text-[10px] uppercase tracking-widest">
               {t('now_label')}
             </p>
-            <p className="text-gray-900 dark:text-[#f0f0f0]">
+            <p className="text-gray-900 dark:tk-heading">
               {song?.artist} - {song?.title}
             </p>
             {song?.artist && (
               <button
                 type="button"
                 onClick={() => setShowSupport(true)}
-                className="text-xs text-gray-400 dark:text-[#6e6e6e] underline hover:text-gray-600 dark:hover:text-[#b0b0b0] transition-colors text-left cursor-pointer w-fit"
+                className="text-xs text-gray-400 dark:tk-muted underline hover:text-gray-600 dark:hover:tk-accent transition-colors text-left cursor-pointer w-fit"
               >
                 {t('support_artist_button')}
               </button>
@@ -217,12 +202,12 @@ export function RadioPlayer() {
 
           {/* Recently played */}
           <div className="flex flex-col gap-3 mt-6">
-            <p className="text-gray-600 dark:text-[#6e6e6e] text-[10px] uppercase tracking-widest">
+            <p className="text-gray-600 dark:tk-muted text-[10px] uppercase tracking-widest">
               {t('recently_label')}
             </p>
-            <ul className="flex flex-col text-xs text-gray-600 dark:text-[#b0b0b0]">
+            <ul className="flex flex-col text-xs text-gray-600 dark:tk-body">
               {history.length === 0 && (
-                <li className="text-gray-300 dark:text-[#3a3a3a]">—</li>
+                <li className="text-gray-300 dark:tk-muted">—</li>
               )}
               {history.map(({ song, played_at }, i) => {
                 if (!song) return null;
@@ -235,13 +220,13 @@ export function RadioPlayer() {
                 return (
                   <li
                     key={i}
-                    className="flex items-center gap-2 py-1.5 border-b border-gray-100 dark:border-[#2a2a2a] overflow-hidden"
+                    className="flex items-center gap-2 py-1.5 border-b border-gray-200 dark:tk-border overflow-hidden"
                   >
                     <span className="truncate max-w-[60ch] mr-auto">
                       {text}
                     </span>
                     {ago && (
-                      <span className="text-gray-300 dark:text-[#3a3a3a] shrink-0 tabular-nums">
+                      <span className="text-gray-300 dark:tk-muted shrink-0 tabular-nums">
                         {ago}
                       </span>
                     )}
@@ -255,29 +240,29 @@ export function RadioPlayer() {
           <div className="mt-8 flex items-center justify-between">
             <button
               onClick={() => setShowRequest(true)}
-              className="self-start text-xs text-gray-400 underline hover:text-gray-700 transition-colors cursor-pointer"
+              className="self-start text-xs text-gray-400 dark:tk-muted underline hover:text-gray-700 dark:hover:tk-accent transition-colors cursor-pointer"
             >
               {t('song_request_button')}
             </button>
 
             {session ? (
-              <span className="text-xs text-gray-600 dark:text-[#b0b0b0] flex items-center gap-1.5">
+              <span className="text-xs text-gray-600 dark:tk-body flex items-center gap-1.5">
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500 shrink-0" />
                 {session.name}
                 <button
                   onClick={disconnect}
-                  className="text-[10px] text-gray-400 dark:text-[#6e6e6e] hover:text-gray-900 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+                  className="text-[10px] text-gray-400 dark:tk-muted hover:text-gray-900 dark:hover:tk-heading transition-colors cursor-pointer"
                   aria-label={t('lastfm_disconnect')}
                 >
                   <XIcon />
                 </button>
               </span>
             ) : pending ? (
-              <span className="text-xs text-gray-400 dark:text-[#6e6e6e] flex items-center gap-1.5">
+              <span className="text-xs text-gray-400 dark:tk-muted flex items-center gap-1.5">
                 {t('lastfm_pending')}
                 <button
                   onClick={confirm}
-                  className="underline hover:text-gray-900 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+                  className="underline hover:text-gray-900 dark:hover:tk-accent transition-colors cursor-pointer"
                 >
                   {t('lastfm_confirm')}
                 </button>
@@ -285,7 +270,7 @@ export function RadioPlayer() {
             ) : (
               <button
                 onClick={connect}
-                className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-[#6e6e6e] hover:text-gray-900 dark:hover:text-[#f0f0f0] transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 text-xs text-gray-400 dark:tk-muted hover:text-gray-900 dark:hover:tk-accent transition-colors cursor-pointer"
               >
                 <LastfmLogoIcon size={16} />
                 {t('lastfm_connect')}
