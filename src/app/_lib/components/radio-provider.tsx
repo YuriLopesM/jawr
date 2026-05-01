@@ -2,7 +2,7 @@
 
 import { useKeyboardShortcuts, useMediaSession, useRadio } from '@/hooks';
 import { HistoryItem, Song } from '@/app/_types';
-import { createContext, useContext } from 'react';
+import { createContext, RefObject, useContext } from 'react';
 
 interface RadioContextValue {
   playing: boolean;
@@ -12,6 +12,11 @@ interface RadioContextValue {
   toggle: () => void;
   toggleMute: () => void;
   changeVolume: (v: number) => void;
+  /**
+   * Read-only access for analyser/visualizer integrations. Do not mutate the
+   * element directly — playback state must flow through `toggle`/`changeVolume`.
+   */
+  audioRef: RefObject<HTMLAudioElement | null>;
 }
 
 const RadioContext = createContext<RadioContextValue | null>(null);
