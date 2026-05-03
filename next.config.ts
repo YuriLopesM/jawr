@@ -6,12 +6,12 @@ const nextConfig: NextConfig = {
   images: {
     qualities: [100, 75],
     remotePatterns: [
-      new URL('https://singlecolorimage.com/**'),
-      new URL('https://i.scdn.co/**'),
-      new URL('https://r2.theaudiodb.com/**'),
-      new URL('https://www.theaudiodb.com/**'),
-      new URL('https://upload.wikimedia.org/**'),
-      new URL('https://api.jawr.org/**'),
+      { protocol: 'https', hostname: 'singlecolorimage.com', pathname: '/**' },
+      { protocol: 'https', hostname: 'i.scdn.co', pathname: '/**' },
+      { protocol: 'https', hostname: 'r2.theaudiodb.com', pathname: '/**' },
+      { protocol: 'https', hostname: 'www.theaudiodb.com', pathname: '/**' },
+      { protocol: 'https', hostname: 'upload.wikimedia.org', pathname: '/**' },
+      { protocol: 'https', hostname: 'api.jawr.org', pathname: '/**' },
     ],
   },
 };
