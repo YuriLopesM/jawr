@@ -247,3 +247,56 @@ input[type='range'].tk-range::-moz-range-thumb {
 ::-webkit-scrollbar-thumb:hover {
   background: #303030;
 }
+
+@keyframes lyrics-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes lyrics-slide-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes lyrics-slide-down {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes lyrics-slide-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.lyrics-panel {
+  animation: lyrics-slide-up 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lyrics-panel.is-closing {
+  animation: lyrics-slide-down 200ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@media (min-width: 640px) {
+  .lyrics-panel {
+    animation: lyrics-slide-left 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .lyrics-panel.is-closing {
+    animation: lyrics-slide-right 200ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+}

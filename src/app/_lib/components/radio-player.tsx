@@ -1,11 +1,13 @@
 'use client';
 
 import { useLastfm, useNotifications } from '@/hooks';
+import { useLyricsStore } from '@/stores/lyrics-store';
 import {
   BellSimpleRingingIcon,
   BellSimpleSlashIcon,
   DownloadSimpleIcon,
   LastfmLogoIcon,
+  MicrophoneStageIcon,
   PauseIcon,
   PlayIcon,
   SpeakerHighIcon,
@@ -19,6 +21,7 @@ import { useRadioContext } from '../context';
 import Image from 'next/image';
 import { timeAgo } from '../helpers/date';
 import { AudioVisualizer } from './audio-visualizer';
+import { Lyrics } from './lyrics';
 import { SongRequestModal } from './song-request-modal';
 import { SupportArtistModal } from './support-artist-modal';
 
@@ -40,12 +43,15 @@ export function RadioPlayer() {
     scrobbleTrack,
   } = useLastfm();
   const { t } = useT('listen');
+  const lyricsEnabled = useLyricsStore((s) => s.enabled);
+  const toggleLyrics = useLyricsStore((s) => s.toggle);
 
   const [showRequest, setShowRequest] = useState(false);
   const [showSupport, setShowSupport] = useState(false);
   const scrobbleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const notificationsLabel = t('notifications_label');
+  const lyricsLabel = t('lyrics_toggle');
 
   useEffect(() => {
     if (scrobbleTimer.current) clearTimeout(scrobbleTimer.current);
@@ -78,21 +84,36 @@ export function RadioPlayer() {
             {t('live_indicator')}
           </span>
         </p>
-        {notificationPermission !== 'denied' && (
+        <div className="flex items-center gap-4">
           <button
-            onClick={toggleNotifications}
+            onClick={toggleLyrics}
             className="flex items-center gap-1.5 text-xs text-gray-400 dark:tk-muted hover:text-gray-700 dark:hover:tk-heading transition-colors cursor-pointer"
-            aria-label={notificationsLabel}
-            title={notificationsLabel}
+            aria-label={lyricsLabel}
+            aria-pressed={lyricsEnabled}
+            title={lyricsLabel}
           >
-            {notificationsEnabled ? (
-              <BellSimpleRingingIcon size={16} weight="fill" />
-            ) : (
-              <BellSimpleSlashIcon size={16} />
-            )}
-            {notificationsLabel}
+            <MicrophoneStageIcon
+              size={16}
+              weight={lyricsEnabled ? 'fill' : 'regular'}
+            />
+            {lyricsLabel}
           </button>
-        )}
+          {notificationPermission !== 'denied' && (
+            <button
+              onClick={toggleNotifications}
+              className="flex items-center gap-1.5 text-xs text-gray-400 dark:tk-muted hover:text-gray-700 dark:hover:tk-heading transition-colors cursor-pointer"
+              aria-label={notificationsLabel}
+              title={notificationsLabel}
+            >
+              {notificationsEnabled ? (
+                <BellSimpleRingingIcon size={16} weight="fill" />
+              ) : (
+                <BellSimpleSlashIcon size={16} />
+              )}
+              {notificationsLabel}
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-[5fr_4fr] relative gap-8 items-start">
@@ -290,6 +311,8 @@ export function RadioPlayer() {
           onClose={() => setShowSupport(false)}
         />
       )}
+
+      <Lyrics />
     </div>
   );
 }
