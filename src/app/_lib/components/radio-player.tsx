@@ -129,7 +129,7 @@ export function RadioPlayer() {
 
             {/* EQ bars / label */}
             <span className="flex-1 px-3 flex justify-between items-center gap-2 text-xs text-gray-500 dark:tk-body min-w-0">
-              <span className="shrink-0">jawr.mp3</span>
+              <span className="shrink-0">jawr.org</span>
               {playing && (
                 <span className="flex-1 h-full flex items-center justify-end min-w-0 max-w-35">
                   <AudioVisualizer bars={8} height={14} barWidth={4} gap={2} />
