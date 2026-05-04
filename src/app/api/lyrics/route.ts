@@ -1,4 +1,3 @@
-import { unstable_cache } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 type LyricsSource = 'lrclib' | 'genius' | null;
@@ -14,7 +13,6 @@ type LyricsResult = {
 const LRCLIB_GET_URL = 'https://lrclib.net/api/get';
 const LRCLIB_SEARCH_URL = 'https://lrclib.net/api/search';
 const GENIUS_SEARCH_URL = 'https://genius.com/api/search';
-const CACHE_TTL_SECONDS = 60 * 60 * 24 * 30;
 const FETCH_TIMEOUT_MS = 6000;
 const BROWSER_UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0';
@@ -97,8 +95,7 @@ function extractBalancedDiv(
   return null;
 }
 
-function stripHeaders(html: string): string {
-  const startRe = /<div[^>]*class="[^"]*LyricsHeader[^"]*"[^>]*>/gi;
+function stripDivsMatching(html: string, startRe: RegExp): string {
   let out = html;
   let m: RegExpExecArray | null;
   while ((m = startRe.exec(out)) !== null) {
@@ -110,6 +107,18 @@ function stripHeaders(html: string): string {
   return out;
 }
 
+function stripHeaders(html: string): string {
+  let out = stripDivsMatching(
+    html,
+    /<div[^>]*class="[^"]*LyricsHeader[^"]*"[^>]*>/gi
+  );
+  out = stripDivsMatching(
+    out,
+    /<div[^>]*data-exclude-from-selection="true"[^>]*>/gi
+  );
+  return out;
+}
+
 function extractLyricsContainers(html: string): string {
   const cleaned = stripHeaders(html);
   const startRe = /<div[^>]*data-lyrics-container="true"[^>]*>/gi;
@@ -118,7 +127,7 @@ function extractLyricsContainers(html: string): string {
   while ((m = startRe.exec(cleaned)) !== null) {
     const block = extractBalancedDiv(cleaned, m.index);
     if (!block) break;
-    parts.push(block.content);
+    parts.push(stripHeaders(block.content));
     startRe.lastIndex = block.endIdx;
   }
   return parts.join('<br>');
@@ -467,10 +476,6 @@ async function fetchLyrics(
   throw new Error('lyrics not found');
 }
 
-const cachedFetchLyrics = unstable_cache(fetchLyrics, ['lyrics-chain-v9'], {
-  revalidate: CACHE_TTL_SECONDS,
-});
-
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const artist = searchParams.get('artist')?.trim();
@@ -482,7 +487,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const result = await cachedFetchLyrics(artist, track, duration);
+    const result = await fetchLyrics(artist, track, duration);
     return NextResponse.json(result, {
       headers: {
         'Cache-Control': 'public, max-age=86400, s-maxage=2592000',
