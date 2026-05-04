@@ -36,8 +36,12 @@ function withTimeout(ms: number) {
 function isHeaderLine(line: string): boolean {
   if (/「.+」\s*歌詞/.test(line)) return true;
   if (/\bLyrics?\s*$/i.test(line) && line.length < 80) return true;
+  if (/^\[?Letra\s+de\s+["“”'].+["“”']\]?\s*$/i.test(line) && line.length < 80)
+    return true;
   if (/^\d+\s+Contributors?\b/i.test(line)) return true;
+  if (/^\d+\s+Colaboradores?\b/i.test(line)) return true;
   if (/^Read More\s*$/i.test(line)) return true;
+  if (/^Ler\s+Mais\s*$/i.test(line)) return true;
   return false;
 }
 
@@ -198,19 +202,57 @@ function cleanTrack(track: string): string {
     .trim();
 }
 
-function isLikelyMatch(
-  artist: string,
-  track: string,
+function levenshtein(a: string, b: string): number {
+  if (a === b) return 0;
+  if (!a.length) return b.length;
+  if (!b.length) return a.length;
+  let prev = new Array<number>(b.length + 1);
+  let curr = new Array<number>(b.length + 1);
+  for (let j = 0; j <= b.length; j += 1) prev[j] = j;
+  for (let i = 1; i <= a.length; i += 1) {
+    curr[0] = i;
+    for (let j = 1; j <= b.length; j += 1) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      curr[j] = Math.min(curr[j - 1] + 1, prev[j] + 1, prev[j - 1] + cost);
+    }
+    [prev, curr] = [curr, prev];
+  }
+  return prev[b.length];
+}
+
+function similarity(a: string, b: string): number {
+  if (!a && !b) return 1;
+  const max = Math.max(a.length, b.length);
+  if (max === 0) return 1;
+  return 1 - levenshtein(a, b) / max;
+}
+
+const FUZZY_THRESHOLD = 0.75;
+const DURATION_PENALTY_DIVISOR = 600;
+
+function fuzzyMatch(a: string, b: string): boolean {
+  if (!a || !b) return false;
+  if (a.includes(b) || b.includes(a)) return true;
+  return similarity(a, b) >= FUZZY_THRESHOLD;
+}
+
+type HitScore = { passes: boolean; sim: number };
+
+function scoreHit(
+  normArtist: string,
+  normTrack: string,
   hitArtist: string,
-  hitTitle: string
-): boolean {
-  const a = normalizeForCompare(artist);
-  const t = normalizeForCompare(track);
+  hitTrack: string
+): HitScore {
   const ha = normalizeForCompare(hitArtist);
-  const ht = normalizeForCompare(hitTitle);
-  const titleOk = ht.includes(t) || t.includes(ht);
-  const artistOk = ha.includes(a) || a.includes(ha);
-  return titleOk && artistOk;
+  const ht = normalizeForCompare(hitTrack);
+  if (!fuzzyMatch(normArtist, ha) || !fuzzyMatch(normTrack, ht)) {
+    return { passes: false, sim: 0 };
+  }
+  return {
+    passes: true,
+    sim: (similarity(normArtist, ha) + similarity(normTrack, ht)) / 2,
+  };
 }
 
 async function fetchGenius(
@@ -244,14 +286,23 @@ async function fetchGenius(
       };
     };
 
+    const normArtist = normalizeForCompare(queryArtist);
+    const normTrack = normalizeForCompare(queryTrack);
     let pageUrl: string | undefined;
+    let bestSim = -Infinity;
     for (const hit of searchData.response?.hits ?? []) {
       if (hit.type !== 'song' || !hit.result?.url) continue;
-      const hitTitle = hit.result.title ?? '';
-      const hitArtist = hit.result.primary_artist?.name ?? '';
-      if (isLikelyMatch(queryArtist, queryTrack, hitArtist, hitTitle)) {
+      const { passes, sim } = scoreHit(
+        normArtist,
+        normTrack,
+        hit.result.primary_artist?.name ?? '',
+        hit.result.title ?? ''
+      );
+      if (!passes) continue;
+      if (sim > bestSim) {
+        bestSim = sim;
         pageUrl = hit.result.url;
-        break;
+        if (sim === 1) break;
       }
     }
     if (!pageUrl) return EMPTY;
@@ -355,21 +406,32 @@ async function fetchLrclibSynced(
       plainLyrics?: string | null;
       instrumental?: boolean;
       duration?: number;
+      artistName?: string;
+      trackName?: string;
     }>;
 
     const targetDur = duration ? Number(duration) : null;
+    const normArtist = normalizeForCompare(artist);
+    const normTrack = normalizeForCompare(queryTrack);
     let best: (typeof hits)[number] | null = null;
-    let bestDelta = Infinity;
+    let bestScore = -Infinity;
     for (const h of hits) {
       if (!h.syncedLyrics) continue;
+      const { passes, sim } = scoreHit(
+        normArtist,
+        normTrack,
+        h.artistName ?? '',
+        h.trackName ?? ''
+      );
+      if (!passes) continue;
       const delta =
         targetDur !== null && h.duration !== undefined
           ? Math.abs(h.duration - targetDur)
           : 0;
-      if (delta < bestDelta) {
+      const score = sim - delta / DURATION_PENALTY_DIVISOR;
+      if (score > bestScore) {
         best = h;
-        bestDelta = delta;
-        if (delta === 0 && targetDur !== null) break;
+        bestScore = score;
       }
     }
 
@@ -400,10 +462,12 @@ async function fetchLyrics(
     throw new Error('lyrics fetch failed');
   }
   if (lrclib.synced || lrclib.instrumental) return lrclib;
-  return fetchGenius(artist, track);
+  const genius = await fetchGenius(artist, track);
+  if (genius.plain) return genius;
+  throw new Error('lyrics not found');
 }
 
-const cachedFetchLyrics = unstable_cache(fetchLyrics, ['lyrics-chain-v6'], {
+const cachedFetchLyrics = unstable_cache(fetchLyrics, ['lyrics-chain-v9'], {
   revalidate: CACHE_TTL_SECONDS,
 });
 
