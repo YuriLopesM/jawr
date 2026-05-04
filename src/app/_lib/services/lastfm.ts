@@ -37,13 +37,14 @@ function sign(params: Record<string, string>, secret: string): string {
   return md5(sorted + secret);
 }
 
-function assertLastfmSuccess(data: any): void {
-  if (data?.error) {
-    const code = typeof data.error === 'number' ? data.error : undefined;
+function assertLastfmSuccess(data: unknown): void {
+  if (data && typeof data === 'object' && 'error' in data) {
+    const d = data as { error?: unknown; message?: unknown };
+    const code = typeof d.error === 'number' ? d.error : undefined;
     const message =
-      typeof data.message === 'string'
-        ? data.message
-        : `Last.fm request failed with code ${String(data.error)}`;
+      typeof d.message === 'string'
+        ? d.message
+        : `Last.fm request failed with code ${String(d.error)}`;
     const status = code === 14 ? 409 : 400;
     throw new LastfmApiError(message, status, code);
   }
