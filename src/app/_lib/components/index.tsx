@@ -4,6 +4,7 @@ export * from './divider';
 export * from './dynamic-page-title';
 export * from './footer';
 export * from './greeting';
+export * from './jawr-logo';
 export * from './language-switcher';
 export * from './menu';
 export * from './mini-player';
