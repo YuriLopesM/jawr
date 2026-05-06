@@ -353,9 +353,10 @@ async function fetchLrclibSynced(
 ): Promise<LyricsResult | null> {
   const t = withTimeout(FETCH_TIMEOUT_MS);
   try {
+    const queryArtist = cleanArtist(artist);
     const queryTrack = cleanTrack(track);
     const params = new URLSearchParams({
-      artist_name: artist,
+      artist_name: queryArtist,
       track_name: queryTrack,
     });
     if (duration) params.set('duration', duration);
@@ -394,7 +395,7 @@ async function fetchLrclibSynced(
     }
 
     const searchParams = new URLSearchParams({
-      artist_name: artist,
+      artist_name: queryArtist,
       track_name: queryTrack,
     });
     const searchRes = await fetch(
@@ -420,7 +421,7 @@ async function fetchLrclibSynced(
     }>;
 
     const targetDur = duration ? Number(duration) : null;
-    const normArtist = normalizeForCompare(artist);
+    const normArtist = normalizeForCompare(queryArtist);
     const normTrack = normalizeForCompare(queryTrack);
     let best: (typeof hits)[number] | null = null;
     let bestScore = -Infinity;
