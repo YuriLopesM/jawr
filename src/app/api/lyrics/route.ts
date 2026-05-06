@@ -138,7 +138,7 @@ function normalizeForCompare(s: string): string {
     .toLowerCase()
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')
-    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/[^\p{Letter}\p{Number}]+/gu, ' ')
     .trim();
 }
 
