@@ -35,7 +35,7 @@
   "lyrics_toggle": "lyrics",
   "lyrics_panel_label": "lyrics panel",
   "lyrics_loading": "loading lyrics...",
-  "lyrics_missing": "lyrics not found",
+  "lyrics_missing": "lyrics not found or instrumental",
   "lyrics_instrumental": "instrumental",
   "lyrics_offset": "offset",
   "lyrics_offset_reset": "reset",

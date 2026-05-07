@@ -13,7 +13,7 @@ type LyricsResult = {
 const LRCLIB_GET_URL = 'https://lrclib.net/api/get';
 const LRCLIB_SEARCH_URL = 'https://lrclib.net/api/search';
 const GENIUS_SEARCH_URL = 'https://genius.com/api/search';
-const FETCH_TIMEOUT_MS = 6000;
+const FETCH_TIMEOUT_MS = 15000;
 const BROWSER_UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0';
 
@@ -144,7 +144,7 @@ function normalizeForCompare(s: string): string {
 
 function cleanArtist(artist: string): string {
   return artist
-    .split(/[;,&/]|\s+(?:feat\.?|ft\.?|featuring|with)\s+/i)[0]
+    .split(/[;,]|\s+(?:feat\.?|ft\.?|featuring|with)\s+/i)[0]
     .trim();
 }
 
@@ -211,57 +211,16 @@ function cleanTrack(track: string): string {
     .trim();
 }
 
-function levenshtein(a: string, b: string): number {
-  if (a === b) return 0;
-  if (!a.length) return b.length;
-  if (!b.length) return a.length;
-  let prev = new Array<number>(b.length + 1);
-  let curr = new Array<number>(b.length + 1);
-  for (let j = 0; j <= b.length; j += 1) prev[j] = j;
-  for (let i = 1; i <= a.length; i += 1) {
-    curr[0] = i;
-    for (let j = 1; j <= b.length; j += 1) {
-      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      curr[j] = Math.min(curr[j - 1] + 1, prev[j] + 1, prev[j - 1] + cost);
-    }
-    [prev, curr] = [curr, prev];
-  }
-  return prev[b.length];
-}
-
-function similarity(a: string, b: string): number {
-  if (!a && !b) return 1;
-  const max = Math.max(a.length, b.length);
-  if (max === 0) return 1;
-  return 1 - levenshtein(a, b) / max;
-}
-
-const FUZZY_THRESHOLD = 0.75;
-const DURATION_PENALTY_DIVISOR = 600;
-
-function fuzzyMatch(a: string, b: string): boolean {
-  if (!a || !b) return false;
-  if (a.includes(b) || b.includes(a)) return true;
-  return similarity(a, b) >= FUZZY_THRESHOLD;
-}
-
-type HitScore = { passes: boolean; sim: number };
-
-function scoreHit(
+function matchesHit(
   normArtist: string,
   normTrack: string,
   hitArtist: string,
   hitTrack: string
-): HitScore {
-  const ha = normalizeForCompare(hitArtist);
-  const ht = normalizeForCompare(hitTrack);
-  if (!fuzzyMatch(normArtist, ha) || !fuzzyMatch(normTrack, ht)) {
-    return { passes: false, sim: 0 };
-  }
-  return {
-    passes: true,
-    sim: (similarity(normArtist, ha) + similarity(normTrack, ht)) / 2,
-  };
+): boolean {
+  return (
+    normalizeForCompare(hitArtist) === normArtist &&
+    normalizeForCompare(hitTrack) === normTrack
+  );
 }
 
 async function fetchGenius(
@@ -298,21 +257,19 @@ async function fetchGenius(
     const normArtist = normalizeForCompare(queryArtist);
     const normTrack = normalizeForCompare(queryTrack);
     let pageUrl: string | undefined;
-    let bestSim = -Infinity;
     for (const hit of searchData.response?.hits ?? []) {
       if (hit.type !== 'song' || !hit.result?.url) continue;
-      const { passes, sim } = scoreHit(
-        normArtist,
-        normTrack,
-        hit.result.primary_artist?.name ?? '',
-        hit.result.title ?? ''
-      );
-      if (!passes) continue;
-      if (sim > bestSim) {
-        bestSim = sim;
-        pageUrl = hit.result.url;
-        if (sim === 1) break;
-      }
+      if (
+        !matchesHit(
+          normArtist,
+          normTrack,
+          hit.result.primary_artist?.name ?? '',
+          hit.result.title ?? ''
+        )
+      )
+        continue;
+      pageUrl = hit.result.url;
+      break;
     }
     if (!pageUrl) return EMPTY;
 
@@ -424,24 +381,20 @@ async function fetchLrclibSynced(
     const normArtist = normalizeForCompare(queryArtist);
     const normTrack = normalizeForCompare(queryTrack);
     let best: (typeof hits)[number] | null = null;
-    let bestScore = -Infinity;
+    let bestDelta = Infinity;
     for (const h of hits) {
       if (!h.syncedLyrics) continue;
-      const { passes, sim } = scoreHit(
-        normArtist,
-        normTrack,
-        h.artistName ?? '',
-        h.trackName ?? ''
-      );
-      if (!passes) continue;
+      if (
+        !matchesHit(normArtist, normTrack, h.artistName ?? '', h.trackName ?? '')
+      )
+        continue;
       const delta =
         targetDur !== null && h.duration !== undefined
           ? Math.abs(h.duration - targetDur)
           : 0;
-      const score = sim - delta / DURATION_PENALTY_DIVISOR;
-      if (score > bestScore) {
+      if (delta < bestDelta) {
         best = h;
-        bestScore = score;
+        bestDelta = delta;
       }
     }
 

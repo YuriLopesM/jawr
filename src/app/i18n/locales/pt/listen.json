@@ -35,7 +35,7 @@
   "lyrics_toggle": "letra",
   "lyrics_panel_label": "painel de letra",
   "lyrics_loading": "carregando letra...",
-  "lyrics_missing": "letra não encontrada",
+  "lyrics_missing": "letra não encontrada ou instrumental",
   "lyrics_instrumental": "instrumental",
   "lyrics_offset": "offset",
   "lyrics_offset_reset": "zerar",
