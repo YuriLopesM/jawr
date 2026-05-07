@@ -41,14 +41,23 @@ export default async function Home() {
       <article className="text-sm text-gray-600 dark:tk-body flex flex-col gap-4">
         <p className="text-sm text-gray-600 dark:tk-body">
           {t('welcome_message')}{' '}
-          <em className="text-gray-300 dark:tk-muted">(just another web radio)</em> -{' '}
-          {t('welcome_message_2')} <br />
+          <em className="text-gray-300 dark:tk-muted">
+            (just another web radio)
+          </em>{' '}
+          - {t('welcome_message_2')} <br />
           {t('listen_instruction_1')}{' '}
-          <a href="/listen" className="underline">
+          <a
+            href="/listen"
+            className="underline hover:text-gray-700 dark:hover:tk-accent transition-colors"
+          >
             {t('listen_instruction_listen')}
           </a>{' '}
           {t('listen_instruction_2')}{' '}
-          <a href="/jawr.m3u" download className="underline">
+          <a
+            href="/jawr.m3u"
+            download
+            className="underline hover:text-gray-700 dark:hover:tk-accent transition-colors"
+          >
             .m3u
           </a>{' '}
           {t('listen_instruction_3')}
@@ -57,7 +66,7 @@ export default async function Home() {
           {t('collaboration_invite_1')}{' '}
           <a
             href="/more"
-            className="underline"
+            className="underline hover:text-gray-700 dark:hover:tk-accent transition-colors"
             aria-label={t('collaboration_invite_read_more')}
           >
             {t('collaboration_invite_read_more')}

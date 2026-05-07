@@ -74,6 +74,16 @@ export default async function Curators() {
         { network: 'lastfm', href: 'https://www.last.fm/user/pagiin' },
       ],
     },
+    {
+      name: 'davi',
+      roles: [CuratorRole.Curator],
+      socials: [
+        {
+          network: 'instagram',
+          href: 'https://www.instagram.com/davimonteiroo_/',
+        },
+      ],
+    },
   ];
 
   return (

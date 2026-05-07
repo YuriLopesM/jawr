@@ -1,17 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-
-export type Theme =
-  | 'light'
-  | 'dark'
-  | 'amoled'
-  | 'nord'
-  | 'dracula'
-  | 'catppuccin'
-  | 'gruvbox'
-  | 'everforest'
-  | 'city-lights';
+import type { Theme } from '../../_types';
 
 export const THEMES: Theme[] = [
   'light',
@@ -35,20 +25,23 @@ const ThemeContext = createContext<{
   cycle: () => {},
 });
 
-function readStoredTheme(): Theme {
-  if (typeof window === 'undefined') return 'dark';
-  const stored = localStorage.getItem('theme') as Theme | null;
-  return stored && THEMES.includes(stored) ? stored : 'dark';
-}
+const THEME_COOKIE = 'theme';
+const THEME_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(readStoredTheme);
+export function ThemeProvider({
+  children,
+  initialTheme = 'dark',
+}: {
+  children: React.ReactNode;
+  initialTheme?: Theme;
+}) {
+  const [theme, setThemeState] = useState<Theme>(initialTheme);
 
   useEffect(() => {
     const root = document.documentElement;
     THEMES.forEach((t) => root.classList.remove(t));
     root.classList.add(theme);
-    localStorage.setItem('theme', theme);
+    document.cookie = `${THEME_COOKIE}=${encodeURIComponent(theme)}; path=/; max-age=${THEME_COOKIE_MAX_AGE}; samesite=lax`;
   }, [theme]);
 
   const setTheme = (t: Theme) => setThemeState(t);

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { cookies } from 'next/headers';
 import Script from 'next/script';
 
 import { getResources, getT, initServerI18next } from 'next-i18next/server';
@@ -9,8 +10,30 @@ import { IBM_Plex_Mono } from 'next/font/google';
 
 import { SwRegister, TzSetter } from './_lib/components';
 import { RadioProvider, ThemeProvider } from './_lib/context';
+import type { Theme } from './_types';
 
 import './globals.css';
+
+function readThemeCookie(themeCookie?: string): Theme {
+  if (!themeCookie) return 'dark';
+
+  const allowedThemes: Theme[] = [
+    'light',
+    'dark',
+    'amoled',
+    'nord',
+    'city-lights',
+    'dracula',
+    'catppuccin',
+    'gruvbox',
+    'everforest',
+  ];
+
+  if (allowedThemes.includes(themeCookie as Theme)) {
+    return themeCookie as Theme;
+  }
+  return 'dark';
+}
 
 const ibmPlexMono = IBM_Plex_Mono({
   subsets: ['latin'],
@@ -29,8 +52,16 @@ export const metadata: Metadata = {
       { url: '/favicon.svg', type: 'image/svg+xml' },
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+      {
+        url: '/android-chrome-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
+      },
+      {
+        url: '/android-chrome-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+      },
     ],
     apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
   },
@@ -72,11 +103,13 @@ export default async function RootLayout({
   ]);
   const resources = getResources(i18n);
   const clarityId = process.env.NEXT_PUBLIC_MICROSOFT_CLARITY_ID;
+  const cookieStore = await cookies();
+  const initialTheme = readThemeCookie(cookieStore.get('theme')?.value);
 
   return (
     <html
       lang={lng}
-      className={`${ibmPlexMono.className} h-full antialiased bg-[var(--dk-bg,#f9f9f9)]`}
+      className={`${ibmPlexMono.className} h-full antialiased bg-(--dk-bg,#f9f9f9) ${initialTheme}`}
     >
       <head>
         {clarityId && process.env.NODE_ENV === 'production' && (
@@ -90,7 +123,7 @@ export default async function RootLayout({
         )}
       </head>
       <body className="h-full flex flex-col">
-        <ThemeProvider>
+        <ThemeProvider initialTheme={initialTheme}>
           <I18nProvider language={lng} resources={resources}>
             <RadioProvider>
               <TzSetter />

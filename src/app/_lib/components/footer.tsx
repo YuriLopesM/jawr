@@ -4,8 +4,6 @@ import { GithubLogoIcon } from '@phosphor-icons/react';
 
 import dayjs from 'dayjs';
 
-import { JawrLogo } from './jawr-logo';
-
 export function Footer() {
   const year = dayjs().year();
 
@@ -13,7 +11,6 @@ export function Footer() {
     <footer className="border-t-gray-100 bg-(--dk-bg,#f9f9f9) border-t dark:border-t-(--dk-border)">
       <div className="max-w-5xl w-full mx-auto h-9 flex items-center justify-between">
         <p className="text-xs text-gray-300 dark:tk-muted flex items-center gap-2">
-          <JawrLogo className="h-4 w-4 fill-current" />
           jawr | {year}
         </p>
         <a

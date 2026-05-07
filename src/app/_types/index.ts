@@ -77,3 +77,14 @@ export type Curator = {
 };
 
 export type CuratorSocialProps = Curator;
+
+export type Theme =
+  | 'light'
+  | 'dark'
+  | 'amoled'
+  | 'nord'
+  | 'dracula'
+  | 'catppuccin'
+  | 'gruvbox'
+  | 'everforest'
+  | 'city-lights';

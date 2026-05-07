@@ -2,6 +2,7 @@ import { getT } from 'next-i18next/server';
 import {
   DynamicPageTitle,
   Footer,
+  JawrLogoExtended,
   LanguageSwitcher,
   Menu,
   MiniPlayer,
@@ -21,12 +22,16 @@ export default async function Template({
       <DynamicPageTitle />
       <header className="w-full flex flex-wrap items-center justify-between gap-y-2">
         <Nav>
-          <Nav.Item href="/">{t('nav_home')}</Nav.Item>
+          <Nav.Item href="/" className="mr-4">
+            <JawrLogoExtended className="w-32 h-auto fill-current text-gray-900 dark:tk-accent" />
+          </Nav.Item>
           <Nav.Item href="/listen">{t('nav_listen')}</Nav.Item>
           <Nav.Item href="/blog">{t('nav_blog')}</Nav.Item>
           <Nav.Item href="/curators">{t('nav_curators')}</Nav.Item>
+          <Nav.Item href="/extension" className="hidden sm:inline-flex">
+            {t('nav_extension')}
+          </Nav.Item>
           <Nav.Item href="/more">{t('nav_more')}</Nav.Item>
-          <Nav.Item href="/extension" className="hidden sm:inline-flex">{t('nav_extension')}</Nav.Item>
         </Nav>
         <Menu>
           <Menu.Item>

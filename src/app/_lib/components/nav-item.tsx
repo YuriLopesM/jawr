@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Children } from 'react';
 import i18nConfig from '../../../../i18n.config';
 
 type NavItemProps = {
@@ -23,6 +24,13 @@ export function NavItem({ children, href, className }: NavItemProps) {
   const normalizedPathname =
     `/${pathnameWithoutLocale}`.replace(/\/$/, '') || '/';
   const isActive = normalizedPathname === href;
+  const childrenArray = Children.toArray(children);
+  const hasOnlyTextChildren = childrenArray.every(
+    (child) => typeof child === 'string' || typeof child === 'number'
+  );
+  const content = hasOnlyTextChildren
+    ? `[${childrenArray.join('')}]`
+    : children;
 
   return (
     <Link
@@ -34,7 +42,7 @@ export function NavItem({ children, href, className }: NavItemProps) {
           : 'text-gray-400 hover:text-gray-600 hover:font-medium dark:tk-muted dark:hover:tk-heading'
       }${className ? ` ${className}` : ''}`}
     >
-      [{children}]
+      {content}
     </Link>
   );
 }
