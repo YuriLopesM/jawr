@@ -1,21 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-type LyricsSource = 'lrclib' | 'genius' | null;
-
 type LyricsResult = {
   synced: string | null;
   plain: string | null;
   instrumental: boolean;
-  source: LyricsSource;
+  source: 'lrclib' | null;
   sourceUrl: string | null;
 };
 
 const LRCLIB_GET_URL = 'https://lrclib.net/api/get';
 const LRCLIB_SEARCH_URL = 'https://lrclib.net/api/search';
-const GENIUS_SEARCH_URL = 'https://genius.com/api/search';
-const FETCH_TIMEOUT_MS = 15000;
-const BROWSER_UA =
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0';
+const FETCH_TIMEOUT_MS = 8000;
 
 const EMPTY: LyricsResult = {
   synced: null,
@@ -29,108 +24,6 @@ function withTimeout(ms: number) {
   const ctrl = new AbortController();
   const id = setTimeout(() => ctrl.abort(), ms);
   return { signal: ctrl.signal, clear: () => clearTimeout(id) };
-}
-
-function isHeaderLine(line: string): boolean {
-  if (/「.+」\s*歌詞/.test(line)) return true;
-  if (/\bLyrics?\s*$/i.test(line) && line.length < 80) return true;
-  if (/^\[?Letra\s+de\s+["“”'].+["“”']\]?\s*$/i.test(line) && line.length < 80)
-    return true;
-  if (/^\d+\s+Contributors?\b/i.test(line)) return true;
-  if (/^\d+\s+Colaboradores?\b/i.test(line)) return true;
-  if (/^Read More\s*$/i.test(line)) return true;
-  if (/^Ler\s+Mais\s*$/i.test(line)) return true;
-  return false;
-}
-
-function htmlToPlainLyrics(html: string): string {
-  return html
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/(p|div)>/gi, '\n')
-    .replace(/<[^>]+>/g, '')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&#x27;|&apos;/g, "'")
-    .replace(/&quot;/g, '"')
-    .split('\n')
-    .map((l) => l.trim())
-    .filter((l) => !isHeaderLine(l))
-    .filter((l, i, arr) => !(l === '' && arr[i - 1] === ''))
-    .join('\n')
-    .trim();
-}
-
-function extractBalancedDiv(
-  html: string,
-  startIdx: number
-): { content: string; endIdx: number } | null {
-  const openTagEnd = html.indexOf('>', startIdx);
-  if (openTagEnd === -1) return null;
-  let depth = 1;
-  let i = openTagEnd + 1;
-  const divOpen = /<div\b/gi;
-  const divClose = /<\/div\s*>/gi;
-  while (depth > 0) {
-    divOpen.lastIndex = i;
-    divClose.lastIndex = i;
-    const openMatch = divOpen.exec(html);
-    const closeMatch = divClose.exec(html);
-    if (!closeMatch) return null;
-    if (openMatch && openMatch.index < closeMatch.index) {
-      depth += 1;
-      i = openMatch.index + openMatch[0].length;
-    } else {
-      depth -= 1;
-      i = closeMatch.index + closeMatch[0].length;
-      if (depth === 0) {
-        return {
-          content: html.slice(openTagEnd + 1, closeMatch.index),
-          endIdx: i,
-        };
-      }
-    }
-  }
-  return null;
-}
-
-function stripDivsMatching(html: string, startRe: RegExp): string {
-  let out = html;
-  let m: RegExpExecArray | null;
-  while ((m = startRe.exec(out)) !== null) {
-    const block = extractBalancedDiv(out, m.index);
-    if (!block) break;
-    out = out.slice(0, m.index) + out.slice(block.endIdx);
-    startRe.lastIndex = m.index;
-  }
-  return out;
-}
-
-function stripHeaders(html: string): string {
-  let out = stripDivsMatching(
-    html,
-    /<div[^>]*class="[^"]*LyricsHeader[^"]*"[^>]*>/gi
-  );
-  out = stripDivsMatching(
-    out,
-    /<div[^>]*data-exclude-from-selection="true"[^>]*>/gi
-  );
-  return out;
-}
-
-function extractLyricsContainers(html: string): string {
-  const cleaned = stripHeaders(html);
-  const startRe = /<div[^>]*data-lyrics-container="true"[^>]*>/gi;
-  const parts: string[] = [];
-  let m: RegExpExecArray | null;
-  while ((m = startRe.exec(cleaned)) !== null) {
-    const block = extractBalancedDiv(cleaned, m.index);
-    if (!block) break;
-    parts.push(stripHeaders(block.content));
-    startRe.lastIndex = block.endIdx;
-  }
-  return parts.join('<br>');
 }
 
 function normalizeForCompare(s: string): string {
@@ -223,91 +116,11 @@ function matchesHit(
   );
 }
 
-async function fetchGenius(
-  artist: string,
-  track: string
-): Promise<LyricsResult> {
-  const t = withTimeout(FETCH_TIMEOUT_MS);
-  try {
-    const queryArtist = cleanArtist(artist);
-    const queryTrack = cleanTrack(track);
-    const searchUrl = `${GENIUS_SEARCH_URL}?q=${encodeURIComponent(`${queryArtist} ${queryTrack}`)}`;
-    const searchRes = await fetch(searchUrl, {
-      headers: { 'User-Agent': BROWSER_UA },
-      signal: t.signal,
-    });
-
-    if (!searchRes.ok) return EMPTY;
-    const ct = searchRes.headers.get('content-type') ?? '';
-    if (!ct.includes('json')) return EMPTY;
-
-    const searchData = (await searchRes.json()) as {
-      response?: {
-        hits?: Array<{
-          type?: string;
-          result?: {
-            url?: string;
-            title?: string;
-            primary_artist?: { name?: string };
-          };
-        }>;
-      };
-    };
-
-    const normArtist = normalizeForCompare(queryArtist);
-    const normTrack = normalizeForCompare(queryTrack);
-    let pageUrl: string | undefined;
-    for (const hit of searchData.response?.hits ?? []) {
-      if (hit.type !== 'song' || !hit.result?.url) continue;
-      if (
-        !matchesHit(
-          normArtist,
-          normTrack,
-          hit.result.primary_artist?.name ?? '',
-          hit.result.title ?? ''
-        )
-      )
-        continue;
-      pageUrl = hit.result.url;
-      break;
-    }
-    if (!pageUrl) return EMPTY;
-
-    const pageRes = await fetch(pageUrl, {
-      headers: { 'User-Agent': BROWSER_UA },
-      signal: t.signal,
-    });
-    if (!pageRes.ok) return EMPTY;
-
-    const html = await pageRes.text();
-    const inner = extractLyricsContainers(html);
-    if (!inner) return EMPTY;
-
-    const plain = htmlToPlainLyrics(inner);
-    if (!plain) return EMPTY;
-
-    return {
-      synced: null,
-      plain,
-      instrumental: false,
-      source: 'genius',
-      sourceUrl: pageUrl,
-    };
-  } catch {
-    return EMPTY;
-  } finally {
-    t.clear();
-  }
-}
-
-// Returns null when lrclib failed (network/timeout). Returns EMPTY when lrclib
-// responded but had no usable synced lyrics. Distinction matters: null skips
-// caching to allow retry; EMPTY falls through to Genius and gets cached.
-async function fetchLrclibSynced(
+async function fetchLrclib(
   artist: string,
   track: string,
   duration: string | null
-): Promise<LyricsResult | null> {
+): Promise<LyricsResult> {
   const t = withTimeout(FETCH_TIMEOUT_MS);
   try {
     const queryArtist = cleanArtist(artist);
@@ -319,7 +132,6 @@ async function fetchLrclibSynced(
     if (duration) params.set('duration', duration);
 
     const res = await fetch(`${LRCLIB_GET_URL}?${params.toString()}`, {
-      headers: { 'User-Agent': BROWSER_UA },
       signal: t.signal,
     });
 
@@ -340,9 +152,9 @@ async function fetchLrclibSynced(
           sourceUrl: data.id ? `https://lrclib.net/lyrics/${data.id}` : null,
         };
       }
-      if (data.syncedLyrics) {
+      if (data.syncedLyrics || data.plainLyrics) {
         return {
-          synced: data.syncedLyrics,
+          synced: data.syncedLyrics ?? null,
           plain: data.plainLyrics ?? null,
           instrumental: false,
           source: 'lrclib',
@@ -357,15 +169,10 @@ async function fetchLrclibSynced(
     });
     const searchRes = await fetch(
       `${LRCLIB_SEARCH_URL}?${searchParams.toString()}`,
-      {
-        headers: {
-          'User-Agent': 'Mozilla/5.0',
-        },
-        signal: t.signal,
-      }
+      { signal: t.signal }
     );
 
-    if (!searchRes.ok) return null;
+    if (!searchRes.ok) return EMPTY;
 
     const hits = (await searchRes.json()) as Array<{
       id?: number;
@@ -383,7 +190,7 @@ async function fetchLrclibSynced(
     let best: (typeof hits)[number] | null = null;
     let bestDelta = Infinity;
     for (const h of hits) {
-      if (!h.syncedLyrics) continue;
+      if (!h.syncedLyrics && !h.plainLyrics) continue;
       if (
         !matchesHit(normArtist, normTrack, h.artistName ?? '', h.trackName ?? '')
       )
@@ -398,36 +205,19 @@ async function fetchLrclibSynced(
       }
     }
 
-    if (!best?.syncedLyrics) return EMPTY;
+    if (!best || (!best.syncedLyrics && !best.plainLyrics)) return EMPTY;
     return {
-      synced: best.syncedLyrics,
+      synced: best.syncedLyrics ?? null,
       plain: best.plainLyrics ?? null,
       instrumental: false,
       source: 'lrclib',
       sourceUrl: best.id ? `https://lrclib.net/lyrics/${best.id}` : null,
     };
   } catch {
-    return null;
+    return EMPTY;
   } finally {
     t.clear();
   }
-}
-
-async function fetchLyrics(
-  artist: string,
-  track: string,
-  duration: string | null
-): Promise<LyricsResult> {
-  const lrclib = await fetchLrclibSynced(artist, track, duration);
-  if (lrclib === null) {
-    const genius = await fetchGenius(artist, track);
-    if (genius.plain) return genius;
-    throw new Error('lyrics fetch failed');
-  }
-  if (lrclib.synced || lrclib.instrumental) return lrclib;
-  const genius = await fetchGenius(artist, track);
-  if (genius.plain) return genius;
-  throw new Error('lyrics not found');
 }
 
 export async function GET(req: NextRequest) {
@@ -440,16 +230,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(EMPTY, { status: 400 });
   }
 
-  try {
-    const result = await fetchLyrics(artist, track, duration);
-    return NextResponse.json(result, {
-      headers: {
-        'Cache-Control': 'public, max-age=86400, s-maxage=2592000',
-      },
-    });
-  } catch {
-    return NextResponse.json(EMPTY, {
-      headers: { 'Cache-Control': 'no-store' },
-    });
-  }
+  const result = await fetchLrclib(artist, track, duration);
+  return NextResponse.json(result, {
+    headers: {
+      'Cache-Control': result.source
+        ? 'public, max-age=86400, s-maxage=2592000'
+        : 'public, max-age=300, s-maxage=3600',
+    },
+  });
 }
