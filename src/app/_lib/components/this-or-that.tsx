@@ -122,25 +122,30 @@ function useCountUp(target: number, active: boolean, duration = 600) {
 
 const STORAGE_KEY = 'jawr-this-or-that-votes';
 
+function readStoredVotes(): ArtistVotes {
+  if (typeof window === 'undefined') return {};
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : {};
+  } catch {
+    return {};
+  }
+}
+
+function readInitialDaily(): DailyData {
+  if (typeof window === 'undefined') return { date: '', count: 0 };
+  return getDailyData();
+}
+
 export function ThisOrThat() {
-  const [votes, setVotes] = useState<ArtistVotes>({});
+  const [votes, setVotes] = useState<ArtistVotes>(readStoredVotes);
   const [pair, setPair] = useState<[ArtistInfo, ArtistInfo] | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [voted, setVoted] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const [daily, setDaily] = useState<DailyData>({ date: '', count: 0 });
+  const [daily, setDaily] = useState<DailyData>(readInitialDaily);
 
   const limitReached = daily.count >= DAILY_LIMIT;
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) setVotes(JSON.parse(stored));
-    } catch {}
-
-    setDaily(getDailyData());
-    loadPair();
-  }, []);
 
   async function loadPair() {
     setLoading(true);
@@ -148,6 +153,18 @@ export function ThisOrThat() {
     setPair(pair);
     setLoading(false);
   }
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchPair().then((p) => {
+      if (cancelled) return;
+      setPair(p);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   function saveVotes(updated: ArtistVotes) {
     setVotes(updated);

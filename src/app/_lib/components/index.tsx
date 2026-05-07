@@ -6,6 +6,7 @@ export * from './footer';
 export * from './greeting';
 export * from './jawr-logo';
 export * from './language-switcher';
+export * from './lyrics';
 export * from './menu';
 export * from './mini-player';
 export * from './nav';

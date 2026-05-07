@@ -27,6 +27,7 @@ export function useRadio() {
     setVolume,
     setSong,
     setHistory,
+    setTrackTiming,
   } = useRadioStore(
     useShallow((store) => ({
       playing: store.playing,
@@ -37,6 +38,7 @@ export function useRadio() {
       setVolume: store.setVolume,
       setSong: store.setSong,
       setHistory: store.setHistory,
+      setTrackTiming: store.setTrackTiming,
     }))
   );
 
@@ -155,9 +157,13 @@ export function useRadio() {
       .then(({ data }) => {
         setSong(data.now_playing?.song ?? null);
         setHistory((data.song_history as HistoryItem[]) ?? []);
+        setTrackTiming(
+          data.now_playing?.elapsed ?? null,
+          data.now_playing?.duration ?? null
+        );
       })
       .catch(() => {});
-  }, [setSong, setHistory]);
+  }, [setSong, setHistory, setTrackTiming]);
 
   // WebSocket now-playing
   useEffect(() => {
@@ -177,6 +183,10 @@ export function useRadio() {
               const np = item.data.np;
               setSong(np.now_playing?.song ?? null);
               setHistory(np.song_history ?? []);
+              setTrackTiming(
+                np.now_playing?.elapsed ?? null,
+                np.now_playing?.duration ?? null
+              );
             }
           }
           return;
@@ -186,6 +196,10 @@ export function useRadio() {
           const np = msg.pub.data.np;
           setSong(np.now_playing?.song ?? null);
           setHistory(np.song_history ?? []);
+          setTrackTiming(
+            np.now_playing?.elapsed ?? null,
+            np.now_playing?.duration ?? null
+          );
         }
       } catch {
         // malformed message — ignore
@@ -227,7 +241,7 @@ export function useRadio() {
       if (reconnectTimer) clearTimeout(reconnectTimer);
       ws?.close();
     };
-  }, [setSong, setHistory]);
+  }, [setSong, setHistory, setTrackTiming]);
 
   function toggle() {
     const audio = audioRef.current;

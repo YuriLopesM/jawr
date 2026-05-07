@@ -35,7 +35,13 @@ export async function getMusicOfTheDay() {
   const artistSeed = pickArtistSeed(entries, day);
   const artistName = artistSeed.artists?.[0]?.name;
 
-  let artistData: any = null;
+  type AudioDBArtist = {
+    strArtist?: string;
+    strGenre?: string;
+    strArtistThumb?: string;
+    strArtistWideThumb?: string;
+  };
+  let artistData: AudioDBArtist | null = null;
 
   if (artistName) {
     try {
@@ -46,7 +52,7 @@ export async function getMusicOfTheDay() {
         { next: { revalidate: ONE_DAY } }
       );
 
-      const json = await res.json();
+      const json = (await res.json()) as { artists?: AudioDBArtist[] };
       artistData = json.artists?.[0] ?? null;
     } catch (error) {
       console.log(error);

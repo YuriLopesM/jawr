@@ -30,5 +30,16 @@
   "lastfm_confirm": "confirmar",
   "notifications_label": "notificações",
   "support_artist_button": "apoie este artista",
-  "support_artist_title": "apoie"
+  "support_artist_title": "apoie",
+  "lyrics_label": "letra",
+  "lyrics_toggle": "letra",
+  "lyrics_panel_label": "painel de letra",
+  "lyrics_loading": "carregando letra...",
+  "lyrics_missing": "letra não encontrada ou instrumental",
+  "lyrics_instrumental": "instrumental",
+  "lyrics_offset": "offset",
+  "lyrics_offset_reset": "zerar",
+  "lyrics_autoscroll": "rolagem automática",
+  "lyrics_settings": "ajustes",
+  "lyrics_close": "fechar letra"
 }

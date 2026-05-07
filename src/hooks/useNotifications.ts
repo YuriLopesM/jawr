@@ -19,18 +19,20 @@ function savePreference(value: boolean) {
   } catch {}
 }
 
-export function useNotifications(song: Song | null, playing: boolean) {
-  const [enabled, setEnabled] = useState(false);
-  const [permission, setPermission] = useState<NotificationPermission>('default');
-  const prevSongRef = useRef<Song | null>(null);
+function initialPermission(): NotificationPermission {
+  if (typeof Notification === 'undefined') return 'default';
+  return Notification.permission;
+}
 
-  useEffect(() => {
-    if (typeof Notification === 'undefined') return;
-    setPermission(Notification.permission);
-    if (Notification.permission === 'granted') {
-      setEnabled(loadPreference());
-    }
-  }, []);
+function initialEnabled(): boolean {
+  if (typeof Notification === 'undefined') return false;
+  return Notification.permission === 'granted' ? loadPreference() : false;
+}
+
+export function useNotifications(song: Song | null, playing: boolean) {
+  const [enabled, setEnabled] = useState(initialEnabled);
+  const [permission, setPermission] = useState<NotificationPermission>(initialPermission);
+  const prevSongRef = useRef<Song | null>(null);
 
   useEffect(() => {
     const prev = prevSongRef.current;

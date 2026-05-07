@@ -7,9 +7,10 @@ import i18nConfig from '../../../../i18n.config';
 type NavItemProps = {
   children: React.ReactNode;
   href: string;
+  className?: string;
 };
 
-export function NavItem({ children, href }: NavItemProps) {
+export function NavItem({ children, href, className }: NavItemProps) {
   const pathname = usePathname();
   const pathnameWithoutLocale = pathname
     .split('/')
@@ -31,7 +32,7 @@ export function NavItem({ children, href }: NavItemProps) {
         isActive
           ? 'text-gray-900 font-semibold dark:tk-accent'
           : 'text-gray-400 hover:text-gray-600 hover:font-medium dark:tk-muted dark:hover:tk-heading'
-      }`}
+      }${className ? ` ${className}` : ''}`}
     >
       [{children}]
     </Link>
