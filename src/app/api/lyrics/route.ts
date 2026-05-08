@@ -11,6 +11,10 @@ type LyricsResult = {
 const LRCLIB_GET_URL = 'https://lrclib.net/api/get';
 const LRCLIB_SEARCH_URL = 'https://lrclib.net/api/search';
 const FETCH_TIMEOUT_MS = 8000;
+const LRCLIB_HEADERS = {
+  'User-Agent':
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+};
 
 const EMPTY: LyricsResult = {
   synced: null,
@@ -133,6 +137,7 @@ async function fetchLrclib(
 
     const res = await fetch(`${LRCLIB_GET_URL}?${params.toString()}`, {
       signal: t.signal,
+      headers: LRCLIB_HEADERS,
     });
 
     if (res.ok) {
@@ -169,7 +174,7 @@ async function fetchLrclib(
     });
     const searchRes = await fetch(
       `${LRCLIB_SEARCH_URL}?${searchParams.toString()}`,
-      { signal: t.signal }
+      { signal: t.signal, headers: LRCLIB_HEADERS }
     );
 
     if (!searchRes.ok) return EMPTY;
