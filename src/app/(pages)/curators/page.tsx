@@ -75,7 +75,7 @@ export default async function Curators() {
       ],
     },
     {
-      name: 'davi',
+      name: 'rain',
       roles: [CuratorRole.Curator],
       socials: [
         {
