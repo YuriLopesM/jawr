@@ -1,5 +1,7 @@
 export * from './audio-visualizer';
+export * from './brand-icons';
 export * from './curator-social';
+export * from './icon-link';
 export * from './divider';
 export * from './dynamic-page-title';
 export * from './footer';
