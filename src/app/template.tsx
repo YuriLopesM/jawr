@@ -6,6 +6,7 @@ import {
   LanguageSwitcher,
   Menu,
   MiniPlayer,
+  MobileMenu,
   Nav,
   ThemeToggle,
 } from './_lib/components';
@@ -17,27 +18,34 @@ export default async function Template({
 }) {
   const { t, lng } = await getT('common');
 
+  const navItems = [
+    { href: '/listen', label: t('nav_listen') },
+    { href: '/blog', label: t('nav_blog') },
+    { href: '/curators', label: t('nav_curators') },
+    { href: '/extension', label: t('nav_extension'), hideOnMobile: true },
+    { href: '/more', label: t('nav_more') },
+  ];
+  const mobileNavItems = navItems.filter((item) => !item.hideOnMobile);
+
   return (
     <div className="max-w-5xl w-full min-h-screen pt-12 px-4 sm:px-8 mx-auto flex flex-col gap-12 relative">
       <DynamicPageTitle />
       <header className="w-full flex flex-wrap items-center justify-between gap-y-2">
-        <Nav>
-          <Nav.Item href="/" className="mr-4">
-            <JawrLogoExtended className="w-32 h-auto fill-current text-gray-900 dark:tk-accent" />
-          </Nav.Item>
-          <Nav.Item href="/listen">{t('nav_listen')}</Nav.Item>
-          <Nav.Item href="/blog">{t('nav_blog')}</Nav.Item>
-          <Nav.Item href="/curators">{t('nav_curators')}</Nav.Item>
-          <Nav.Item href="/extension" className="hidden sm:inline-flex">
-            {t('nav_extension')}
-          </Nav.Item>
-          <Nav.Item href="/more">{t('nav_more')}</Nav.Item>
-        </Nav>
+        <Nav
+          logo={{
+            href: '/',
+            content: (
+              <JawrLogoExtended className="w-32 h-auto fill-current text-gray-900 dark:tk-accent" />
+            ),
+          }}
+          items={navItems}
+        />
         <Menu>
           <Menu.Item>
             <LanguageSwitcher currentLanguage={lng} />
           </Menu.Item>
           <ThemeToggle />
+          <MobileMenu items={mobileNavItems} />
         </Menu>
       </header>
       <div className="w-full">{children}</div>
