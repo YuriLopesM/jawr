@@ -41,43 +41,84 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: ['400', '500', '600', '700'],
 });
 
-export const metadata: Metadata = {
-  title: 'jawr.',
-  description: 'Just another web radio.',
-  metadataBase: new URL('https://jawr.org'),
-  manifest: '/site.webmanifest',
-  icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      {
-        url: '/android-chrome-192x192.png',
-        sizes: '192x192',
-        type: 'image/png',
-      },
-      {
-        url: '/android-chrome-512x512.png',
-        sizes: '512x512',
-        type: 'image/png',
-      },
-    ],
-    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
-  },
-  appleWebApp: {
-    capable: true,
-    title: 'jawr.',
-    statusBarStyle: 'black-translucent',
-  },
-  openGraph: {
-    siteName: 'jawr.',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary',
-  },
-};
+const SITE_NAME = 'jawr.org';
+const SITE_TITLE = 'jawr.org - just another web radio';
+const SITE_DESCRIPTION = 'discover new music on a curated 24/7 web radio';
+const SITE_URL = 'https://jawr.org';
+const OG_IMAGE_PATH = '/og-image.png';
+
+const OG_LOCALES = {
+  pt: 'pt_BR',
+  en: 'en_US',
+} as const;
+
+type SupportedLang = keyof typeof OG_LOCALES;
+
+function getOgLocale(lng: string) {
+  const primary = OG_LOCALES[lng as SupportedLang] ?? OG_LOCALES.pt;
+  const alternate = Object.values(OG_LOCALES).filter((l) => l !== primary);
+  return { primary, alternate };
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { lng } = await getT('common');
+  const { primary: locale, alternate: alternateLocale } = getOgLocale(lng);
+
+  return {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    metadataBase: new URL(SITE_URL),
+    manifest: '/site.webmanifest',
+    icons: {
+      icon: [
+        { url: '/favicon.ico', sizes: 'any' },
+        { url: '/favicon.svg', type: 'image/svg+xml' },
+        { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+        { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+        {
+          url: '/android-chrome-192x192.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
+        {
+          url: '/android-chrome-512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+        },
+      ],
+      apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
+    },
+    appleWebApp: {
+      capable: true,
+      title: SITE_NAME,
+      statusBarStyle: 'black-translucent',
+    },
+    openGraph: {
+      siteName: SITE_NAME,
+      title: SITE_TITLE,
+      description: SITE_DESCRIPTION,
+      type: 'website',
+      url: SITE_URL,
+      locale,
+      alternateLocale,
+      images: [
+        {
+          url: OG_IMAGE_PATH,
+          width: 1200,
+          height: 630,
+          alt: SITE_TITLE,
+          type: 'image/png',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: SITE_TITLE,
+      description: SITE_DESCRIPTION,
+      images: [OG_IMAGE_PATH],
+    },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: [
