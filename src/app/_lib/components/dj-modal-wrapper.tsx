@@ -1,24 +1,16 @@
 'use client';
 
-import { useState } from 'react';
-import { DJModal } from '../../_lib/components/dj-modal';
-
-type Props = {
-  onOpen: () => void;
-};
+import { useT } from 'next-i18next/client';
+import { DJModal } from './dj-modal';
+import { ModalTrigger } from './modal-trigger';
 
 export function DJModalWrapper() {
-  const [show, setShow] = useState(false);
+  const { t } = useT('more');
 
   return (
-    <>
-      <button
-        onClick={() => setShow(true)}
-        className="underline text-gray-800 dark:tk-body hover:text-gray-600 dark:hover:tk-accent transition-colors cursor-pointer"
-      >
-        join →
-      </button>
-      {show && <DJModal onClose={() => setShow(false)} />}
-    </>
+    <ModalTrigger
+      label={t('dj_section_cta')}
+      renderModal={(close) => <DJModal onClose={close} />}
+    />
   );
 }

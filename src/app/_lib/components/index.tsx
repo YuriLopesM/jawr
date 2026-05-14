@@ -12,6 +12,7 @@ export * from './language-switcher';
 export * from './lyrics';
 export * from './menu';
 export * from './mobile-menu';
+export * from './modal-trigger';
 export * from './mini-player';
 export * from './nav';
 export * from './nav-item';
