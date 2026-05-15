@@ -1,5 +1,26 @@
 {
   "extension_title": "extensão",
-  "seo_description": "Melhore sua experiência de escuta com a extensão de navegador da jawr. Em breve.",
-  "wip": "em construção."
+  "seo_description": "a extensão de navegador da jawr coloca a rádio na barra do seu Chrome, Edge ou Firefox.",
+  "description": "controle a rádio direto da barra do navegador. sem precisar manter uma aba aberta.",
+  "preview_light_alt": "popup da extensão",
+  "features_title": "funcionalidades",
+  "features": [
+    "play/pause e volume direto da barra",
+    "música atual com capa e histórico no popup",
+    "notificações de troca de faixa",
+    "atalhos de teclado",
+    "visualizador ao vivo"
+  ],
+  "shortcuts_title": "atalhos",
+  "shortcuts": [
+    "play / pause",
+    "mostrar música atual",
+    "aumentar volume",
+    "diminuir volume"
+  ],
+  "install_title": "instalar",
+  "install_chrome": "chrome / edge",
+  "install_firefox": "firefox",
+  "source_title": "código",
+  "source_link": "ver no github"
 }

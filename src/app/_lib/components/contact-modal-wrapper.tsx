@@ -1,24 +1,16 @@
 'use client';
 
-import { useState } from 'react';
-import { ContactModal } from '../../_lib/components/contact-modal';
-
-type Props = {
-  onOpen: () => void;
-};
+import { useT } from 'next-i18next/client';
+import { ContactModal } from './contact-modal';
+import { ModalTrigger } from './modal-trigger';
 
 export function ContactModalWrapper() {
-  const [show, setShow] = useState(false);
+  const { t } = useT('more');
 
   return (
-    <>
-      <button
-        onClick={() => setShow(true)}
-        className="underline text-gray-800 dark:tk-body hover:text-gray-600 dark:hover:tk-accent transition-colors cursor-pointer"
-      >
-        send →
-      </button>
-      {show && <ContactModal onClose={() => setShow(false)} />}
-    </>
+    <ModalTrigger
+      label={t('contact_section_cta')}
+      renderModal={(close) => <ContactModal onClose={close} />}
+    />
   );
 }

@@ -1,5 +1,7 @@
 export * from './audio-visualizer';
+export * from './brand-icons';
 export * from './curator-social';
+export * from './icon-link';
 export * from './divider';
 export * from './dynamic-page-title';
 export * from './footer';
@@ -9,6 +11,8 @@ export * from './jawr-logo-extended';
 export * from './language-switcher';
 export * from './lyrics';
 export * from './menu';
+export * from './mobile-menu';
+export * from './modal-trigger';
 export * from './mini-player';
 export * from './nav';
 export * from './nav-item';

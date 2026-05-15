@@ -1,5 +1,26 @@
 {
   "extension_title": "extension",
-  "seo_description": "Enhance your listening experience with the jawr browser extension. Coming soon.",
-  "wip": "under construction."
+  "seo_description": "The jawr browser extension puts the radio in your Chrome, Edge, or Firefox toolbar.",
+  "description": "control the radio from your browser toolbar. no need to keep a tab open.",
+  "preview_light_alt": "extension popup",
+  "features_title": "features",
+  "features": [
+    "play/pause and volume from the toolbar",
+    "now-playing with cover and history in the popup",
+    "track-change notifications",
+    "keyboard shortcuts",
+    "live visualizer"
+  ],
+  "shortcuts_title": "shortcuts",
+  "shortcuts": [
+    "play / pause",
+    "show current song",
+    "volume up",
+    "volume down"
+  ],
+  "install_title": "install",
+  "install_chrome": "chrome / edge",
+  "install_firefox": "firefox",
+  "source_title": "source",
+  "source_link": "view on github"
 }
