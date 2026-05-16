@@ -6,7 +6,7 @@ import { Curator, CuratorRole } from '../../_types';
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getT(['common', 'curators']);
   const title = `jawr | ${t('nav_curators')}`;
-  const description = t('seo_description');
+  const description = t('curators:seo_description');
 
   return {
     title,
@@ -19,10 +19,12 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: '/curators',
       type: 'website',
+      images: ['/og-image.png'],
     },
     twitter: {
       title,
       description,
+      images: ['/og-image.png'],
     },
   };
 }

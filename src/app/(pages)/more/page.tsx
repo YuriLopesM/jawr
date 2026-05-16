@@ -7,7 +7,7 @@ import { DJModalWrapper } from '../../_lib/components/dj-modal-wrapper';
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getT(['common', 'more']);
   const title = `jawr | ${t('nav_more')}`;
-  const description = t('seo_description');
+  const description = t('more:seo_description');
 
   return {
     title,
@@ -20,10 +20,12 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: '/more',
       type: 'website',
+      images: ['/og-image.png'],
     },
     twitter: {
       title,
       description,
+      images: ['/og-image.png'],
     },
   };
 }

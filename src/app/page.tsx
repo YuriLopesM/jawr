@@ -6,7 +6,7 @@ import { Divider, Greeting, PlayingNow, TodayCard } from './_lib/components';
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getT(['common', 'home']);
   const title = `jawr | ${t('nav_home')}`;
-  const description = t('seo_description');
+  const description = t('home:seo_description');
 
   return {
     title,
@@ -19,10 +19,12 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: '/',
       type: 'website',
+      images: ['/og-image.png'],
     },
     twitter: {
       title,
       description,
+      images: ['/og-image.png'],
     },
   };
 }

@@ -5,7 +5,7 @@ import { Divider } from '../../_lib/components';
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getT(['common', 'blog']);
   const title = `jawr | ${t('nav_blog')}`;
-  const description = t('seo_description');
+  const description = t('blog:seo_description');
 
   return {
     title,
@@ -18,10 +18,12 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: '/blog',
       type: 'website',
+      images: ['/og-image.png'],
     },
     twitter: {
       title,
       description,
+      images: ['/og-image.png'],
     },
   };
 }

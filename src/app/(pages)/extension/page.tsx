@@ -17,7 +17,7 @@ const GITHUB_REPO_URL = 'https://github.com/xrnst/jawr-browser-ext';
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getT(['common', 'extension']);
   const title = `jawr | ${t('nav_extension')}`;
-  const description = t('seo_description');
+  const description = t('extension:seo_description');
 
   return {
     title,
@@ -30,10 +30,12 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: '/extension',
       type: 'website',
+      images: ['/og-image.png'],
     },
     twitter: {
       title,
       description,
+      images: ['/og-image.png'],
     },
   };
 }

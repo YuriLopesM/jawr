@@ -5,7 +5,7 @@ import { Divider, RadioPlayer } from '../../_lib/components';
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getT(['common', 'listen']);
   const title = `jawr | ${t('nav_listen')}`;
-  const description = t('seo_description');
+  const description = t('listen:seo_description');
 
   return {
     title,
@@ -18,10 +18,12 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: '/listen',
       type: 'website',
+      images: ['/og-image.png'],
     },
     twitter: {
       title,
       description,
+      images: ['/og-image.png'],
     },
   };
 }
