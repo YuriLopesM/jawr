@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'www.theaudiodb.com', pathname: '/**' },
       { protocol: 'https', hostname: 'upload.wikimedia.org', pathname: '/**' },
       { protocol: 'https', hostname: 'api.jawr.org', pathname: '/**' },
+      {
+        protocol: 'https',
+        hostname: 'sean-fish-imageproxy.s3.us-west-1.amazonaws.com',
+        pathname: '/**',
+      },
     ],
   },
 };
