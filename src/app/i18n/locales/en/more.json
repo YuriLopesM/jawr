@@ -27,5 +27,8 @@
   "dj_field_link": "link or material",
   "dj_field_message": "message",
   "dj_button_send": "send",
-  "dj_button_sending": "sending..."
+  "dj_button_sending": "sending...",
+  "branding_section_title": "visual identity",
+  "branding_section_description": "our beautiful shark and visual identity was made by the incredible designer Eddie Guima.",
+  "branding_section_cta": "take a look →"
 }

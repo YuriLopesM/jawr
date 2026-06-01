@@ -44,12 +44,29 @@ export default async function More() {
 
       <section className="flex flex-col gap-2">
         <p className="text-sm font-bold text-gray-800 dark:tk-heading">
+          {t('branding_section_title')}
+        </p>
+        <p className="text-sm text-gray-600 dark:tk-body">
+          {t('branding_section_description')}
+        </p>
+        <a
+          href="https://www.behance.net/gallery/249733661/Just-Another-Web-Radio-Branding-Project"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="self-start text-sm underline text-gray-800 dark:tk-heading hover:text-gray-600 dark:hover:tk-accent transition-colors"
+        >
+          {t('branding_section_cta')}
+        </a>
+      </section>
+
+      <section className="flex flex-col gap-2 items-end">
+        <p className="text-sm font-bold text-gray-800 dark:tk-heading">
           {t('dj_section_title')}
         </p>
         <p className="text-sm text-gray-600 dark:tk-body">
           {t('dj_section_description')}
         </p>
-        <div className="text-sm">
+        <div className="text-sm flex flex-col items-end">
           <DJModalWrapper />
         </div>
       </section>

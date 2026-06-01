@@ -385,7 +385,7 @@ export function Tetris() {
 
   async function handleShare() {
     const didCopy = await shareOrCopy(
-      `🎮 jawr · tetris\n\n🏆 ${score} pts\n📊 ${lines} lines · lvl ${level}\n⏱️ ${formatTime(elapsed)}\n\njawr.org`
+      `🎮 jawr · tetris\n\n🏆 ${score} pts\n📊 ${lines} lines · lvl ${level}\n⏱️ ${formatTime(elapsed)}`
     );
     if (!didCopy) return;
     setCopied(true);
