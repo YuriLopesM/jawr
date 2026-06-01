@@ -7,6 +7,7 @@ export * from './dynamic-page-title';
 export * from './footer';
 export * from './greeting';
 export * from './guess-album';
+export * from './guess-movie';
 export * from './jawr-logo';
 export * from './jawr-logo-extended';
 export * from './language-switcher';

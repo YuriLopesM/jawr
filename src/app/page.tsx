@@ -5,6 +5,7 @@ import {
   Divider,
   Greeting,
   GuessAlbum,
+  GuessMovie,
   PlayingNow,
   Snake,
   Tetris,
@@ -96,6 +97,7 @@ export default async function Home() {
       <Divider />
       <section className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
         <GuessAlbum />
+        <GuessMovie />
         <Snake />
         <Tetris />
       </section>

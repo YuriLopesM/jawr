@@ -14,6 +14,12 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'api.jawr.org', pathname: '/**' },
       {
         protocol: 'https',
+        hostname: 'images-na.ssl-images-amazon.com',
+        pathname: '/**',
+      },
+      { protocol: 'https', hostname: 'image.tmdb.org', pathname: '/**' },
+      {
+        protocol: 'https',
         hostname: 'sean-fish-imageproxy.s3.us-west-1.amazonaws.com',
         pathname: '/**',
       },
