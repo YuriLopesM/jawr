@@ -2,6 +2,12 @@
 
 import { useEffect } from 'react';
 
+declare global {
+  interface Window {
+    __gameCapturingKeys?: boolean;
+  }
+}
+
 interface Options {
   toggle: () => void;
   toggleMute: () => void;
@@ -45,6 +51,9 @@ export function useKeyboardShortcuts({
     function handler(e: KeyboardEvent) {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       if (isTypingTarget(e.target)) return;
+      // A focused minigame (snake, tetris) captures these keys; don't also
+      // drive the radio player while one is playing.
+      if (window.__gameCapturingKeys) return;
 
       switch (e.code) {
         case 'Space':

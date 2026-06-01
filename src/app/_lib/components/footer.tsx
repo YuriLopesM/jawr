@@ -1,6 +1,6 @@
 'use client';
 
-import { GithubLogoIcon } from '@phosphor-icons/react';
+import { GithubLogoIcon, XLogoIcon } from '@phosphor-icons/react';
 
 import dayjs from 'dayjs';
 
@@ -13,15 +13,26 @@ export function Footer() {
         <p className="text-xs text-gray-300 dark:tk-muted flex items-center gap-2">
           jawr | {year}
         </p>
-        <a
-          aria-label="github logo"
-          href="https://github.com/YuriLopesM/jawr"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-gray-300 dark:tk-muted text-md hover:text-gray-600 dark:hover:tk-accent transition-colors"
-        >
-          <GithubLogoIcon />
-        </a>
+        <div className="flex items-center gap-3">
+          <a
+            aria-label="x logo"
+            href="https://x.com/radiojawr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-300 dark:tk-muted text-md hover:text-gray-600 dark:hover:tk-accent transition-colors"
+          >
+            <XLogoIcon />
+          </a>
+          <a
+            aria-label="github logo"
+            href="https://github.com/YuriLopesM/jawr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-300 dark:tk-muted text-md hover:text-gray-600 dark:hover:tk-accent transition-colors"
+          >
+            <GithubLogoIcon />
+          </a>
+        </div>
       </div>
     </footer>
   );

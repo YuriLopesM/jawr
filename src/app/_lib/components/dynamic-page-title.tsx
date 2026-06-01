@@ -48,9 +48,9 @@ export function DynamicPageTitle() {
   }, [pathname, t]);
 
   const baseTitle = `jawr | ${pageTitle}`;
-  const trackTitle = ['🎵', song?.artist, song?.title]
+  const trackTitle = `🎵 ${[song?.artist, song?.title]
     .filter(Boolean)
-    .join(' - ');
+    .join(' - ')}`;
   const shouldAlternate = playing && Boolean(trackTitle);
 
   useLayoutEffect(() => {

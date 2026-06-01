@@ -1,7 +1,16 @@
 import type { Metadata } from 'next';
 import { getT } from 'next-i18next/server';
 import { cookies } from 'next/headers';
-import { Divider, Greeting, PlayingNow, TodayCard } from './_lib/components';
+import {
+  Divider,
+  Greeting,
+  GuessAlbum,
+  GuessMovie,
+  PlayingNow,
+  Snake,
+  Tetris,
+  TodayCard,
+} from './_lib/components';
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getT(['common', 'home']);
@@ -84,6 +93,13 @@ export default async function Home() {
         <TodayCard.Artist />
         <TodayCard.Color />
         <TodayCard.Image lang={lang} />
+      </section>
+      <Divider />
+      <section className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
+        <GuessAlbum />
+        <GuessMovie />
+        <Snake />
+        <Tetris />
       </section>
       {/* <OnThisDay /> */}
       {/* <Divider /> */}
