@@ -125,7 +125,7 @@ export function GuessGame({ game, i18nPrefix, imageClassName, shareLine }: Props
   async function handleShare() {
     const squares = resultSquares(results);
     const correct = results.filter(Boolean).length;
-    const text = `${shareLine} · ${getTodayLabel()}\n\n${squares} ${correct}/${results.length}`;
+    const text = `${shareLine} · ${getTodayLabel()}\n\n${squares} ${correct}/${results.length}\n\n@radiojawr`;
     const didCopy = await shareOrCopy(text);
     if (!didCopy) return;
     setCopied(true);

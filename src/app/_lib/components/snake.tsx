@@ -119,7 +119,7 @@ export function Snake() {
 
   async function handleShare() {
     const didCopy = await shareOrCopy(
-      `🐍 jawr · snake\n\n🏆 ${score} pts\n⏱️ ${formatTime(elapsed)}`
+      `🐍 jawr · snake\n\n🏆 ${score} pts\n⏱️ ${formatTime(elapsed)}\n\n@radiojawr`
     );
     if (!didCopy) return;
     setCopied(true);
