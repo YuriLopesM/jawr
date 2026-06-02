@@ -6,8 +6,9 @@ import { shareOrCopy } from '@/app/_lib/helpers/share';
 import type { Puzzle, GuessGame as GuessGameInstance } from '@/app/_lib/services/guess-game';
 
 // Valid Next image widths (images.imageSizes/deviceSizes). Reveal walks up
-// these resolutions to animate the depixelation, ending sharp. All layers are
-// mounted up front so the browser preloads them and the reveal is smooth.
+// these resolutions to animate the depixelation, ending sharp. Only the current
+// step is rendered so the browser never fetches a sharper image than the player
+// has earned, keeping the answer out of the DOM and network until reveal.
 const PIXEL_STEPS = [32, 64, 128, 256];
 const STEP_MS = 180;
 const FADE_MS = 250;
@@ -181,12 +182,12 @@ export function GuessGame({ game, i18nPrefix, imageClassName, shareLine }: Props
                       transitionDuration: `${FADE_MS}ms`,
                     }}
                   >
-                    {PIXEL_STEPS.map((w, i) => (
+                    {PIXEL_STEPS.slice(0, pixelStep + 1).map((w, i) => (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         key={w}
                         src={pixelSrc(puzzle.image, w)}
-                        alt={i === pixelStep ? puzzle.subtitle : ''}
+                        alt={done && i === pixelStep ? puzzle.subtitle : ''}
                         aria-hidden={i !== pixelStep}
                         className="absolute inset-0 w-full h-full object-cover transition-opacity duration-200"
                         style={{
