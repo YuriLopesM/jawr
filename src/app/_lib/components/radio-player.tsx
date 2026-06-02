@@ -20,6 +20,7 @@ import { useRadioContext } from '../context';
 
 import Image from 'next/image';
 import { timeAgo } from '../helpers/date';
+import { shareOrCopy } from '../helpers/share';
 import { AudioVisualizer } from './audio-visualizer';
 import { Lyrics } from './lyrics';
 import { SongRequestModal } from './song-request-modal';
@@ -48,7 +49,25 @@ export function RadioPlayer() {
 
   const [showRequest, setShowRequest] = useState(false);
   const [showSupport, setShowSupport] = useState(false);
+  const [copied, setCopied] = useState(false);
   const scrobbleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const copiedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (copiedTimer.current) clearTimeout(copiedTimer.current);
+    };
+  }, []);
+
+  async function handleShare() {
+    if (!song?.artist || !song?.title) return;
+    const text = `📻 jawr · ${t('share_now_playing')}\n\n${song.artist} - ${song.title}\n\n@radiojawr`;
+    const didCopy = await shareOrCopy(text);
+    if (!didCopy) return;
+    setCopied(true);
+    if (copiedTimer.current) clearTimeout(copiedTimer.current);
+    copiedTimer.current = setTimeout(() => setCopied(false), 1500);
+  }
 
   const notificationsLabel = t('notifications_label');
   const lyricsLabel = t('lyrics_toggle');
@@ -211,13 +230,22 @@ export function RadioPlayer() {
               {song?.artist} - {song?.title}
             </p>
             {song?.artist && (
-              <button
-                type="button"
-                onClick={() => setShowSupport(true)}
-                className="text-xs text-gray-400 dark:tk-muted underline hover:text-gray-600 dark:hover:tk-accent transition-colors text-left cursor-pointer w-fit"
-              >
-                {t('support_artist_button')}
-              </button>
+              <div className="flex items-center gap-4">
+                <button
+                  type="button"
+                  onClick={() => setShowSupport(true)}
+                  className="text-xs text-gray-400 dark:tk-muted underline hover:text-gray-600 dark:hover:tk-accent transition-colors text-left cursor-pointer w-fit"
+                >
+                  {t('support_artist_button')}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleShare}
+                  className="text-xs text-gray-400 dark:tk-muted underline hover:text-gray-600 dark:hover:tk-accent transition-colors text-left cursor-pointer w-fit"
+                >
+                  {copied ? t('share_song_copied') : t('share_song_button')}
+                </button>
+              </div>
             )}
           </div>
 
